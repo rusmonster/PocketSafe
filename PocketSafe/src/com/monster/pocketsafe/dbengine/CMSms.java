@@ -9,8 +9,9 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 public class CMSms implements IMSms {
 
 	private int mId;
-	private TTypDirection mDirection;
-	private TTypIsNew mIsNew;
+	private int mDirection;
+	private int mFolder;
+	private int mIsNew;
 	private String mPhone;
 	private String mText;
 	private Date mDate;
@@ -19,7 +20,7 @@ public class CMSms implements IMSms {
 		return mDate;
 	}
 
-	public TTypDirection getDirection() {
+	public int getDirection() {
 		return mDirection;
 	}
 
@@ -27,7 +28,7 @@ public class CMSms implements IMSms {
 		return mId;
 	}
 
-	public TTypIsNew getIsNew() {
+	public int getIsNew() {
 		return mIsNew;
 	}
 
@@ -43,7 +44,7 @@ public class CMSms implements IMSms {
 		mDate=dat;
 	}
 
-	public void setDirection(TTypDirection direction) {
+	public void setDirection(int direction) {
 		mDirection = direction;
 	}
 
@@ -53,7 +54,7 @@ public class CMSms implements IMSms {
 		mId = id;
 	}
 
-	public void setIsNew(TTypIsNew isNew) {
+	public void setIsNew(int isNew) {
 		mIsNew = isNew;
 	}
 
@@ -71,6 +72,14 @@ public class CMSms implements IMSms {
 
 	public void setText(String Text) {
 		mText=Text;
+	}
+
+	public int getFolder() {
+		return mFolder;
+	}
+
+	public void setFolder(int folder) {
+		mFolder = folder;
 	}
 
 }

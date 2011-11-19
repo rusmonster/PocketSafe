@@ -7,7 +7,8 @@ public class MyException extends Exception {
 	public enum TTypMyException {
 		ENoError,
 		EInvalidDbId, 
-		EPhoneTooLong, EPhoneInvalid, EDbAlreadyOpened, EDbNotOpened, EDbVersionError, EDbErrCreateFolder, EDbIdNotFoundSetting
+		EPhoneTooLong, EPhoneInvalid, EDbAlreadyOpened, EDbNotOpened, EDbVersionError, 
+		EDbErrCreateFolder, EDbIdNotFoundSetting, EDbErrorGetLastID, EDbIdNotFoundSms, EDbErrGetCountSms, EDbErrGetCountSetting
 	}
 	
 	private TTypMyException mId;

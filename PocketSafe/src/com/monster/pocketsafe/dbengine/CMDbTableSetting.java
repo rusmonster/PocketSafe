@@ -4,8 +4,6 @@ import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 public class CMDbTableSetting implements IMDbTableSetting {
 	private IMSdkDbConection mConn;
@@ -43,6 +41,19 @@ public class CMDbTableSetting implements IMDbTableSetting {
 
 	public void SetConnection(IMSdkDbConection conn) {
 		mConn = conn;
+	}
+
+	public int getCount() throws MyException {
+		String sql = "SELECT COUNT(*) FROM M__SETTING";
+		Cursor c = mConn.Query(sql);
+		try {
+			if (c.moveToFirst())
+				return c.getInt(0);
+			
+			throw new MyException(TTypMyException.EDbErrGetCountSetting);
+		} finally {
+			c.close();
+		}	
 	}
 
 }

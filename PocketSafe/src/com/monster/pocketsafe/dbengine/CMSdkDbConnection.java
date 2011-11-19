@@ -46,5 +46,22 @@ public class CMSdkDbConnection implements IMSdkDbConection {
 		
 		return mDb.rawQuery(sql, null);
 	}
-
+	
+	public int getLastInsertID() throws MyException {
+		int id = -1;
+		String sql = "SELECT last_insert_rowid();";
+		
+		Cursor c = Query(sql);
+		try {
+			c.moveToFirst();
+			id = c.getInt(0);
+		} catch (Exception e){}
+		
+		c.close();
+		
+		if (id<=0)
+			throw new MyException(TTypMyException.EDbErrorGetLastID);
+		
+		return id;
+	}
 }

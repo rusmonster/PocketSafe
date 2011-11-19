@@ -7,7 +7,7 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 
 public class CMDbEngine implements IMDbEngine {
-	static private final int CUR_DB_VERSION = 3;
+	static private final int CUR_DB_VERSION = 1;
 	
 	private IMLocator mLocator;
 	private IMSdkDbConection mConn;
@@ -53,31 +53,19 @@ public class CMDbEngine implements IMDbEngine {
 			mConn.ExecSQL("CREATE TABLE M__SETTING(ID INTEGER PRIMARY KEY, VAL VARCHAR(250))");
 			
 			mConn.ExecSQL("DROP TABLE IF EXISTS M__SMS");
-			mConn.ExecSQL("CREATE TABLE M__SMS(ID INTEGER PRIMARY KEY AUTOINCREMENT)");
-
-			mConn.ExecSQL("INSERT INTO M__SETTING (ID,VAL) VALUES("+TTypSetting.EDbVersion.ordinal()+",'1')");
-			db_ver = 1;
-		}
-		
-		if (db_ver<2) {
-			mConn.ExecSQL("DROP TABLE IF EXISTS M__SMS");
 			mConn.ExecSQL("CREATE TABLE M__SMS(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"DIRECTION INTEGER," +
+					"FOLDER INTEGER," +
 					"ISNEW INTEGER," +
 					"PHONE VARCHAR(50)," +
 					"TXT TEXT," +
 					"DAT DATETIME)");
-			
-			mConn.ExecSQL("UPDATE M__SETTING SET VAL='2' WHERE ID="+TTypSetting.EDbVersion.ordinal());
-			db_ver = 2;
-		}
-		
-		if (db_ver<3) {
+
 			mConn.ExecSQL("INSERT INTO M__SETTING (ID,VAL) VALUES("+TTypSetting.EDbPassTimout.ordinal()+",'300')");
-			mConn.ExecSQL("UPDATE M__SETTING SET VAL='3' WHERE ID="+TTypSetting.EDbVersion.ordinal());
-			db_ver = 3;
+			mConn.ExecSQL("INSERT INTO M__SETTING (ID,VAL) VALUES("+TTypSetting.EDbVersion.ordinal()+",'1')");
+			db_ver = 1;
 		}
-		
+			
 		if (db_ver != CUR_DB_VERSION)
 			throw new MyException(TTypMyException.EDbVersionError);
 		
@@ -92,6 +80,10 @@ public class CMDbEngine implements IMDbEngine {
 	}
 
 	public IMDbTableSetting TableSetting() {
+		return mTabSetting;
+	}
+
+	public IMDbQuerySetting QuerySetting() {
 		return mTabSetting;
 	}
 
