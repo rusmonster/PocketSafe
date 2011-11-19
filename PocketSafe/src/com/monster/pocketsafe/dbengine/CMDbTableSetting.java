@@ -15,9 +15,7 @@ public class CMDbTableSetting implements IMDbTableSetting {
 		mConn.ExecSQL(sql, args );
 	}
 
-	public boolean getById(IMSetting dest, TTypSetting id) throws MyException {
-		boolean res = false;
-		
+	public void getById(IMSetting dest, TTypSetting id) throws MyException {
 		String sql = "select ID,VAL from M__SETTING where ID="+id.ordinal();
 		Cursor c = mConn.Query(sql);
 		
@@ -27,16 +25,13 @@ public class CMDbTableSetting implements IMDbTableSetting {
 				dest.setId(n);
 				String val = c.getString(1);
 				dest.setStrVal(val);
-				res = true;
+				return;
 			}
+			
+			throw  new MyException(TTypMyException.EDbIdNotFoundSetting);
 		} finally {
 			c.close();
 		}
-		
-		if (!res) 
-			throw  new MyException(TTypMyException.EDbIdNotFoundSetting);
-		
-		return res;
 	}
 
 	public void SetConnection(IMSdkDbConection conn) {

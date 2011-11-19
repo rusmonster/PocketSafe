@@ -8,5 +8,5 @@ public interface IMDbQuerySetting extends IMDbDataSet {
 		EDbVersion,
 		EDbPassTimout
 	}
-	boolean getById(IMSetting dest, TTypSetting id) throws MyException;
+	void getById(IMSetting dest, TTypSetting id) throws MyException;
 }

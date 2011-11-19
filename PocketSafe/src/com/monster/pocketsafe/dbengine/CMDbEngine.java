@@ -43,8 +43,8 @@ public class CMDbEngine implements IMDbEngine {
 		int db_ver = 0;
 		IMSetting set = mLocator.createSetting();
 		try {
-			if ( mTabSetting.getById(set, TTypSetting.EDbVersion) )
-				db_ver = set.getIntVal();
+			mTabSetting.getById(set, TTypSetting.EDbVersion);
+			db_ver = set.getIntVal();
 		} catch (Exception e)
 		{}
 		
