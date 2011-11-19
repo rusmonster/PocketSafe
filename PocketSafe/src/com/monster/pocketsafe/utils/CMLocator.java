@@ -22,7 +22,7 @@ public class CMLocator implements IMLocator {
 	}
 
 	public IMDbTableSms createDbTableSms() {
-		return new CMDbTableSms();
+		return new CMDbTableSms(this);
 	}
 
 	public IMSetting createSetting() {
