@@ -5,7 +5,8 @@ import com.monster.pocketsafe.utils.MyException;
 public interface IMDbQuerySetting extends IMDbDataSet {
 	public enum TTypSetting {
 		EDbZeroSetting,
-		EDbVersion
+		EDbVersion,
+		EDbPassTimout
 	}
 	boolean getById(IMSetting dest, TTypSetting id) throws MyException;
 }

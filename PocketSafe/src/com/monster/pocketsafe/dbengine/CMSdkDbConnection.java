@@ -25,12 +25,19 @@ public class CMSdkDbConnection implements IMSdkDbConection {
 		Context context = MyAppContext.getAppContext();
 		mDb = context.openOrCreateDatabase(filename, 0 /*MODE_WORLD_WRITEABLE*/, null);
 	}
-
+	
 	public void ExecSQL(String sql) throws MyException {
 		if (mDb == null || !mDb.isOpen())
 			throw new MyException(TTypMyException.EDbNotOpened);
 		
 		mDb.execSQL(sql);
+	}
+
+	public void ExecSQL(String sql, Object[] bindArgs) throws MyException {
+		if (mDb == null || !mDb.isOpen())
+			throw new MyException(TTypMyException.EDbNotOpened);
+		
+		mDb.execSQL(sql, bindArgs);
 	}
 
 	public Cursor Query(String sql) throws MyException {
@@ -39,6 +46,5 @@ public class CMSdkDbConnection implements IMSdkDbConection {
 		
 		return mDb.rawQuery(sql, null);
 	}
-	
-	
+
 }

@@ -21,7 +21,7 @@ public class CMSetting implements IMSetting {
 	public void setId(int id) throws MyException {
 		if (id<0)
 			throw new MyException(TTypMyException.EInvalidDbId);
-
+		mId = id;
 	}
 
 	public String getStrVal() {

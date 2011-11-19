@@ -7,7 +7,7 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 
 public class CMDbEngine implements IMDbEngine {
-	static private final int CUR_DB_VERSION = 2;
+	static private final int CUR_DB_VERSION = 3;
 	
 	private IMLocator mLocator;
 	private IMSdkDbConection mConn;
@@ -72,6 +72,12 @@ public class CMDbEngine implements IMDbEngine {
 			db_ver = 2;
 		}
 		
+		if (db_ver<3) {
+			mConn.ExecSQL("INSERT INTO M__SETTING (ID,VAL) VALUES("+TTypSetting.EDbPassTimout.ordinal()+",'300')");
+			mConn.ExecSQL("UPDATE M__SETTING SET VAL='3' WHERE ID="+TTypSetting.EDbVersion.ordinal());
+			db_ver = 3;
+		}
+		
 		if (db_ver != CUR_DB_VERSION)
 			throw new MyException(TTypMyException.EDbVersionError);
 		
@@ -83,6 +89,10 @@ public class CMDbEngine implements IMDbEngine {
 
 	public IMDbQuerySms QuerySms() {
 		return mTabSms;
+	}
+
+	public IMDbTableSetting TableSetting() {
+		return mTabSetting;
 	}
 
 }
