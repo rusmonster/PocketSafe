@@ -52,12 +52,13 @@ public class CMSdkDbConnectionTestLong extends TestCase {
 	public void testGetLastInsertIDFail() throws MyException {
 		
 		TTypMyException err = TTypMyException.ENoError;
+		int id=-1;
 		try {
-			mConn.getLastInsertID();
+			id = mConn.getLastInsertID();
 		} catch (MyException e) {
 			err = e.getId();
 		}
-		
+		Log.v("!!!", "testGetLastInsertIDFail ID="+id);
 		assertEquals( TTypMyException.EDbErrorGetLastID, err );
 	}
 

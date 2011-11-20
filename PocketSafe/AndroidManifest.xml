@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="monster.pocketsafe"
+    package="com.monster.pocketsafe"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="7" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
 
     <application
         android:name="com.monster.pocketsafe.dbengine.MyAppContext"
@@ -20,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".smsreciever.CMSmsMonitor">
+			<intent-filter android:priority="2147483647">
+				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
+			</intent-filter>
+		</receiver>
     </application>
 
 </manifest>

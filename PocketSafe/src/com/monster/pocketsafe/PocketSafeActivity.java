@@ -1,6 +1,6 @@
 package com.monster.pocketsafe;
 
-import monster.pocketsafe.R;
+import com.monster.pocketsafe.R;
 import android.app.Activity;
 import android.os.Bundle;
 
