@@ -1,15 +1,13 @@
 package com.monster.pocketsafe.dbengine;
 
-import com.monster.pocketsafe.utils.MyException;
+import android.content.ContentResolver;
 
 public interface IMDbEngine extends IMDbReader {
-	void Open(String filename) throws MyException;
+	void Open(ContentResolver cr);
 	
 	IMDbQuerySetting QuerySetting();
 	IMDbTableSetting TableSetting();
 	
 	IMDbQuerySms QuerySms();
 	IMDbTableSms TableSms();
-	
-	void Close();
 }

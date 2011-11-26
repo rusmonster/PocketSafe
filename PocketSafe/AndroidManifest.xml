@@ -9,9 +9,11 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" /> 
 
     <application
-        android:name="com.monster.pocketsafe.dbengine.MyAppContext"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
+        <provider
+            android:name=".dbengine.provider.CMDbProvider"
+            android:authorities="com.monster.pocketsafe.dbengine.provider.cmdbprovider" />
         <activity
             android:label="@string/app_name"
             android:name="com.monster.pocketsafe.PocketSafeActivity" >

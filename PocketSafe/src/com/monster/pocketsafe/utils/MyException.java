@@ -8,7 +8,8 @@ public class MyException extends Exception {
 		ENoError,
 		EInvalidDbId, 
 		EPhoneTooLong, EPhoneInvalid, EDbAlreadyOpened, EDbNotOpened, EDbVersionError, 
-		EDbErrCreateFolder, EDbIdNotFoundSetting, EDbErrorGetLastID, EDbIdNotFoundSms, EDbErrGetCountSms, EDbErrGetCountSetting
+		EDbErrCreateFolder, EDbIdNotFoundSetting, EDbErrorGetLastID, EDbIdNotFoundSms, 
+		EDbErrGetCountSms, EDbErrGetCountSetting, EDbErrInsertSms
 	}
 	
 	private TTypMyException mId;

@@ -3,6 +3,7 @@ package com.monster.pocketsafe.testlong.dbengine;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.monster.pocketsafe.dbengine.CMDbEngine;
@@ -17,13 +18,11 @@ import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
-import junit.framework.TestCase;
 
-public class CMDbEngineTestLong extends TestCase {
+public class CMDbEngineTestLong extends AndroidTestCase {
 
 	private IMLocator mLocator;
 	private CMDbEngine mDbEngine;
-	private static final String DBNAME = "mydb2.dat";
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -31,44 +30,40 @@ public class CMDbEngineTestLong extends TestCase {
 		mLocator = new CMLocator();
 		mDbEngine = new CMDbEngine(mLocator);
 		
-		mDbEngine.Open(DBNAME);
+		
+		mDbEngine.Open(getContext().getContentResolver());
 		mDbEngine.TableSms().Clear();
 		int cnt = mDbEngine.TableSms().getCount();
 		assertEquals(0, cnt);
 	}
 
 	protected void tearDown() throws Exception {
-		mDbEngine.Close();
 		super.tearDown();
-	}
-
-	public void testOpenClose() throws MyException {
-		mDbEngine.Close();
-		mDbEngine.Open(DBNAME);
-		mDbEngine.Close();
-		mDbEngine.Open(DBNAME);
-		mDbEngine.Close(); 
 	}
 	
 	public void testSettingInsert() throws MyException {
 		int id = TTypSetting.EDbPassTimout.ordinal();
+		
+		IMSetting orig = mLocator.createSetting();
+		mDbEngine.TableSetting().getById(orig, TTypSetting.EDbPassTimout);
+		
 		IMSetting set = mLocator.createSetting();
 		set.setId(id);
-		set.setIntVal(250);
+		set.setIntVal(orig.getIntVal()+50);
 		mDbEngine.TableSetting().Update(set);
 		
 		IMSetting dest = mLocator.createSetting();
 		mDbEngine.TableSetting().getById(dest, TTypSetting.EDbPassTimout);
 		
 		assertEquals(id, dest.getId());
-		assertEquals(250, dest.getIntVal());
+		assertEquals(set.getIntVal(), dest.getIntVal());
 		
-		set.setIntVal(300);
-		mDbEngine.TableSetting().Update(set);
+
+		mDbEngine.TableSetting().Update(orig);
 		mDbEngine.TableSetting().getById(dest, TTypSetting.EDbPassTimout);
 		
-		assertEquals(id, dest.getId());
-		assertEquals(300, dest.getIntVal());
+		assertEquals(orig.getId(), dest.getId());
+		assertEquals(orig.getIntVal(), dest.getIntVal());
 	}
 	
 	public void testSettingGetFailed() {
@@ -123,13 +118,14 @@ public class CMDbEngineTestLong extends TestCase {
 	public void testSmsQueryByFolderOrderByDatDesc() throws MyException {
 		Date dat = new Date();
 		
+		IMSms sms  = null;
 
 		
 		ArrayList<IMSms> list = new ArrayList<IMSms>();
 		ArrayList<IMSms> res = new ArrayList<IMSms>();
 		
 		for (int i=0; i<5; i++) {
-			IMSms sms  = mLocator.createSms();
+			sms  = mLocator.createSms();
 			sms.setDate(dat);
 			sms.setDirection(TTypDirection.EIncoming);
 			sms.setFolder(TTypFolder.Einbox);
@@ -139,21 +135,32 @@ public class CMDbEngineTestLong extends TestCase {
 			int id = mDbEngine.TableSms().Insert(sms);
 			sms.setId(id);
 			list.add(sms);
-		}
-		
-		for (int i=0; i<5; i++) {
-			IMSms sms = list.get(i);
+			
+			dat = new Date(dat.getTime()+1);
 			Log.v("!!!", "SMSID="+sms.getId() );
 		}
 		
-		int k=0;
+		assertEquals(mDbEngine.TableSms().getCount(),list.size());
+		
+		sms = mLocator.createSms();
+		sms.setDate(dat);
+		sms.setDirection(TTypDirection.EOutgoing);
+		sms.setFolder(TTypFolder.EOutbox);
+		sms.setIsNew(TTypIsNew.EReaded);
+		sms.setText("sended sms");
+		sms.setPhone("12345679");
+		int id = mDbEngine.TableSms().Insert(sms);
+		sms.setId(id);
+		
+		
+		int k=list.size()-1;
 		
 		
 		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, 0, 3);
 		assertEquals(3,res.size());
 		
 		for (int i=0; i<3; i++) {
-			IMSms src = list.get(k++);
+			IMSms src = list.get(k--);
 			IMSms dest = res.get(i);
 			
 			assertEquals(src.getId(), dest.getId());
@@ -169,7 +176,7 @@ public class CMDbEngineTestLong extends TestCase {
 		assertEquals(2,res.size());
 		
 		for (int i=0; i<2; i++) {
-			IMSms src = list.get(k++);
+			IMSms src = list.get(k--);
 			IMSms dest = res.get(i);
 			
 			assertEquals(src.getId(), dest.getId());
@@ -183,6 +190,18 @@ public class CMDbEngineTestLong extends TestCase {
 		
 		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, 6, 3);
 		assertEquals(0,res.size());
+		
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EOutbox, 0, 3);
+		assertEquals(1,res.size());
+		IMSms dest = res.get(0);
+		
+		assertEquals(sms.getId(), dest.getId());
+		assertEquals(sms.getDate(), dest.getDate());
+		assertEquals(sms.getDirection(), dest.getDirection());
+		assertEquals(sms.getFolder(), dest.getFolder());
+		assertEquals(sms.getIsNew(), dest.getIsNew());
+		assertEquals(sms.getPhone(), dest.getPhone());
+		assertEquals(sms.getText(), dest.getText());
 	
 	}
 }

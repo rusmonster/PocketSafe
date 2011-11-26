@@ -1,23 +1,37 @@
 package com.monster.pocketsafe.dbengine;
 
+import com.monster.pocketsafe.dbengine.provider.CMDbProvider;
+import com.monster.pocketsafe.dbengine.provider.CMSQLiteOnenHelper;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 
 public class CMDbTableSetting implements IMDbTableSetting {
-	private IMSdkDbConection mConn;
+	private ContentResolver mCr;
+	
+    private static final String[] mContent = new String[] {
+        CMSQLiteOnenHelper._ID, 
+        CMSQLiteOnenHelper.SETTING_VAL
+    };
+    
+    private static final String[] mCount = new String[] {
+        "count(*) as count"
+    };
 	
 	public void Update(IMSetting setting) throws MyException {
-		String sql = "UPDATE M__SETTING SET VAL = ? WHERE ID="+setting.getId();
-		
-		Object[] args = new String[] { setting.getStrVal() };
-		mConn.ExecSQL(sql, args );
+        ContentValues values = new ContentValues();
+        
+        values.put(CMSQLiteOnenHelper._ID, setting.getId());
+        values.put(CMSQLiteOnenHelper.SETTING_VAL, setting.getStrVal());
+        
+		mCr.update(CMDbProvider.CONTENT_URI_SETTING, values, CMSQLiteOnenHelper._ID+"=" + setting.getId(), null);
 	}
 
 	public void getById(IMSetting dest, TTypSetting id) throws MyException {
-		String sql = "select ID,VAL from M__SETTING where ID="+id.ordinal();
-		Cursor c = mConn.Query(sql);
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mContent, CMSQLiteOnenHelper._ID+"=" + id.ordinal(), null, null);
 		
 		try {
 			if ( c.moveToFirst() ) {
@@ -34,21 +48,23 @@ public class CMDbTableSetting implements IMDbTableSetting {
 		}
 	}
 
-	public void SetConnection(IMSdkDbConection conn) {
-		mConn = conn;
-	}
-
 	public int getCount() throws MyException {
-		String sql = "SELECT COUNT(*) FROM M__SETTING";
-		Cursor c = mConn.Query(sql);
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mCount, null, null, null);
+				
 		try {
-			if (c.moveToFirst())
-				return c.getInt(0);
+			if ( c.moveToFirst() ) {
+				int cnt = c.getInt(0);
+				return cnt;
+			}
 			
-			throw new MyException(TTypMyException.EDbErrGetCountSetting);
+			throw  new MyException(TTypMyException.EDbErrGetCountSetting);
 		} finally {
 			c.close();
 		}	
+	}
+
+	public void SetContentResolver(ContentResolver cr) {
+		mCr = cr;
 	}
 
 }
