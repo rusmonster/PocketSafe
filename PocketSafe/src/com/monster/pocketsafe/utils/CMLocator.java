@@ -1,9 +1,11 @@
 package com.monster.pocketsafe.utils;
 
+import com.monster.pocketsafe.dbengine.CMDbEngine;
 import com.monster.pocketsafe.dbengine.CMDbTableSetting;
 import com.monster.pocketsafe.dbengine.CMDbTableSms;
 import com.monster.pocketsafe.dbengine.CMSetting;
 import com.monster.pocketsafe.dbengine.CMSms;
+import com.monster.pocketsafe.dbengine.IMDbEngine;
 import com.monster.pocketsafe.dbengine.IMDbTableSetting;
 import com.monster.pocketsafe.dbengine.IMDbTableSms;
 import com.monster.pocketsafe.dbengine.IMSetting;
@@ -25,6 +27,10 @@ public class CMLocator implements IMLocator {
 
 	public IMSms createSms() {
 		return new CMSms();
+	}
+
+	public IMDbEngine createDbEngine() {
+		return new CMDbEngine(this);
 	}
 
 

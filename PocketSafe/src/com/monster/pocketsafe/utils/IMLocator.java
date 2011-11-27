@@ -1,5 +1,6 @@
 package com.monster.pocketsafe.utils;
 
+import com.monster.pocketsafe.dbengine.IMDbEngine;
 import com.monster.pocketsafe.dbengine.IMDbTableSetting;
 import com.monster.pocketsafe.dbengine.IMDbTableSms;
 import com.monster.pocketsafe.dbengine.IMSetting;
@@ -10,4 +11,5 @@ public interface IMLocator {
 	IMDbTableSms createDbTableSms();
 	IMSms createSms();
 	IMSetting createSetting();
+	IMDbEngine createDbEngine();
 }

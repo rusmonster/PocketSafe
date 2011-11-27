@@ -29,6 +29,7 @@ public class CMSmsTest extends TestCase {
 		assertEquals(mSms.getPhone(), "123");
 	}
 	
+	/*
 	public void testSetPhoneErrFormat() {
 		MyException ex=null;
 		try {
@@ -58,6 +59,7 @@ public class CMSmsTest extends TestCase {
 		assertTrue(ex.getId() == TTypMyException.EPhoneInvalid);
 
 	}
+	*/
 	
 	public void testSetPhoneErrTooLong() {
 		MyException ex=null;
