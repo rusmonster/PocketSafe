@@ -9,7 +9,7 @@ public class MyException extends Exception {
 		EInvalidDbId, 
 		EPhoneTooLong, EPhoneInvalid, EDbAlreadyOpened, EDbNotOpened, EDbVersionError, 
 		EDbErrCreateFolder, EDbIdNotFoundSetting, EDbErrorGetLastID, EDbIdNotFoundSms, 
-		EDbErrGetCountSms, EDbErrGetCountSetting, EDbErrInsertSms
+		EDbErrGetCountSms, EDbErrGetCountSetting, EDbErrInsertSms, EErrServiceNotBinded, EDbErrGetCountContact
 	}
 	
 	private TTypMyException mId;

@@ -14,26 +14,27 @@ import android.text.TextUtils;
 public class CMDbProvider extends ContentProvider {
 
 	public static final String PROVIDER_NAME = "com.monster.pocketsafe.dbengine.provider.cmdbprovider";
+	
+	private static final String SMSGROUP_PATH = CMSQLiteOnenHelper.TABLE_SMS+"/group";
+	
 	public static final Uri CONTENT_URI_SETTING = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnenHelper.TABLE_SETTING);
 	public static final Uri CONTENT_URI_SMS = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnenHelper.TABLE_SMS);
+	public static final Uri CONTENT_URI_SMSGROUP = Uri.parse("content://"+PROVIDER_NAME+"/" + SMSGROUP_PATH);
 	
-	private SQLiteDatabase mDb;
+	private SQLiteDatabase mDb; 
 
 	private static final UriMatcher uriMatcher;
 	private static final int CODE_SETTING		= 1;
-	private static final int CODE_SETTING_ID	= 2;
-	private static final int CODE_SMS			= 3;
-	private static final int CODE_SMS_ID		= 4;
+	private static final int CODE_SMS			= 2;
+	private static final int CODE_SMSGROUP		= 3;
 	
 	static{
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SETTING, 		CODE_SETTING);
-		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SETTING+"/#",	CODE_SETTING_ID);      
 		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SMS, 			CODE_SMS);
-		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SMS+"/#", 	CODE_SMS_ID);      
+		uriMatcher.addURI(PROVIDER_NAME, SMSGROUP_PATH,							CODE_SMSGROUP);
 	}
 	
-
 	@Override
 	public boolean onCreate() {
 		 mDb = (new CMSQLiteOnenHelper(getContext())).getWritableDatabase();
@@ -61,7 +62,7 @@ public class CMDbProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-	    Uri _uri = null;
+	    Uri _uri = null; 
 	    long id=-1;
 	    
 	    switch (uriMatcher.match(uri)){
@@ -85,8 +86,7 @@ public class CMDbProvider extends ContentProvider {
 	}
 
 	@Override
-	public Cursor query(Uri uri, String[] projection, 
-            String selection, String[] selectionArgs, String sort)  {
+	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sort)  {
 		
 		Cursor c = null;
 		String orderBy;       
@@ -104,6 +104,10 @@ public class CMDbProvider extends ContentProvider {
 	        break;
 	    case CODE_SMS:
 	    	c = mDb.query(CMSQLiteOnenHelper.TABLE_SMS, projection, selection, selectionArgs, null, null, orderBy);
+	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
+	        break;
+	    case CODE_SMSGROUP:
+	    	c = mDb.query(CMSQLiteOnenHelper.QUERY_SMSGROUP, projection, selection, selectionArgs, null, null, orderBy);
 	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
 	        break;
 	    default: throw new SQLException("Failed to query from "+uri);

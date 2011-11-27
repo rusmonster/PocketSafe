@@ -26,7 +26,14 @@ public class CMDbTableSms implements IMDbTableSms {
         CMSQLiteOnenHelper.SMS_ISNEW,
         CMSQLiteOnenHelper.SMS_PHONE,
         CMSQLiteOnenHelper.SMS_TEXT,
-        CMSQLiteOnenHelper.SMS_DATE,
+        CMSQLiteOnenHelper.SMS_DATE
+    };
+    
+    private static final String[] mContentGroup = new String[] {
+    	CMSQLiteOnenHelper.SMSGROUP_PHONE,
+    	CMSQLiteOnenHelper.SMSGROUP_COUNT,
+    	CMSQLiteOnenHelper.SMSGROUP_COUNTNEW,
+    	CMSQLiteOnenHelper.SMSGROUP_MAXDATE
     };
     
     private static final String[] mCount = new String[] {
@@ -70,7 +77,6 @@ public class CMDbTableSms implements IMDbTableSms {
         if (id<0) throw new MyException(TTypMyException.EDbErrInsertSms);
         
 		return id;
-
 	}
 
 
@@ -113,11 +119,71 @@ public class CMDbTableSms implements IMDbTableSms {
 	}
 
 	public void QueryByFolderOrderByDatDesc(ArrayList<IMSms> dest, int folder, int start,
-			int count) throws MyException {
+			int count) throws MyException  {
 		
 		dest.clear();
 		
 		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnenHelper.SMS_FOLDER+"="+folder, null, CMSQLiteOnenHelper.SMS_DATE+" DESC"); 
+		
+		try {
+			if (!c.moveToFirst()) return;
+			if ( !c.move(start) ) return;
+			
+			int end = start+count;
+			for (int i=start; i<end; i++) {
+				IMSms sms = mLocator.createSms();
+				Load(sms, c);
+				dest.add(sms);
+				if (!c.moveToNext()) return;
+			}
+		} finally {
+			c.close();
+		}
+	}
+
+	public void QueryGroupByPhoneOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) {
+		dest.clear();
+		
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, null, null, CMSQLiteOnenHelper.SMSGROUP_MAXDATE+" DESC"); 
+		
+		try {
+			if (!c.moveToFirst()) return;
+			if ( !c.move(start) ) return;
+			
+			int end = start+count;
+			for (int i=start; i<end; i++) {
+				IMSmsGroup gr = mLocator.createSmsGroup();
+				gr.setPhone(c.getString(0));
+				gr.setCount(c.getInt(1));
+				gr.setCountNew(c.getInt(2));
+				gr.setDate( new Date(c.getLong(3)));
+				dest.add(gr);
+				if (!c.moveToNext()) return;
+			}
+		} finally {
+			c.close();
+		}	
+	}
+
+	public void Update(IMSms item) throws MyException {
+        ContentValues values = new ContentValues();
+        
+        values.put(CMSQLiteOnenHelper.SMS_DIRECTION, item.getDirection());
+        values.put(CMSQLiteOnenHelper.SMS_FOLDER, item.getFolder());
+        values.put(CMSQLiteOnenHelper.SMS_ISNEW, item.getIsNew());
+        values.put(CMSQLiteOnenHelper.SMS_PHONE, item.getPhone());
+        values.put(CMSQLiteOnenHelper.SMS_TEXT, item.getText());
+        values.put(CMSQLiteOnenHelper.SMS_DATE, item.getDate().getTime());
+        
+        mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnenHelper._ID + "="+item.getId(), null);	
+	}
+
+	public void QueryByPhoneOrderByDatDesc(ArrayList<IMSms> dest, String phone,	int start, int count) throws MyException {
+		
+		dest.clear();
+		
+		String[] args = new String[] { phone };
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnenHelper.SMS_PHONE+"=?", args , CMSQLiteOnenHelper.SMS_DATE+" DESC"); 
 		
 		try {
 			if (!c.moveToFirst()) return;

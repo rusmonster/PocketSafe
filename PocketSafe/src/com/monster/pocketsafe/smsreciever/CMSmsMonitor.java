@@ -7,24 +7,40 @@ import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.main.TTypEvent;
+import com.monster.pocketsafe.main.TTypEventStrings;
 import com.monster.pocketsafe.safeservice.CMSafeService;
-import com.monster.pocketsafe.safeservice.IMSafeService;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class CMSmsMonitor extends BroadcastReceiver {
 	private static final String ACTION = "android.provider.Telephony.SMS_RECEIVED";
-	private IMSafeService myService=null;
+	private static final IMLocator mLocator = new CMLocator();
+	private static final IMDbEngine mDbEngine = mLocator.createDbEngine();
+	
+	private void ProcessMessage(Context context, String phone, String text) throws MyException {
+		IMSms sms = mLocator.createSms();
+		sms.setDirection(TTypDirection.EIncoming);
+		sms.setFolder(TTypFolder.Einbox);
+		sms.setIsNew(TTypIsNew.EJustRecv);
+		sms.setPhone(phone);
+		sms.setText(text);
+		sms.setDate( new Date() );
+		
+		int id = mDbEngine.TableSms().Insert(sms);
+		
+		Intent intent = new Intent(context, CMSafeService.class);
+		intent.putExtra(TTypEventStrings.EVENT_TYP, TTypEvent.ESmsRecieved.Value);
+		intent.putExtra(TTypEventStrings.EVENT_ID, id);
+        context.startService(intent);
+	}
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -49,23 +65,22 @@ public class CMSmsMonitor extends BroadcastReceiver {
 			
 			Log.d("!!!","SMS Message from: "+smsfrom+"; text: "+smstext);
 			
-			IMLocator locator  = new CMLocator();
-			IMDbEngine db = locator.createDbEngine();
-			db.Open( context.getContentResolver() );
+			mDbEngine.Open( context.getContentResolver() );
 			try {
-				IMSms sms = locator.createSms();
-				sms.setDirection(TTypDirection.EIncoming);
-				sms.setFolder(TTypFolder.Einbox);
-				sms.setIsNew(TTypIsNew.EJustRecv);
-				sms.setPhone(smsfrom);
-				sms.setText(smstext);
-				sms.setDate( new Date() );
-				
-				db.TableSms().Insert(sms);
-			Log.d("!!!", "SMS stored");
+				ProcessMessage(context, smsfrom, smstext);
+				Log.d("!!!", "SMS stored");
 			} catch (MyException e) {
 				e.printStackTrace();
 			}
+			
+			/*
+			if (isOrderedBroadcast()) {
+				Log.d("!!!","isOrderedBroadcast() == true");
+				//abortBroadcast();
+			}
+			else
+				Log.d("!!!","isOrderedBroadcast() == false");
+			*/
 
 			/*
 	        Intent a = new Intent(context, CMSafeService.class);
@@ -88,28 +103,11 @@ public class CMSmsMonitor extends BroadcastReceiver {
 			}
 */
 			
-			/*
-			if (isOrderedBroadcast()) {
-				Log.d("!!!","isOrderedBroadcast() == true");
-				//abortBroadcast();
-			}
-			else
-				Log.d("!!!","isOrderedBroadcast() == false");
-			*/
+
 		}
 		
 	}
-	
-    private ServiceConnection serviceConncetion = new ServiceConnection() {
 
-    	public void onServiceConnected(ComponentName name, IBinder service) {
-    		myService = ((CMSafeService.MyBinder)service).getService();
-    	}
-
-	    public void onServiceDisconnected(ComponentName name) {
-	        myService = null;
-	    }
 
 };
 
-}

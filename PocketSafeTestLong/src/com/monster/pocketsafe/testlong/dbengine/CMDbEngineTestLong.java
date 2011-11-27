@@ -1,6 +1,8 @@
 package com.monster.pocketsafe.testlong.dbengine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import android.test.AndroidTestCase;
@@ -8,8 +10,10 @@ import android.util.Log;
 
 import com.monster.pocketsafe.dbengine.CMDbEngine;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMSms;
+import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
@@ -137,7 +141,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			list.add(sms);
 			
 			dat = new Date(dat.getTime()+1);
-			Log.v("!!!", "SMSID="+sms.getId() );
+			//Log.v("!!!", "SMSID="+sms.getId() );
 		}
 		
 		assertEquals(mDbEngine.TableSms().getCount(),list.size());
@@ -203,5 +207,133 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		assertEquals(sms.getPhone(), dest.getPhone());
 		assertEquals(sms.getText(), dest.getText());
 	
+	}
+	
+	public void testSmsQueryGroupByPhoneOrderByMaxDatDesc() throws MyException {
+		Date dat = new Date();
+		
+		IMSms sms  = null;
+
+		
+		ArrayList<IMSms> list = new ArrayList<IMSms>();
+		ArrayList<IMSmsGroup> res = new ArrayList<IMSmsGroup>();
+		
+		for (int i=0; i<5; i++) {
+			sms  = mLocator.createSms();
+			sms.setDate(dat);
+			sms.setDirection(TTypDirection.EIncoming);
+			sms.setFolder(TTypFolder.Einbox);
+			sms.setIsNew(TTypIsNew.EReaded);
+			sms.setText("hellow world");
+			sms.setPhone("1234567"+i);
+			int id = mDbEngine.TableSms().Insert(sms);
+			sms.setId(id);
+			list.add(sms);
+			
+			dat = new Date(dat.getTime()+1);
+			//Log.v("!!!", "SMSID="+sms.getId() );
+		}
+		
+		for (int i=0; i<3; i++) {
+			sms  = mLocator.createSms();
+			sms.setDate(dat);
+			sms.setDirection(TTypDirection.EIncoming);
+			sms.setFolder(TTypFolder.Einbox);
+			sms.setIsNew(TTypIsNew.Enew);
+			sms.setText("hellow world");
+			sms.setPhone("1234567"+i);
+			int id = mDbEngine.TableSms().Insert(sms);
+			sms.setId(id);
+			list.add(sms);
+			
+			dat = new Date(dat.getTime()+1);
+			//Log.v("!!!", "SMSID="+sms.getId() );
+		}
+		
+		assertEquals(mDbEngine.TableSms().getCount(),list.size());
+		
+		ArrayList<IMSmsGroup> temp = new ArrayList<IMSmsGroup>();
+		for (int i=0; i<5; i++) {
+			IMSmsGroup gr = mLocator.createSmsGroup();
+			gr.setPhone("1234567"+i);
+			
+			int cnt=0;
+			int cntnew=0;
+			Date maxdat = new Date(0);
+			for (int j=0; j<list.size(); j++) {
+				sms = list.get(j);
+				if (sms.getPhone().compareTo(gr.getPhone()) == 0) {
+					cnt++;
+					if (sms.getIsNew()>=TTypIsNew.Enew)
+						cntnew++;
+					if (sms.getDate().getTime()>maxdat.getTime())
+						maxdat.setTime( sms.getDate().getTime() );
+				}
+			}
+			
+			gr.setCount(cnt);
+			gr.setCountNew(cntnew);
+			gr.setDate(maxdat);
+			
+			temp.add(gr);
+		}
+		
+		Comparator<IMSmsGroup> comperator = new Comparator<IMSmsGroup>() {
+			@Override
+			public int compare(IMSmsGroup object1, IMSmsGroup object2) {
+			
+			return -1*object1.getDate().compareTo(object2.getDate());
+			}
+			};
+		Collections.sort(temp, comperator);
+		
+		/*
+		for (int i=0; i<temp.size(); i++) {
+			IMSmsGroup dest = temp.get(i);
+			Log.d("!!!", "I="+i+"; PHONE: "+dest.getPhone()+"; COUNT: "+dest.getCount()+"; NEW: "+dest.getCountNew()+"; DAT: "+dest.getDate().getTime());
+		}
+		*/
+		//Log.v("!!!", "Checking...");
+		
+		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 0, 3);
+		assertEquals(3,res.size());
+		
+		for (int i=0; i<3; i++) {
+			IMSmsGroup src = temp.get(i);
+			IMSmsGroup dest = res.get(i);
+			
+			//Log.d("!!!", "I="+i+"; PHONE: "+dest.getPhone()+"; COUNT: "+dest.getCount()+"; NEW: "+dest.getCountNew()+"; DAT: "+dest.getDate().getTime());
+			assertEquals(src.getPhone(), dest.getPhone());
+			assertEquals(src.getCount(), dest.getCount());
+			assertEquals(src.getCountNew(), dest.getCountNew());
+			assertEquals(src.getDate(), dest.getDate());
+		}
+		
+		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 3, 3);
+		assertEquals(2,res.size());
+		
+		for (int i=0; i<2; i++) {
+			IMSmsGroup src = temp.get(i+3);
+			IMSmsGroup dest = res.get(i);
+			
+			assertEquals(src.getPhone(), dest.getPhone());
+			assertEquals(src.getCount(), dest.getCount());
+			assertEquals(src.getCountNew(), dest.getCountNew());
+			assertEquals(src.getDate(), dest.getDate());
+		}
+		
+		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 6, 3);
+		assertEquals(0,res.size());
+	}
+	
+	public void testContactGetByPhone() {
+		IMContact dest = mDbEngine.QueryContact().getByPhone("+79261361040");
+		assertNotNull(dest);
+		assertEquals("Monster", dest.getName());
+	}
+	
+	public void testContactGetCount() throws MyException {
+		int cnt = mDbEngine.QueryContact().getCount();
+		Log.d("!!!", "Contact.getCount = "+cnt);
 	}
 }

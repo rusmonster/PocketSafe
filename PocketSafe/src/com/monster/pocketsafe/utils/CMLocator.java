@@ -1,15 +1,29 @@
 package com.monster.pocketsafe.utils;
 
+import com.monster.pocketsafe.dbengine.CMContact;
 import com.monster.pocketsafe.dbengine.CMDbEngine;
+import com.monster.pocketsafe.dbengine.CMDbTableContact;
 import com.monster.pocketsafe.dbengine.CMDbTableSetting;
 import com.monster.pocketsafe.dbengine.CMDbTableSms;
 import com.monster.pocketsafe.dbengine.CMSetting;
 import com.monster.pocketsafe.dbengine.CMSms;
+import com.monster.pocketsafe.dbengine.CMSmsGroup;
+import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMDbEngine;
+import com.monster.pocketsafe.dbengine.IMDbTableContact;
 import com.monster.pocketsafe.dbengine.IMDbTableSetting;
 import com.monster.pocketsafe.dbengine.IMDbTableSms;
 import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMSms;
+import com.monster.pocketsafe.dbengine.IMSmsGroup;
+import com.monster.pocketsafe.main.CMDbWriter;
+import com.monster.pocketsafe.main.CMDispatcher;
+import com.monster.pocketsafe.main.CMEventSimpleID;
+import com.monster.pocketsafe.main.CMMain;
+import com.monster.pocketsafe.main.IMDbWriterInternal;
+import com.monster.pocketsafe.main.IMDispatcherSender;
+import com.monster.pocketsafe.main.IMEventSimpleID;
+import com.monster.pocketsafe.main.IMMain;
 
 public class CMLocator implements IMLocator {
 
@@ -31,6 +45,34 @@ public class CMLocator implements IMLocator {
 
 	public IMDbEngine createDbEngine() {
 		return new CMDbEngine(this);
+	}
+
+	public IMMain createMain() {
+		return new CMMain(this);
+	}
+
+	public IMSmsGroup createSmsGroup() {
+		return new CMSmsGroup();
+	}
+
+	public IMContact createContact() {
+		return new CMContact();
+	}
+
+	public IMDbTableContact createDbTableContact() {
+		return new CMDbTableContact(this);
+	}
+
+	public IMDispatcherSender createDispatcher() {
+		return new CMDispatcher();
+	}
+
+	public IMEventSimpleID createEventSimpleID() {
+		return new CMEventSimpleID();
+	}
+
+	public IMDbWriterInternal createDbWriter() {
+		return new CMDbWriter(this);
 	}
 
 

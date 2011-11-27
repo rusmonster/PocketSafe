@@ -1,5 +1,6 @@
 package com.monster.pocketsafe.dbengine.provider;
 
+import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 
 import android.content.ContentValues;
@@ -24,6 +25,22 @@ public class CMSQLiteOnenHelper extends SQLiteOpenHelper implements BaseColumns 
 	public static final String SMS_TEXT = "TXT";
 	public static final String SMS_DATE = "DAT";
 	
+	public static final String QUERY_SMSGROUP = "(select "+
+			CMSQLiteOnenHelper.SMS_PHONE+" as "+CMSQLiteOnenHelper.SMSGROUP_PHONE+","+
+			"count(*) as "+CMSQLiteOnenHelper.SMSGROUP_COUNT+","+
+    		"(select "+
+				"count(*) "+
+				"from "+CMSQLiteOnenHelper.TABLE_SMS+" as A "+
+				"where A.PHONE=SMS.PHONE and A.ISNEW>="+TTypIsNew.Enew+
+				") as "+CMSQLiteOnenHelper.SMSGROUP_COUNTNEW+","+
+			"MAX("+CMSQLiteOnenHelper.SMS_DATE+") as "+CMSQLiteOnenHelper.SMSGROUP_MAXDATE+" "+
+			"from  "+CMSQLiteOnenHelper.TABLE_SMS+" as SMS "+
+			"group by "+CMSQLiteOnenHelper.SMS_PHONE+
+			")";
+	public static final String SMSGROUP_PHONE = "PHONE";
+	public static final String SMSGROUP_COUNT = "count";
+	public static final String SMSGROUP_COUNTNEW = "countnew";
+	public static final String SMSGROUP_MAXDATE = "maxdat";
 	
 
 	public CMSQLiteOnenHelper(Context context) {

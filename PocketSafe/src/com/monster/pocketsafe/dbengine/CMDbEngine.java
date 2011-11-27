@@ -10,6 +10,7 @@ public class CMDbEngine implements IMDbEngine {
 	private ContentResolver mCr;
 	private IMDbTableSetting mTabSetting;
 	private IMDbTableSms mTabSms;
+	private IMDbTableContact mTabContact;
 	
 	public CMDbEngine(IMLocator locator) {
 		mLocator = locator;
@@ -24,6 +25,9 @@ public class CMDbEngine implements IMDbEngine {
 		
 		mTabSms = mLocator.createDbTableSms();
 		mTabSms.SetContentResolver(mCr);
+		
+		mTabContact = mLocator.createDbTableContact();
+		mTabContact.SetContentResolver(mCr);
 	}
 
 	public IMDbTableSms TableSms() {
@@ -33,13 +37,17 @@ public class CMDbEngine implements IMDbEngine {
 	public IMDbQuerySms QuerySms() {
 		return mTabSms;
 	}
-
+	
 	public IMDbTableSetting TableSetting() {
 		return mTabSetting;
 	}
 
 	public IMDbQuerySetting QuerySetting() {
 		return mTabSetting;
+	}
+
+	public IMDbQueryContact QueryContact() {
+		return mTabContact;
 	}
 
 }

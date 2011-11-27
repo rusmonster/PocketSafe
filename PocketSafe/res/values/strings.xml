@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, PocketSafeActivity!</string>
     <string name="app_name">PocketSafe</string>
+    <string name="new_sms">New sms message</string>
 
 </resources>
