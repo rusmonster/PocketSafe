@@ -178,12 +178,12 @@ public class CMDbTableSms implements IMDbTableSms {
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnenHelper._ID + "="+item.getId(), null);	
 	}
 
-	public void QueryByPhoneOrderByDatDesc(ArrayList<IMSms> dest, String phone,	int start, int count) throws MyException {
+	public void QueryByPhoneOrderByDat(ArrayList<IMSms> dest, String phone,	int start, int count) throws MyException {
 		
 		dest.clear();
 		
 		String[] args = new String[] { phone };
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnenHelper.SMS_PHONE+"=?", args , CMSQLiteOnenHelper.SMS_DATE+" DESC"); 
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnenHelper.SMS_PHONE+"=?", args , CMSQLiteOnenHelper.SMS_DATE); 
 		
 		try {
 			if (!c.moveToFirst()) return;

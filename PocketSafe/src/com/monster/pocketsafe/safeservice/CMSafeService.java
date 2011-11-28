@@ -5,6 +5,7 @@ import com.monster.pocketsafe.main.TTypEvent;
 import com.monster.pocketsafe.main.TTypEventStrings;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
+import com.monster.pocketsafe.utils.MyException;
 
 import android.app.Service;
 import android.content.Intent;
@@ -53,7 +54,11 @@ public class CMSafeService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		mMain = mLocator.createMain();
-		mMain.Open(this);
+		try {
+			mMain.Open(this);
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
 	}
 
 

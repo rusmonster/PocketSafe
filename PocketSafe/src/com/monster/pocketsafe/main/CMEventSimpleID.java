@@ -1,17 +1,8 @@
 package com.monster.pocketsafe.main;
 
-public class CMEventSimpleID implements IMEventSimpleID {
+public class CMEventSimpleID extends CMEvent implements IMEventSimpleID {
 
-	private TTypEvent mTyp;
 	private int mId;
-	
-	public TTypEvent getTyp() {
-		return mTyp;
-	}
-
-	public void setTyp(TTypEvent typ) {
-		mTyp = typ;
-	}
 
 	public int getId() {
 		return mId;

@@ -29,11 +29,28 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 	private IMMain mMain;
 	private Button mBtNewSms;
 	private ArrayList<IMSmsGroup> mGroups = new ArrayList<IMSmsGroup>();
-
+	private final android.os.Handler mHandler = new android.os.Handler();
+	
 	@Override
 	protected void onResume() {
-		super.onResume();
         Log.d("!!!", "onResume");
+		try {
+			getMain().Dispatcher().addListener(this);
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		Log.d("!!!", "onPause");
+		try {
+			getMain().Dispatcher().delListener(this);
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
+		super.onPause();
 	}
 
 	@Override
@@ -92,7 +109,6 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 	    }
     };
 	    
-    String[] mData = {"data1", "data2"};
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,15 +153,25 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 		super.onDestroy();
 	}
 
+	private final Runnable mRunReload = new Runnable() {
+		
+		public void run() {
+			try {
+				createListAdapter();
+			} catch (MyException e) {
+				e.printStackTrace();
+			}	
+		}
+	};
+	
 	public void listenerEvent(IMEvent event) throws MyException {
 		Log.v("!!!", "listenerEvent: "+event.getTyp());
 		
 		switch (event.getTyp()) {
 		case ESmsRecieved:
-			createListAdapter();
-			break;
 		case ESmsUpdated:
-			createListAdapter();
+			mHandler.removeCallbacks(mRunReload);
+			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
 		}
 	}

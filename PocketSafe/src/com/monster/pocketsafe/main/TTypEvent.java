@@ -6,7 +6,12 @@ import java.util.Map;
 public enum TTypEvent
 {
     ESmsRecieved(1),
-    ESmsUpdated(2);
+    ESmsUpdated(2), 
+    ESmsSendStart(3),
+    ESmsOutboxAdded(4),
+    ESmsSent(5), 
+    EErrMyException(6), 
+    ESmsSendError(7);
 
  
     /**

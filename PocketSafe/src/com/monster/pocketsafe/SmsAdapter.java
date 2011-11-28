@@ -1,8 +1,10 @@
 package com.monster.pocketsafe;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.monster.pocketsafe.dbengine.IMSms;
+import com.monster.pocketsafe.dbengine.TTypDirection;
 
 import android.content.Context;
 import android.view.View;
@@ -14,31 +16,56 @@ public class SmsAdapter extends BaseAdapter {
 
 	private List<IMSms> mList;
 	private final Context mContext;
+	private String mName;
+	private SimpleDateFormat mDateFormatFull = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private View mEditor;
+	//private SimpleDateFormat mDateFormatTime = new SimpleDateFormat("HH:mm:ss");
 	
-	public SmsAdapter(Context context, List<IMSms> list) {
+	public SmsAdapter(Context context, List<IMSms> list, String nam, View editor) {
 		mContext = context;
 		mList = list;
+		mName = nam;
+		mEditor = editor;
 	}
-	
 	public int getCount() {
-		return mList.size();
+		return mList.size()+1;
 	}
 
 	public Object getItem(int position) {
-		return mList.get(position);
+		return null;//mList.get(position);
 	}
 
 	public long getItemId(int position) {
-		return mList.get(position).getId();
+		return position; //mList.get(position).getId();
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-	    IMSms sms = mList.get(position);
+	private View getListView(int position, View convertView, ViewGroup parent) {
+		IMSms sms = mList.get(position);
 
 	    TextView tv = new TextView(mContext);
-	    tv.setText(sms.getPhone()+": "+sms.getText());
-	    return tv;
+	    String txt;
+	    
+	    if (sms.getDirection() == TTypDirection.EIncoming) 
+	    	txt = new String(mName);
+	    else
+	    	txt = new String("Me");
+	    
+	    txt += ": "+sms.getText()+"\n"+mDateFormatFull.format(sms.getDate());
+	    
+	    tv.setText(txt);
+	    return tv;		
+	}
+
+	private View getEditView(int position, View convertView, ViewGroup parent) {
+		return mEditor;
+	}
+	
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		if (position<mList.size())
+			return getListView(position, convertView, parent);
+		else 
+			return getEditView(position, convertView, parent);
 	}
 
 }
