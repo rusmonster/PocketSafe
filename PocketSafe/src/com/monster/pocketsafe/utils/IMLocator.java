@@ -11,6 +11,7 @@ import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.main.IMDbWriterInternal;
 import com.monster.pocketsafe.main.IMDispatcherSender;
 import com.monster.pocketsafe.main.IMEvent;
+import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
@@ -28,6 +29,7 @@ public interface IMLocator {
 	IMDispatcherSender createDispatcher();
 	IMEvent createEvent();
 	IMEventSimpleID createEventSimpleID();
+	IMEventErr createEventErr();
 	IMDbWriterInternal createDbWriter();
 	IMSmsSender createSmsSender();
 }

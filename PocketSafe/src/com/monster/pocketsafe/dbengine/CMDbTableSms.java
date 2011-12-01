@@ -39,7 +39,7 @@ public class CMDbTableSms implements IMDbTableSms {
     private static final String[] mCount = new String[] {
         "count(*) as count"
     };
-	
+    
 	public CMDbTableSms(IMLocator locator) {
 		mLocator = locator;
 	}
@@ -196,6 +196,22 @@ public class CMDbTableSms implements IMDbTableSms {
 				dest.add(sms);
 				if (!c.moveToNext()) return;
 			}
+		} finally {
+			c.close();
+		}
+	}
+
+	public int getCountNew() throws MyException {
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mCount, 
+				CMSQLiteOnenHelper.SMS_ISNEW+">="+TTypIsNew.ENew+" and "+CMSQLiteOnenHelper.SMS_FOLDER+"="+TTypFolder.EInbox, null, null);
+		
+		try {
+			if ( c.moveToFirst() ) {
+				int cnt = c.getInt(0);
+				return cnt;
+			}
+			
+			throw  new MyException(TTypMyException.EDbErrGetCountSmsNew);
 		} finally {
 			c.close();
 		}

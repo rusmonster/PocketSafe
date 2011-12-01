@@ -11,7 +11,9 @@ public enum TTypEvent
     ESmsOutboxAdded(4),
     ESmsSent(5), 
     EErrMyException(6), 
-    ESmsSendError(7);
+    ESmsSendError(7),
+    ESmsDelivered(8), 
+    ESmsDeliverError(9);
 
  
     /**

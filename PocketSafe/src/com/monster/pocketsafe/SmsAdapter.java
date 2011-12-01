@@ -7,6 +7,7 @@ import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -57,6 +58,8 @@ public class SmsAdapter extends BaseAdapter {
 	}
 
 	private View getEditView(int position, View convertView, ViewGroup parent) {
+		//mEditor.findViewById(R.id.edSms).requestFocus();
+		Log.v("!!!"," getEditView");
 		return mEditor;
 	}
 	

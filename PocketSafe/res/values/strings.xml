@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, PocketSafeActivity!</string>
-    <string name="app_name">PocketSafe</string>
-    <string name="new_sms">New sms message</string>
+    <string name="app_name">SmsSafe-MO</string>
+    <string name="sms_new">New sms message</string>
+    <string name="sms_new_cnt">new messages: </string>
+    <string name="sms_sending">Sending message...</string>
 
 </resources>

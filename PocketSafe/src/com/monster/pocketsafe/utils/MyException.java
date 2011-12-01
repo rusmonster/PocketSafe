@@ -3,8 +3,6 @@ package com.monster.pocketsafe.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.monster.pocketsafe.main.TTypEvent;
-
 @SuppressWarnings("serial")
 public class MyException extends Exception {
 
@@ -37,7 +35,10 @@ public class MyException extends Exception {
 		ESmsErrSenderObserverIsNull(24), 
 		ESmsErrSenderContextIsNull(25), 
 		ESmsErrSenderClosed(26), 
-		ESmsErrSenderAlreadySending(27);
+		ESmsErrSenderAlreadySending(27), 
+		ESmsErrSendNoPhone(28), 
+		ESmsErrSendNoText(29),
+		EDbErrGetCountSmsNew(30);
 		
 		   /**
 	     * Value for this difficulty

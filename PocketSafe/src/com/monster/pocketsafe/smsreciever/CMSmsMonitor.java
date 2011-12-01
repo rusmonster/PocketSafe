@@ -28,7 +28,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 	private void ProcessMessage(Context context, String phone, String text) throws MyException {
 		IMSms sms = mLocator.createSms();
 		sms.setDirection(TTypDirection.EIncoming);
-		sms.setFolder(TTypFolder.Einbox);
+		sms.setFolder(TTypFolder.EInbox);
 		sms.setIsNew(TTypIsNew.EJustRecv);
 		sms.setPhone(phone);
 		sms.setText(text);
@@ -72,6 +72,8 @@ public class CMSmsMonitor extends BroadcastReceiver {
 			} catch (MyException e) {
 				e.printStackTrace();
 			}
+			
+			abortBroadcast();
 			
 			/*
 			if (isOrderedBroadcast()) {

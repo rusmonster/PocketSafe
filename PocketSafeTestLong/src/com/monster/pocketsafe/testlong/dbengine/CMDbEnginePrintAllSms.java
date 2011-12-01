@@ -29,14 +29,14 @@ public class CMDbEnginePrintAllSms extends AndroidTestCase {
 		
 		ArrayList<IMSms> res = new ArrayList<IMSms>();
 		int k=0;
-		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, k, 1000);
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, k, 1000);
 		while (res.size()>0) {
 			for (int i=0; i<res.size(); i++) {
 				IMSms sms = res.get(i);
 				Log.d("!!!", "FROM: "+sms.getPhone()+";TEXT: "+sms.getText());
 			}
 			k+=1000;
-			mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, k, 1000);
+			mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, k, 1000);
 		}
 		
 	}

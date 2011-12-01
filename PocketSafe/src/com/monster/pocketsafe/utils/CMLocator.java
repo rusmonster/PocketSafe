@@ -19,11 +19,13 @@ import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.main.CMDbWriter;
 import com.monster.pocketsafe.main.CMDispatcher;
 import com.monster.pocketsafe.main.CMEvent;
+import com.monster.pocketsafe.main.CMEventErr;
 import com.monster.pocketsafe.main.CMEventSimpleID;
 import com.monster.pocketsafe.main.CMMain;
 import com.monster.pocketsafe.main.IMDbWriterInternal;
 import com.monster.pocketsafe.main.IMDispatcherSender;
 import com.monster.pocketsafe.main.IMEvent;
+import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.sms.sender.CMSmsSender;
@@ -85,6 +87,10 @@ public class CMLocator implements IMLocator {
 
 	public IMEvent createEvent() {
 		return new CMEvent();
+	}
+
+	public IMEventErr createEventErr() {
+		return new CMEventErr();
 	}
 
 

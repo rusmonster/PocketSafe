@@ -1,7 +1,6 @@
 package com.monster.pocketsafe;
 
 import java.util.ArrayList;
-
 import com.monster.pocketsafe.R;
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSmsGroup;
@@ -25,7 +24,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 public class SmsMainActivity extends ListActivity implements IMListener {
+	
 
+	protected static final int NEW_SMS_RESULT = 1002;
 	private IMMain mMain;
 	private Button mBtNewSms;
 	private ArrayList<IMSmsGroup> mGroups = new ArrayList<IMSmsGroup>();
@@ -36,6 +37,7 @@ public class SmsMainActivity extends ListActivity implements IMListener {
         Log.d("!!!", "onResume");
 		try {
 			getMain().Dispatcher().addListener(this);
+			createListAdapter();
 		} catch (MyException e) {
 			e.printStackTrace();
 		}
@@ -123,8 +125,8 @@ public class SmsMainActivity extends ListActivity implements IMListener {
         mBtNewSms.setOnClickListener( new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Log.d("!!!", "button clicked");
-				finish();
+		        Intent intent = new Intent(SmsMainActivity.this, SmsNewActivity.class); 
+		        startActivityForResult(intent, NEW_SMS_RESULT);
 			}
 		});
         
@@ -132,8 +134,10 @@ public class SmsMainActivity extends ListActivity implements IMListener {
     }
     
 	private IMMain getMain() throws MyException {
-		if (mMain == null)
+		if (mMain == null) {
+			Log.w("!!!", "mMain == null");
 			throw new MyException(TTypMyException.EErrServiceNotBinded);
+		}
 		return mMain;
 	}
 
@@ -170,9 +174,35 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 		switch (event.getTyp()) {
 		case ESmsRecieved:
 		case ESmsUpdated:
+		case ESmsOutboxAdded:
 			mHandler.removeCallbacks(mRunReload);
 			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
 		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	       if (resultCode == RESULT_OK) {
+	            switch (requestCode) {
+	            case NEW_SMS_RESULT:
+	            	
+	            	String phone = data.getStringExtra(SmsViewerActivity.PHONE);
+	            	
+	            	if (phone!=null && phone.length()>0) {
+		                Intent intent = new Intent(this, SmsViewerActivity.class); 
+		                intent.putExtra(SmsViewerActivity.PHONE, phone); 
+		                startActivity(intent);
+	            	}
+
+	                break;
+	            }
+
+	        } else {
+	            Log.w("!!!", "Warning: activity result not ok");
+	        }
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 }

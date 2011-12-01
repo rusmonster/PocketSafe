@@ -89,7 +89,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		src.setDate(dat);
 		src.setDirection(TTypDirection.EIncoming);
 		src.setFolder(TTypFolder.EOutbox);
-		src.setIsNew(TTypIsNew.Enew);
+		src.setIsNew(TTypIsNew.ENew);
 		src.setPhone("1234567");
 		src.setText("hellow world");
 		
@@ -132,8 +132,8 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms  = mLocator.createSms();
 			sms.setDate(dat);
 			sms.setDirection(TTypDirection.EIncoming);
-			sms.setFolder(TTypFolder.Einbox);
-			sms.setIsNew(TTypIsNew.Enew);
+			sms.setFolder(TTypFolder.EInbox);
+			sms.setIsNew(TTypIsNew.ENew);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
 			int id = mDbEngine.TableSms().Insert(sms);
@@ -150,7 +150,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		sms.setDate(dat);
 		sms.setDirection(TTypDirection.EOutgoing);
 		sms.setFolder(TTypFolder.EOutbox);
-		sms.setIsNew(TTypIsNew.EReaded);
+		sms.setIsNew(TTypIsNew.EOld);
 		sms.setText("sended sms");
 		sms.setPhone("12345679");
 		int id = mDbEngine.TableSms().Insert(sms);
@@ -160,7 +160,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		int k=list.size()-1;
 		
 		
-		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, 0, 3);
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, 0, 3);
 		assertEquals(3,res.size());
 		
 		for (int i=0; i<3; i++) {
@@ -176,7 +176,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getText(), dest.getText());
 		}
 		
-		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, 3, 3);
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, 3, 3);
 		assertEquals(2,res.size());
 		
 		for (int i=0; i<2; i++) {
@@ -192,7 +192,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getText(), dest.getText());
 		}
 		
-		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.Einbox, 6, 3);
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, 6, 3);
 		assertEquals(0,res.size());
 		
 		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EOutbox, 0, 3);
@@ -222,8 +222,8 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms  = mLocator.createSms();
 			sms.setDate(dat);
 			sms.setDirection(TTypDirection.EIncoming);
-			sms.setFolder(TTypFolder.Einbox);
-			sms.setIsNew(TTypIsNew.EReaded);
+			sms.setFolder(TTypFolder.EInbox);
+			sms.setIsNew(TTypIsNew.EOld);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
 			int id = mDbEngine.TableSms().Insert(sms);
@@ -238,8 +238,8 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms  = mLocator.createSms();
 			sms.setDate(dat);
 			sms.setDirection(TTypDirection.EIncoming);
-			sms.setFolder(TTypFolder.Einbox);
-			sms.setIsNew(TTypIsNew.Enew);
+			sms.setFolder(TTypFolder.EInbox);
+			sms.setIsNew(TTypIsNew.ENew);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
 			int id = mDbEngine.TableSms().Insert(sms);
@@ -264,7 +264,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 				sms = list.get(j);
 				if (sms.getPhone().compareTo(gr.getPhone()) == 0) {
 					cnt++;
-					if (sms.getIsNew()>=TTypIsNew.Enew)
+					if (sms.getIsNew()>=TTypIsNew.ENew)
 						cntnew++;
 					if (sms.getDate().getTime()>maxdat.getTime())
 						maxdat.setTime( sms.getDate().getTime() );
@@ -327,7 +327,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 	}
 	
 	public void testContactGetByPhone() {
-		IMContact dest = mDbEngine.QueryContact().getByPhone("+79261361040");
+		IMContact dest = mDbEngine.QueryContact().getByPhone("5555");
 		assertNotNull(dest);
 		assertEquals("Monster", dest.getName());
 	}

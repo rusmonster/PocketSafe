@@ -1,5 +1,6 @@
 package com.monster.pocketsafe.dbengine.provider;
 
+import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 
@@ -31,7 +32,7 @@ public class CMSQLiteOnenHelper extends SQLiteOpenHelper implements BaseColumns 
     		"(select "+
 				"count(*) "+
 				"from "+CMSQLiteOnenHelper.TABLE_SMS+" as A "+
-				"where A.PHONE=SMS.PHONE and A.ISNEW>="+TTypIsNew.Enew+
+				"where A.PHONE=SMS.PHONE and A.FOLDER="+TTypFolder.EInbox+" and A.ISNEW>="+TTypIsNew.ENew+
 				") as "+CMSQLiteOnenHelper.SMSGROUP_COUNTNEW+","+
 			"MAX("+CMSQLiteOnenHelper.SMS_DATE+") as "+CMSQLiteOnenHelper.SMSGROUP_MAXDATE+" "+
 			"from  "+CMSQLiteOnenHelper.TABLE_SMS+" as SMS "+

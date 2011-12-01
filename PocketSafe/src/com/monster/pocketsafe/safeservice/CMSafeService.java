@@ -59,6 +59,7 @@ public class CMSafeService extends Service {
 		} catch (MyException e) {
 			e.printStackTrace();
 		}
+		Log.d("!!!", "Service created");
 	}
 
 
@@ -78,5 +79,13 @@ public class CMSafeService extends Service {
 		}
 
 		return START_STICKY;//super.onStartCommand(intent, flags, startId);
+	}
+
+
+	@Override
+	public void onDestroy() {
+		mMain.Close();
+		Log.d("!!!", "Service destroyed");
+		super.onDestroy();
 	}
 }
