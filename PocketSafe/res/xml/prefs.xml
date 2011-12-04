@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference 
+        android:key="@string/pref_pass" 
+        android:title="@string/pref_pass_title"
+        android:summary="@string/pref_pass_summary"
+        android:password="true" />
+    <ListPreference android:summary="@string/pref_passtimeout_summary" android:entryValues="@array/text_passtimout_vals" android:entries="@array/text_passtimout" android:key="@string/pref_passtimeout" android:title="@string/pref_passtimeout_title" android:defaultValue="1" android:dialogTitle="@string/pref_passtimeout_dialogTitle"/>
+</PreferenceScreen>

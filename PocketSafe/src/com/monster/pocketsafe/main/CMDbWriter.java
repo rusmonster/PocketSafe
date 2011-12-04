@@ -32,4 +32,30 @@ public class CMDbWriter implements IMDbWriterInternal {
 		mDispatcher.pushEvent(ev);
 	}
 
+	public void SmsDelAll() throws MyException {
+		mDbEngine.TableSms().Clear();
+		
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.ESmsDelMany);
+		mDispatcher.pushEvent(ev);
+		
+	}
+
+	public void SmsDeleteByPhone(String phone)  throws MyException  {
+		mDbEngine.TableSms().DeleteByPhone(phone);
+		
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.ESmsDelMany);
+		mDispatcher.pushEvent(ev);
+	}
+
+	public void SmsDelete(int sms_id) throws MyException {
+		mDbEngine.TableSms().Delete(sms_id);
+		
+		IMEventSimpleID ev = mLocator.createEventSimpleID();
+		ev.setTyp(TTypEvent.ESmsDeleted);
+		ev.setId(sms_id);
+		mDispatcher.pushEvent(ev);	
+	}
+
 }

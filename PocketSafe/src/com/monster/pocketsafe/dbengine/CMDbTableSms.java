@@ -59,6 +59,10 @@ public class CMDbTableSms implements IMDbTableSms {
 	public void Delete(int id) throws MyException {
 		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnenHelper._ID+"="+id, null);
 	}
+	
+	public void DeleteByPhone(String phone) throws MyException {
+		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnenHelper.SMS_PHONE+"=?", new String[] {phone});
+	}
 
 	public int Insert(IMSms item) throws MyException {
         ContentValues values = new ContentValues();

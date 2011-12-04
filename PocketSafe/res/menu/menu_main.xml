@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/mnuMainNewSms" android:title="@string/sms_newsms"></item>
+    <item android:id="@+id/mnuMainDelAll" android:title="@string/sms_delall"></item>
+    <item android:id="@+id/mnuMainSettings" android:title="@string/options"></item>
+    <item android:id="@+id/mnuMainAbout" android:title="@string/about"></item>
+
+    
+
+</menu>

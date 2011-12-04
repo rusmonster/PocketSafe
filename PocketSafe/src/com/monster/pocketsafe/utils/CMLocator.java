@@ -28,6 +28,8 @@ import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
+import com.monster.pocketsafe.main.notificator.CMSmsNotificator;
+import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
 import com.monster.pocketsafe.sms.sender.CMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 
@@ -91,6 +93,10 @@ public class CMLocator implements IMLocator {
 
 	public IMEventErr createEventErr() {
 		return new CMEventErr();
+	}
+
+	public IMSmsNotificator createSmsNotificator() {
+		return new CMSmsNotificator();
 	}
 
 

@@ -13,8 +13,9 @@ public enum TTypEvent
     EErrMyException(6), 
     ESmsSendError(7),
     ESmsDelivered(8), 
-    ESmsDeliverError(9);
-
+    ESmsDeliverError(9), 
+    ESmsDelMany(10), 
+    ESmsDeleted(11);
  
     /**
      * Value for this difficulty

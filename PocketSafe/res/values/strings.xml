@@ -5,5 +5,30 @@
     <string name="sms_new">New sms message</string>
     <string name="sms_new_cnt">new messages: </string>
     <string name="sms_sending">Sending message...</string>
+    <string name="sms_newsms">New</string>
+    <string name="sms_delall">Delete all</string>
+    <string name="about">About</string>
+    <string name="siteurl">http://www.soft-mo.com</string>
+    <string name="title_about">About</string>
+    <string name="sms_view_thread">View</string>
+    <string name="sms_del_thread">Delete</string>
+    <string name="sms_delmessageconf">Delete message?</string>
+    <string name="sms_delthreadconf">Delete message history for %s?</string>
+    <string name="sms_delallconf">Delete all messages?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="sms_allsms">All messages</string>
+    <string name="sms_message">Message</string>
+    <string name="sms_forward">Forward</string>
+    <string name="sms_delmessage">Delete</string>
+    <string name="options">Settings</string>
+    
+    <string name="pref_pass">pass</string> 
+    <string name="pref_pass_title">Password</string> 
+    <string name="pref_pass_summary">Change password</string> 
+    <string name="pref_passtimeout">passtimeout</string> 
+    <string name="pref_passtimeout_title">Password timeout</string> 
+    <string name="pref_passtimeout_summary">current timeout</string> 
+    <string name="pref_passtimeout_dialogTitle">Choose new timeout</string>     
 
 </resources>

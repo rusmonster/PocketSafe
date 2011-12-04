@@ -1,5 +1,6 @@
 package com.monster.pocketsafe;
 
+import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMListener;
@@ -19,24 +20,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class SmsNewActivity extends Activity implements IMListener {
 	
 	private static final int IDD_SMS_SENDING = 1;
 	protected static final int CONTACT_PICKER_RESULT = 1001;
+	public static final String TEXT = "com.monster.pocketsafe.SMSNEW_TEXT";
 	private IMMain mMain;
 	private EditText mEdPhone;
 	private Button mBtBook;
 	private EditText mEdText;
 	private Button mBtSend;
 	private ProgressDialog mDlg;
+	private String mPhone;
+	private String mLastEdPhoneVal;
 
 	private IMMain getMain() throws MyException {
 		if (mMain == null)
@@ -66,6 +69,42 @@ public class SmsNewActivity extends Activity implements IMListener {
 	    }
     };
     
+    private void Phone2Name() {
+    	String phone = mEdPhone.getText().toString().trim();
+    	
+    	if (phone.equalsIgnoreCase(mLastEdPhoneVal)) return;
+    	
+    	Log.d("!!!", "phone="+phone);
+    	Log.d("!!!", "mLastEdPhoneVal="+mLastEdPhoneVal);
+    	
+		IMContact c=null;
+		try {
+			c = getMain().DbReader().QueryContact().getByPhone(phone);
+		} catch (MyException e) {
+			ErrorDisplayer.displayError(this, e.getId().Value);
+			return;
+		}
+		
+		mPhone=null;
+		if (c!=null) {
+			mPhone = c.getPhone();
+			mEdPhone.setText(c.getName());
+		}
+
+		Log.d("!!!", "mPhone="+mPhone);
+		
+		mLastEdPhoneVal= mEdPhone.getText().toString();
+	
+    }
+    
+    private void SendSms() throws MyException {
+    	String phone=mPhone;
+		if (phone==null)
+			mPhone = mEdPhone.getText().toString();	
+	
+    	getMain().SendSms(mPhone, mEdText.getText().toString());
+    }
+    
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,32 +112,48 @@ public class SmsNewActivity extends Activity implements IMListener {
 	    setContentView(R.layout.smsnew);
 
 	    mEdPhone = (EditText)findViewById(R.id.edSmsNewPhone);
+	    mEdPhone.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					mLastEdPhoneVal = mEdPhone.getText().toString().trim();
+					mEdPhone.selectAll();
+				}
+				else {
+					Phone2Name();
+				}
+			}
+		});
+	    
 	    mBtBook = (Button)findViewById(R.id.btSmsNewBook);
 	    mEdText = (EditText)findViewById(R.id.edSmsNewText);
 	    mBtSend = (Button)findViewById(R.id.btSmsNewSend);
 	    
 	    mBtBook.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				 Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,  
-					        Contacts.CONTENT_URI);  
-				startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);				
-			}
+			public void onClick(View v) { SelectContactFromBook();	}
 		});
 	    
 	    mBtSend.setOnClickListener( new OnClickListener() {
 			
 			public void onClick(View v) {
 				try {
-					getMain().SendSms(mEdPhone.getText().toString(),mEdText.getText().toString());
+					SendSms();
 				} catch (MyException e) {
-					ErrorDisplayer.displayError(e.getId().Value);
+					ErrorDisplayer.displayError(SmsNewActivity.this, e.getId().Value);
 				}
 				
 			}
 		} );
 	}
 	
+	@Override
+	protected void onStart() {
+		String text = getIntent().getStringExtra(TEXT);
+		if (text!=null)
+			mEdText.setText(text);
+		super.onStart();
+	}
+
 	@Override
 	protected void onResume() {
 	    bindService(new Intent(this, CMSafeService.class), serviceConncetion, BIND_AUTO_CREATE);
@@ -144,7 +199,7 @@ public class SmsNewActivity extends Activity implements IMListener {
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
 			
 	        Intent intent = new Intent(this, SmsViewerActivity.class); 
-	        intent.putExtra(SmsViewerActivity.PHONE, mEdPhone.getText().toString()); 
+	        intent.putExtra(SmsViewerActivity.PHONE, mPhone); 
 	        
 			mEdPhone.getText().clear();
 			mEdText.getText().clear();
@@ -155,17 +210,26 @@ public class SmsNewActivity extends Activity implements IMListener {
 		case ESmsSendError:
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
 			IMEventErr ev = (IMEventErr) event;
-			String errstr = ErrorDisplayer.getErrStr(ev.getErr());
-			Toast.makeText(getBaseContext(), errstr, Toast.LENGTH_SHORT).show();
+			ErrorDisplayer.displayError(this, ev.getErr());
 			break;
 		}
 		
 	}
+	
+    private void SelectContactFromBook() {
+    	//Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, Contacts.CONTENT_URI);  
+		//startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
+    	
+    	Intent i = new Intent(Intent.ACTION_PICK,Phone.CONTENT_URI);
+    		    startActivityForResult(i, CONTACT_PICKER_RESULT);
+
+    }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+
             case CONTACT_PICKER_RESULT:
             	Cursor cursor = null;
                 String phone = "";
@@ -175,8 +239,50 @@ public class SmsNewActivity extends Activity implements IMListener {
 
                     // get the contact id from the Uri
                     String id = result.getLastPathSegment();
+ 			      
+                    // query for everything phone
+                    cursor = getContentResolver().query(Phone.CONTENT_URI, 
+                            null, Phone._ID + "=?", new String[] { id },
+                            null);
 
-                    // query for everything email
+                    int phoneIdx = cursor.getColumnIndex(Phone.NUMBER);
+
+                    // let's just get the first phone
+                    if (cursor.moveToFirst()) {
+                        phone = cursor.getString(phoneIdx);
+                        Log.v("!!!", "Got phone: " + phone);
+                    } else {
+                        Log.w("!!!", "No results");
+                    }
+                } catch (Exception e) {
+                    Log.e("!!!", "Failed to get phone data", e);
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                    
+                    mEdPhone.setText(phone);
+                    if (phone.length()>0) {
+                    	Phone2Name();
+                    	mEdText.requestFocus();
+                    }
+
+                }
+
+                break;
+
+            /*
+            case CONTACT_PICKER_RESULT:
+            	Cursor cursor = null;
+                String phone = "";
+                try {
+                    Uri result = data.getData();
+                    Log.v("!!!", "Got a contact result: " + result.toString());
+
+                    // get the contact id from the Uri
+                    String id = result.getLastPathSegment();
+ 			      
+                    // query for everything phone
                     cursor = getContentResolver().query(Phone.CONTENT_URI,
                             null, Phone.CONTACT_ID + "=?", new String[] { id },
                             null);
@@ -204,6 +310,7 @@ public class SmsNewActivity extends Activity implements IMListener {
                 }
 
                 break;
+                */
             }
 
         } else {

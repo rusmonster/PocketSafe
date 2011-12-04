@@ -43,17 +43,21 @@
     android:text="Text:"
     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/edSmsNewText"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:layout_weight="1" />
-
-    <Button
-        android:id="@+id/btSmsNewSend"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Send message" />
-
+        android:layout_height="wrap_content" >
+	    <EditText
+	        android:id="@+id/edSmsNewText"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:inputType="textMultiLine"
+	        android:layout_weight="1" />
+	
+	    <Button
+	        android:id="@+id/btSmsNewSend"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Send" />
+	</LinearLayout>
 </LinearLayout>

@@ -22,6 +22,7 @@ public class CMDbTableContact implements IMDbTableContact {
 	public IMContact getByPhone(String phone) {
 		
 		if (phone == null) return null;
+		if (phone.length()==0) return null;
 		
 		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phone));
 		String[] proj = new String[] {PhoneLookup.DISPLAY_NAME, PhoneLookup.NUMBER};
