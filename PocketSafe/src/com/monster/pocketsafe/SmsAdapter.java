@@ -22,25 +22,25 @@ public class SmsAdapter extends BaseAdapter {
 	private View mEditor;
 	//private SimpleDateFormat mDateFormatTime = new SimpleDateFormat("HH:mm:ss");
 	
-	public SmsAdapter(Context context, List<IMSms> list, String nam, View editor) {
+	public SmsAdapter(Context context, List<IMSms> list, String nam) {
 		mContext = context;
 		mList = list;
 		mName = nam;
-		mEditor = editor;
 	}
+	
 	public int getCount() {
-		return mList.size()+1;
+		return mList.size();
 	}
 
 	public Object getItem(int position) {
-		return null;//mList.get(position);
+		return mList.get(position);
 	}
 
 	public long getItemId(int position) {
-		return position; //mList.get(position).getId();
+		return mList.get(position).getId();
 	}
 
-	private View getListView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		IMSms sms = mList.get(position);
 
 	    TextView tv = new TextView(mContext);
@@ -54,21 +54,6 @@ public class SmsAdapter extends BaseAdapter {
 	    txt += ": "+sms.getText()+"\n"+mDateFormatFull.format(sms.getDate());
 	    
 	    tv.setText(txt);
-	    return tv;		
-	}
-
-	private View getEditView(int position, View convertView, ViewGroup parent) {
-		//mEditor.findViewById(R.id.edSms).requestFocus();
-		Log.v("!!!"," getEditView");
-		return mEditor;
-	}
-	
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		if (position<mList.size())
-			return getListView(position, convertView, parent);
-		else 
-			return getEditView(position, convertView, parent);
-	}
+	    return tv;		}
 
 }

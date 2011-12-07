@@ -31,6 +31,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -126,7 +127,7 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 			}
 		}
 		
-        SmsAdapter adapter = new SmsAdapter(this, mSmsList, mName, mEditorView);
+        SmsAdapter adapter = new SmsAdapter(this, mSmsList, mName);
         setListAdapter(adapter);
 	}
     
@@ -136,9 +137,14 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.smsviewer);
 	    
+	    
+	    
 	    mEditorView = getLayoutInflater().inflate(R.layout.smsviewereditor, null);
+	    getListView().addFooterView(mEditorView);
+	    
 	    mEdText = (EditText) mEditorView.findViewById(R.id.edSms);
 	    mBtSend = (Button)mEditorView.findViewById(R.id.btSendSms);
+	    
 	    
 	    mBtSend.setOnClickListener(new View.OnClickListener() {
 			
@@ -157,10 +163,6 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	    getListView().setStackFromBottom(true);
 	    
 	    registerForContextMenu(getListView());
-	    
-	    
-	    
-	    
 	}
 
 	private final Runnable mRunReload = new Runnable() {
@@ -225,6 +227,7 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 				mDlg.setCancelable(false);
 				mDlg.setMessage(getResources().getString(R.string.sms_sending));
 				dlg = mDlg;
+				break;
 			case IDD_DELTHREAD:
 				dlg = ShowDelThreadDlg();
 				break;
@@ -313,19 +316,13 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 		super.onStart();
 	}
 	
-	
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-	}
-
 	@Override
 	protected void onResume() {
 	    bindService(new Intent(this, CMSafeService.class), serviceConncetion, BIND_AUTO_CREATE);
+	    //mEdText.requestFocus();
+	    Log.v("!!!", "SmsViewer onResume()");
 	    super.onResume();
 	}
-	
 	
 	@Override
 	protected void onPause() {

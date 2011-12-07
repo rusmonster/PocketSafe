@@ -32,7 +32,9 @@
 			</intent-filter>
 		</receiver>
 		<service android:name=".safeservice.CMSafeService" />
-		<activity android:name=".SmsViewerActivity" android:label="@string/app_name"></activity>
+		<activity android:name=".SmsViewerActivity" 
+		    android:label="@string/app_name" 
+		    ></activity>
 		<activity android:name=".SmsNewActivity" android:label="@string/sms_new"></activity>
 		<activity android:name=".AboutActivity"></activity>
 		<activity android:name=".OptionsActivity"></activity>

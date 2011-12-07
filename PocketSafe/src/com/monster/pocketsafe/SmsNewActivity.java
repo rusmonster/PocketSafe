@@ -221,7 +221,7 @@ public class SmsNewActivity extends Activity implements IMListener {
 		//startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
     	
     	Intent i = new Intent(Intent.ACTION_PICK,Phone.CONTENT_URI);
-    		    startActivityForResult(i, CONTACT_PICKER_RESULT);
+    	startActivityForResult(i, CONTACT_PICKER_RESULT);
 
     }
 
