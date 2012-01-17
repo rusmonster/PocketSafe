@@ -140,7 +140,10 @@ public class SmsNewActivity extends Activity implements IMListener {
 					SendSms();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsNewActivity.this, e.getId().Value);
+				} catch (Exception e) {
+					ErrorDisplayer.displayError(SmsNewActivity.this, TTypMyException.ESmsErrSendGeneral.Value);
 				}
+				
 				
 			}
 		} );

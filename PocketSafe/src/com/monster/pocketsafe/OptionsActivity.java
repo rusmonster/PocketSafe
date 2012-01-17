@@ -1,9 +1,7 @@
 package com.monster.pocketsafe;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.util.Log;
 
 public class OptionsActivity extends PreferenceActivity {
 
@@ -15,10 +13,5 @@ public class OptionsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.prefs);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.v("!!!", "onActivityResult");
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 
 }

@@ -31,7 +31,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -155,6 +154,8 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 						getMain().SendSms(mPhone, text);
 					} catch (MyException e) {
 						ErrorDisplayer.displayError(SmsViewerActivity.this, e.getId().Value);
+					} catch (Exception e) {
+						ErrorDisplayer.displayError(SmsViewerActivity.this, TTypMyException.ESmsErrSendGeneral.Value);
 					}
 			}
 		});

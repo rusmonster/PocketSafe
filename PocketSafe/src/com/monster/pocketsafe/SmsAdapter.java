@@ -7,7 +7,6 @@ import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

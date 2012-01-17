@@ -39,7 +39,8 @@ public class MyException extends Exception {
 		ESmsErrSendNoPhone(28), 
 		ESmsErrSendNoText(29),
 		EDbErrGetCountSmsNew(30), 
-		EErrPhoneFormat(31);
+		EErrPhoneFormat(31),
+		ESmsErrSendGeneral(32);
 		
 		   /**
 	     * Value for this difficulty

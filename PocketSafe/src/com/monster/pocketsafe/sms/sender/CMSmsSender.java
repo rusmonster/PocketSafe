@@ -1,5 +1,9 @@
 package com.monster.pocketsafe.sms.sender;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
@@ -10,12 +14,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.telephony.SmsManager;
+import android.util.Log;
 
 public class CMSmsSender implements IMSmsSender {
 	
     private static final String SENT = "SMS_SENT";
     private static final String DELIVERED = "SMS_DELIVERED";
     private static final String SMS_ID = "SMS_ID";
+    private static final String PART_NUM = "PART_NUM";
     
 	private IMSmsSenderObserver mObserver;
 	private Context mContext;
@@ -37,10 +43,16 @@ public class CMSmsSender implements IMSmsSender {
         	int tag = intent.getIntExtra(SMS_ID, -1);
         	if (tag == -1) return;
         	
+        	int part = intent.getIntExtra(PART_NUM, -1);
+        	if (part == -1) return;
+        	
+        	Log.d("!!!", String.format("Sent recieved: tag=%d; part=%d", tag, part));
+        	      	
+        	
             switch (getResultCode())
             {
                 case Activity.RESULT_OK:
-                    mObserver.SmsSenderSent(CMSmsSender.this, tag);
+               		mObserver.SmsSenderSent(CMSmsSender.this, tag);
                     break;
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                 	mObserver.SmsSenderSentError(CMSmsSender.this, tag, TTypMyException.ESmsErrSentGeneric.Value);
@@ -70,6 +82,11 @@ public class CMSmsSender implements IMSmsSender {
         	int tag = intent.getIntExtra(SMS_ID, -1);
         	if (tag == -1) return;
         	
+        	int part = intent.getIntExtra(PART_NUM, -1);
+        	if (part == -1) return;
+        	
+        	Log.d("!!!",String.format("Deliv recieved: tag=%d; part=%d", tag, part));
+        	
             switch (getResultCode())
             {
                 case Activity.RESULT_OK:
@@ -92,16 +109,26 @@ public class CMSmsSender implements IMSmsSender {
 		if (mState == TSmsSenderState.EClosed)
 			throw new MyException(TTypMyException.ESmsErrSenderClosed);
 		
-		Intent sendI = new Intent(SENT);
-		sendI.putExtra(SMS_ID, tag);
-		PendingIntent SentPI = PendingIntent.getBroadcast(mContext, 0, sendI, 0);
+		ArrayList<String> parts = mSmsManager.divideMessage(text);
+		ArrayList<PendingIntent> SentPIs= new ArrayList<PendingIntent>();
+		ArrayList<PendingIntent> DeliveredPIs= new ArrayList<PendingIntent>();
 		
-		Intent delivI = new Intent(DELIVERED);
-		delivI.putExtra(SMS_ID, tag);
-		PendingIntent DeliveredPI = PendingIntent.getBroadcast(mContext, 0, delivI, 0);
+		int cnt = parts.size();
+		for (int i=0; i<cnt; i++) {
+			Intent sendI = new Intent(SENT);
+			sendI.putExtra(SMS_ID, tag);
+			sendI.putExtra(PART_NUM, i);
+			PendingIntent SentPI = PendingIntent.getBroadcast(mContext, 0, sendI, PendingIntent.FLAG_UPDATE_CURRENT);
+			SentPIs.add(SentPI);
+			
+			Intent delivI = new Intent(DELIVERED);
+			delivI.putExtra(SMS_ID, tag);
+			delivI.putExtra(PART_NUM, i);
+			PendingIntent DeliveredPI = PendingIntent.getBroadcast(mContext, 0, delivI, PendingIntent.FLAG_UPDATE_CURRENT);
+			DeliveredPIs.add(DeliveredPI);
+		}
 		
-        mSmsManager.sendTextMessage(phone, null, text, SentPI, DeliveredPI); 
-		
+		mSmsManager.sendMultipartTextMessage(phone, null, parts, SentPIs, DeliveredPIs);
 	}
 
 

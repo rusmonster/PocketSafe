@@ -3,7 +3,7 @@
 	<name>PocketSafeTestLong</name>
 	<comment></comment>
 	<projects>
-		<project>PrivateSms</project>
+		<project>PocketSafe</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

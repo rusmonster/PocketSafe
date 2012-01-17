@@ -24,7 +24,7 @@
     <string name="options">Settings</string>
     
     <string name="pref_pass">pass</string> 
-    <string name="pref_pass_title">password</string> 
+    <string name="pref_pass_title">Password</string> 
     <string name="pref_pass_summary">change password</string> 
     <string name="pref_passtimeout">passtimeout</string> 
     <string name="pref_passtimeout_title">Password timeout</string> 

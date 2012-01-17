@@ -15,10 +15,10 @@ public class CMDbProvider extends ContentProvider {
 
 	public static final String PROVIDER_NAME = "com.monster.pocketsafe.dbengine.provider.cmdbprovider";
 	
-	private static final String SMSGROUP_PATH = CMSQLiteOnenHelper.TABLE_SMS+"/group";
+	private static final String SMSGROUP_PATH = CMSQLiteOnlineHelper.TABLE_SMS+"/group";
 	
-	public static final Uri CONTENT_URI_SETTING = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnenHelper.TABLE_SETTING);
-	public static final Uri CONTENT_URI_SMS = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnenHelper.TABLE_SMS);
+	public static final Uri CONTENT_URI_SETTING = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnlineHelper.TABLE_SETTING);
+	public static final Uri CONTENT_URI_SMS = Uri.parse("content://"+PROVIDER_NAME+"/" + CMSQLiteOnlineHelper.TABLE_SMS);
 	public static final Uri CONTENT_URI_SMSGROUP = Uri.parse("content://"+PROVIDER_NAME+"/" + SMSGROUP_PATH);
 	
 	private SQLiteDatabase mDb; 
@@ -30,14 +30,14 @@ public class CMDbProvider extends ContentProvider {
 	
 	static{
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SETTING, 		CODE_SETTING);
-		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnenHelper.TABLE_SMS, 			CODE_SMS);
+		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnlineHelper.TABLE_SETTING, 		CODE_SETTING);
+		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnlineHelper.TABLE_SMS, 			CODE_SMS);
 		uriMatcher.addURI(PROVIDER_NAME, SMSGROUP_PATH,							CODE_SMSGROUP);
 	}
 	
 	@Override
 	public boolean onCreate() {
-		 mDb = (new CMSQLiteOnenHelper(getContext())).getWritableDatabase();
+		 mDb = (new CMSQLiteOnlineHelper(getContext())).getWritableDatabase();
 	     return (mDb == null) ? false : true;
 	}
 	
@@ -47,11 +47,11 @@ public class CMDbProvider extends ContentProvider {
 		
 	    switch (uriMatcher.match(uri)){
 	    case CODE_SETTING:
-	    	 retVal = mDb.delete(CMSQLiteOnenHelper.TABLE_SETTING, where, whereArgs);
+	    	 retVal = mDb.delete(CMSQLiteOnlineHelper.TABLE_SETTING, where, whereArgs);
 	         getContext().getContentResolver().notifyChange(uri, null);
 	        break;
 	    case CODE_SMS:
-	    	 retVal = mDb.delete(CMSQLiteOnenHelper.TABLE_SMS, where, whereArgs);
+	    	 retVal = mDb.delete(CMSQLiteOnlineHelper.TABLE_SMS, where, whereArgs);
 	         getContext().getContentResolver().notifyChange(uri, null);
 	        break;
 	    default: throw new SQLException("Failed to delete from " + uri);
@@ -67,14 +67,14 @@ public class CMDbProvider extends ContentProvider {
 	    
 	    switch (uriMatcher.match(uri)){
 	    case CODE_SETTING:
-	        id = mDb.insert(CMSQLiteOnenHelper.TABLE_SETTING, CMSQLiteOnenHelper.SETTING_VAL, values);
+	        id = mDb.insert(CMSQLiteOnlineHelper.TABLE_SETTING, CMSQLiteOnlineHelper.SETTING_VAL, values);
 	        if (id>0){
 	            _uri = ContentUris.withAppendedId(CONTENT_URI_SETTING, id);
 	            getContext().getContentResolver().notifyChange(_uri, null);    
 	        }
 	        break;
 	    case CODE_SMS:
-	        id = mDb.insert(CMSQLiteOnenHelper.TABLE_SMS, CMSQLiteOnenHelper.SMS_PHONE, values);
+	        id = mDb.insert(CMSQLiteOnlineHelper.TABLE_SMS, CMSQLiteOnlineHelper.SMS_PHONE, values);
 	        if (id>0){
 	            _uri = ContentUris.withAppendedId(CONTENT_URI_SMS, id);
 	            getContext().getContentResolver().notifyChange(_uri, null);    
@@ -91,7 +91,7 @@ public class CMDbProvider extends ContentProvider {
 		Cursor c = null;
 		String orderBy;       
         if (TextUtils.isEmpty(sort)) {
-            orderBy = CMSQLiteOnenHelper._ID;
+            orderBy = CMSQLiteOnlineHelper._ID;
         } 
         else {
             orderBy = sort;
@@ -99,15 +99,15 @@ public class CMDbProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
 	    case CODE_SETTING:
-	    	c = mDb.query(CMSQLiteOnenHelper.TABLE_SETTING, projection, selection, selectionArgs, null, null, orderBy);
+	    	c = mDb.query(CMSQLiteOnlineHelper.TABLE_SETTING, projection, selection, selectionArgs, null, null, orderBy);
 	        c.setNotificationUri(getContext().getContentResolver(), uri);
 	        break;
 	    case CODE_SMS:
-	    	c = mDb.query(CMSQLiteOnenHelper.TABLE_SMS, projection, selection, selectionArgs, null, null, orderBy);
+	    	c = mDb.query(CMSQLiteOnlineHelper.TABLE_SMS, projection, selection, selectionArgs, null, null, orderBy);
 	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
 	        break;
 	    case CODE_SMSGROUP:
-	    	c = mDb.query(CMSQLiteOnenHelper.QUERY_SMSGROUP, projection, selection, selectionArgs, null, null, orderBy);
+	    	c = mDb.query(CMSQLiteOnlineHelper.QUERY_SMSGROUP, projection, selection, selectionArgs, null, null, orderBy);
 	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
 	        break;
 	    default: throw new SQLException("Failed to query from "+uri);
@@ -122,11 +122,11 @@ public class CMDbProvider extends ContentProvider {
 		
         switch (uriMatcher.match(uri)){
 	    case CODE_SETTING:
-			mDb.update(CMSQLiteOnenHelper.TABLE_SETTING, values, where, whereArgs); 
+			mDb.update(CMSQLiteOnlineHelper.TABLE_SETTING, values, where, whereArgs); 
 	        getContext().getContentResolver().notifyChange(uri, null);
 	        break;
 	    case CODE_SMS:
-			mDb.update(CMSQLiteOnenHelper.TABLE_SMS, values, where, whereArgs); 
+			mDb.update(CMSQLiteOnlineHelper.TABLE_SMS, values, where, whereArgs); 
 	        getContext().getContentResolver().notifyChange(uri, null);
 	        break;
 	    default: throw new SQLException("Failed to query from "+uri);

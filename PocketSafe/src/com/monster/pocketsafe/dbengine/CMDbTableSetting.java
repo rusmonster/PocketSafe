@@ -1,7 +1,7 @@
 package com.monster.pocketsafe.dbengine;
 
 import com.monster.pocketsafe.dbengine.provider.CMDbProvider;
-import com.monster.pocketsafe.dbengine.provider.CMSQLiteOnenHelper;
+import com.monster.pocketsafe.dbengine.provider.CMSQLiteOnlineHelper;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
@@ -13,8 +13,8 @@ public class CMDbTableSetting implements IMDbTableSetting {
 	private ContentResolver mCr;
 	
     private static final String[] mContent = new String[] {
-        CMSQLiteOnenHelper._ID, 
-        CMSQLiteOnenHelper.SETTING_VAL
+        CMSQLiteOnlineHelper._ID, 
+        CMSQLiteOnlineHelper.SETTING_VAL
     };
     
     private static final String[] mCount = new String[] {
@@ -24,14 +24,14 @@ public class CMDbTableSetting implements IMDbTableSetting {
 	public void Update(IMSetting setting) throws MyException {
         ContentValues values = new ContentValues();
         
-        values.put(CMSQLiteOnenHelper._ID, setting.getId());
-        values.put(CMSQLiteOnenHelper.SETTING_VAL, setting.getStrVal());
+        values.put(CMSQLiteOnlineHelper._ID, setting.getId());
+        values.put(CMSQLiteOnlineHelper.SETTING_VAL, setting.getStrVal());
         
-		mCr.update(CMDbProvider.CONTENT_URI_SETTING, values, CMSQLiteOnenHelper._ID+"=" + setting.getId(), null);
+		mCr.update(CMDbProvider.CONTENT_URI_SETTING, values, CMSQLiteOnlineHelper._ID+"=" + setting.getId(), null);
 	}
 
 	public void getById(IMSetting dest, TTypSetting id) throws MyException {
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mContent, CMSQLiteOnenHelper._ID+"=" + id.ordinal(), null, null);
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mContent, CMSQLiteOnlineHelper._ID+"=" + id.ordinal(), null, null);
 		
 		try {
 			if ( c.moveToFirst() ) {
