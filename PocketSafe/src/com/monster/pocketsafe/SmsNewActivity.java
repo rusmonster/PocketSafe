@@ -186,7 +186,10 @@ public class SmsNewActivity extends Activity implements IMListener {
 
 	@Override
 	protected void onResume() {
-	    bindService(new Intent(this, CMSafeService.class), serviceConncetion, BIND_AUTO_CREATE);
+		Intent stIntent = new Intent(this, CMSafeService.class);
+        startService(stIntent);
+	    bindService(stIntent, serviceConncetion, BIND_AUTO_CREATE);
+	    
 	    super.onResume();
 	}
 	

@@ -336,8 +336,10 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	
 	@Override
 	protected void onResume() {
-	    bindService(new Intent(this, CMSafeService.class), serviceConncetion, BIND_AUTO_CREATE);
-	    //mEdText.requestFocus();
+		Intent stIntent = new Intent(this, CMSafeService.class);
+        startService(stIntent);
+	    bindService(stIntent, serviceConncetion, BIND_AUTO_CREATE);
+	    
 	    Log.v("!!!", "SmsViewer onResume()");
 	    super.onResume();
 	}

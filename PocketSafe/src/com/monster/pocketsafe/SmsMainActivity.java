@@ -49,7 +49,11 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 	@Override
 	protected void onResume() {
         Log.d("!!!", "onResume "+this.toString());
-        bindService(new Intent(this, CMSafeService.class), serviceConncetion, BIND_AUTO_CREATE);
+        
+        Intent stIntent = new Intent(this, CMSafeService.class);
+        startService(stIntent);
+        bindService(stIntent, serviceConncetion, BIND_AUTO_CREATE);
+        
 		super.onResume();
 	}
 
