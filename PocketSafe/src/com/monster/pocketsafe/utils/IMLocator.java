@@ -15,6 +15,8 @@ import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
+import com.monster.pocketsafe.rsa.IMBase64;
+import com.monster.pocketsafe.rsa.IMRsa;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 
 public interface IMLocator {
@@ -34,4 +36,6 @@ public interface IMLocator {
 	IMDbWriterInternal createDbWriter();
 	IMSmsSender createSmsSender();
 	IMSmsNotificator createSmsNotificator();
+	IMBase64 createBase64();
+	IMRsa createRsa();
 }

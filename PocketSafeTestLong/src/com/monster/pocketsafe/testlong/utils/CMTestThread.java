@@ -8,6 +8,20 @@ public class CMTestThread extends Thread {
 	private Looper mLooper;
 	private boolean mIsRun = false;
 	
+	private void setRun(boolean _run) {
+		synchronized (this) {
+			mIsRun = _run;
+		}
+	}
+	
+	private boolean getRun() {
+		boolean run;
+		synchronized (this) {
+			run = mIsRun;
+		}	
+		return run;
+	}
+	
 	public CMTestThread(Runnable _runnable) {
 		mRunnable = _runnable;
 	}
@@ -17,16 +31,16 @@ public class CMTestThread extends Thread {
 		Looper.prepare();
 		mLooper = Looper.myLooper();
 		
-		mIsRun = true;
+		setRun(true);
 		
 		mRunnable.run();
 		Looper.loop();
 		
-		mIsRun = false;
+		setRun(false);
 	}
 	
 	public void stopThread() {
-		if (!mIsRun) throw new RuntimeException("Test Thread not running");
+		if (!getRun()) throw new RuntimeException("Test Thread not running");
 		
 		mLooper.quit();
 		try {
@@ -34,7 +48,6 @@ public class CMTestThread extends Thread {
 		} catch (InterruptedException e) {
 		}
 		
-		if (mIsRun) throw new RuntimeException("Test Thread stop error");
-	}
-
+		if (getRun()) throw new RuntimeException("Test Thread stop error");
+	}	
 }

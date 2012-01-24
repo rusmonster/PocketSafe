@@ -40,7 +40,12 @@ public class MyException extends Exception {
 		ESmsErrSendNoText(29),
 		EDbErrGetCountSmsNew(30), 
 		EErrPhoneFormat(31),
-		ESmsErrSendGeneral(32);
+		ESmsErrSendGeneral(32), 
+		ERsaInvalidKeyFormat(33), 
+		ERsaErrGeneratingKeyPair(34), 
+		ERsaErrEncrypt(35),
+		ERsaErrDecrypt(36), 
+		ERsaNotReady(37);
 		
 		   /**
 	     * Value for this difficulty
