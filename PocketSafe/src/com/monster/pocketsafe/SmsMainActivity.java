@@ -65,7 +65,10 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 		} catch (MyException e) {
 			e.printStackTrace();
 		}
+		
+		mMain=null;
 		unbindService(serviceConncetion);
+		
 		super.onPause();
 	}
 	
