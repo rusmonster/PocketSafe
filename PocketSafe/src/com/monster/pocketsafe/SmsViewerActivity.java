@@ -25,6 +25,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -36,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SmsViewerActivity extends ListActivity implements IMListener {
@@ -48,7 +51,10 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	private final Handler mHandler = new Handler();
 	private View mEditorView;
 	private EditText mEdText;
+	private TextView mTvCounter;
 	private Button mBtSend;
+	
+	private CSmsCounter mSmsCou = new CSmsCounter();
 	
 	public static final String PHONE = "com.monster.pocketsafe.SmsViewerActivity.PHONE";
 	private static final int IDD_SMS_SENDING = 1;
@@ -140,9 +146,20 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	    
 	    mEditorView = getLayoutInflater().inflate(R.layout.smsviewereditor, null);
 	    getListView().addFooterView(mEditorView);
-	    
-	    mEdText = (EditText) mEditorView.findViewById(R.id.edSms);
+
+	    mTvCounter = (TextView)mEditorView.findViewById(R.id.tvCounter);
 	    mBtSend = (Button)mEditorView.findViewById(R.id.btSendSms);
+	    mEdText = (EditText) mEditorView.findViewById(R.id.edSms);
+	    mEdText.addTextChangedListener(new TextWatcher() {
+			
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}			
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			
+			public void afterTextChanged(Editable s) {
+				mSmsCou.setSms(s.toString());
+				mTvCounter.setText(" "+mSmsCou.toString());
+			}
+		});
 	    
 	    
 	    mBtSend.setOnClickListener(new View.OnClickListener() {

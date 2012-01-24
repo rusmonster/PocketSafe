@@ -9,6 +9,7 @@ import com.monster.pocketsafe.safeservice.CMSafeService;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
+import android.R.bool;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -20,12 +21,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class SmsNewActivity extends Activity implements IMListener {
 	
@@ -40,6 +44,7 @@ public class SmsNewActivity extends Activity implements IMListener {
 	private ProgressDialog mDlg;
 	private String mPhone;
 	private String mLastEdPhoneVal;
+	private TextView mTxtCounter;
 
 	private IMMain getMain() throws MyException {
 		if (mMain == null)
@@ -126,9 +131,28 @@ public class SmsNewActivity extends Activity implements IMListener {
 		});
 	    
 	    mBtBook = (Button)findViewById(R.id.btSmsNewBook);
-	    mEdText = (EditText)findViewById(R.id.edSmsNewText);
-	    mBtSend = (Button)findViewById(R.id.btSmsNewSend);
 	    
+	    mTxtCounter = (TextView)findViewById(R.id.tvCounter);
+	    mEdText = (EditText)findViewById(R.id.edSmsNewText);
+	    mEdText.addTextChangedListener(new TextWatcher() {
+			
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				//nothing
+			}
+			
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				//nothing
+			}
+			
+			public void afterTextChanged(Editable s) {
+				CSmsCounter smscou = new CSmsCounter(s.toString());
+				mTxtCounter.setText(" "+smscou.toString());
+			}
+		});	    
+	    
+	    
+	    mBtSend = (Button)findViewById(R.id.btSmsNewSend);	    
 	    mBtBook.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) { SelectContactFromBook();	}
 		});
@@ -147,6 +171,9 @@ public class SmsNewActivity extends Activity implements IMListener {
 				
 			}
 		} );
+	    
+	    
+
 	}
 	
 	@Override
