@@ -30,10 +30,12 @@ import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.main.notificator.CMSmsNotificator;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
-import com.monster.pocketsafe.rsa.CMBase64;
-import com.monster.pocketsafe.rsa.CMRsa;
-import com.monster.pocketsafe.rsa.IMBase64;
-import com.monster.pocketsafe.rsa.IMRsa;
+import com.monster.pocketsafe.sec.CMAes;
+import com.monster.pocketsafe.sec.CMBase64;
+import com.monster.pocketsafe.sec.CMRsa;
+import com.monster.pocketsafe.sec.IMAes;
+import com.monster.pocketsafe.sec.IMBase64;
+import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sms.sender.CMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 
@@ -109,6 +111,10 @@ public class CMLocator implements IMLocator {
 
 	public IMRsa createRsa() {
 		return new CMRsa(this);
+	}
+
+	public IMAes createAes() {
+		return new CMAes(this);
 	}
 
 

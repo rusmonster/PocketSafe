@@ -2,7 +2,7 @@ package com.monster.pocketsafe.test;
 
 import android.util.Log;
 
-import com.monster.pocketsafe.rsa.CMBase64;
+import com.monster.pocketsafe.sec.CMBase64;
 
 import junit.framework.TestCase;
 

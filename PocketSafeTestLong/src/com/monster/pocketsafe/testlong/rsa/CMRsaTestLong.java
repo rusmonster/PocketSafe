@@ -2,9 +2,9 @@ package com.monster.pocketsafe.testlong.rsa;
 
 import android.util.Log;
 
-import com.monster.pocketsafe.rsa.CMRsa;
-import com.monster.pocketsafe.rsa.IMRsa;
-import com.monster.pocketsafe.rsa.IMRsaObserver;
+import com.monster.pocketsafe.sec.CMRsa;
+import com.monster.pocketsafe.sec.IMRsa;
+import com.monster.pocketsafe.sec.IMRsaObserver;
 import com.monster.pocketsafe.testlong.utils.CMTestThread;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.MyException;

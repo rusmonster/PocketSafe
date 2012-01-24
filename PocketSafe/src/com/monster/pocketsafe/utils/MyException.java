@@ -45,7 +45,9 @@ public class MyException extends Exception {
 		ERsaErrGeneratingKeyPair(34), 
 		ERsaErrEncrypt(35),
 		ERsaErrDecrypt(36), 
-		ERsaNotReady(37);
+		ERsaNotReady(37), 
+		EAesErrEncrypt(38),
+		EAesErrDecrypt(39);
 		
 		   /**
 	     * Value for this difficulty
