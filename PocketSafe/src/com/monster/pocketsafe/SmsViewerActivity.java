@@ -25,8 +25,10 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -64,6 +66,7 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	private static final int IDM_SHOWALL = 103;
 	private static final int IDM_FORWARD = 104;
 	private static final int IDM_DELMESSAGE = 105;
+	private static final int IDM_COPYMESSAGE = 106;
 	
 	private static final int NEW_SMS_RESULT = 1002;
 	
@@ -348,12 +351,16 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	protected void onPause() {
 		try {
 			getMain().Dispatcher().delListener(this);
-			unbindService(serviceConncetion);
-			if (mDlg != null) dismissDialog(IDD_SMS_SENDING);
-			mDlg = null;
+
 		} catch (MyException e) {
 			e.printStackTrace();
 		}
+		
+		if (mDlg != null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
+		
+		mMain=null;
+		unbindService(serviceConncetion);
+		
 		super.onPause();
 	}
 
@@ -415,9 +422,16 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		
 		switch(item.getItemId()) {
 		case IDM_FORWARD:
 			ForwardMessage(info.position);
+			break;
+		case IDM_COPYMESSAGE:
+			ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+			String txt = new String( mSmsList.get(info.position).getText() );
+			clipboard.setText(txt);
+			Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
 			break;
 		case IDM_DELMESSAGE:
 			mMessageForDel = mSmsList.get(info.position).getId();
@@ -440,6 +454,7 @@ public class SmsViewerActivity extends ListActivity implements IMListener {
 			menu.setHeaderTitle(R.string.sms_message);
 			
 			menu.add(Menu.NONE, IDM_FORWARD, Menu.NONE, R.string.sms_forward);
+			menu.add(Menu.NONE, IDM_COPYMESSAGE, Menu.NONE, R.string.sms_copymessage);
 			menu.add(Menu.NONE, IDM_DELMESSAGE, Menu.NONE, R.string.sms_delmessage);
 		}
 		super.onCreateContextMenu(menu, v, menuInfo);

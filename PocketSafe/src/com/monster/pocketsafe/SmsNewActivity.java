@@ -198,11 +198,15 @@ public class SmsNewActivity extends Activity implements IMListener {
 	protected void onPause() {
 		try {
 			getMain().Dispatcher().delListener(this);
-			unbindService(serviceConncetion);
-			if (mDlg!=null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
 		} catch (MyException e) {
 			e.printStackTrace();
 		}
+		
+		if (mDlg!=null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
+		
+		mMain=null;
+		unbindService(serviceConncetion);
+		
 		super.onPause();
 	}
 
