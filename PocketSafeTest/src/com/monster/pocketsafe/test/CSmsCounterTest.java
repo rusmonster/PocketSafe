@@ -100,38 +100,38 @@ public class CSmsCounterTest extends TestCase {
 		assertEquals(CSmsCounter.LEN_SMALL, sut.getLenOne());
 		assertEquals(CSmsCounter.LEN_SMALL, sut.getNextLimit());
 		assertEquals(CSmsCounter.LEN_SMALL-3, sut.getOst());
-		assertEquals("62/65", sut.toString());
+		assertEquals("67/70", sut.toString());
 	}
 
-	public void test65rus() {
+	public void test70rus() {
 		String txt = new String();
-		for (int i=0; i<65; i++) {
+		for (int i=0; i<70; i++) {
 			txt+="ÿ";
 		}
 		
 		CSmsCounter sut = new CSmsCounter(txt);
 		
 		assertEquals(1, sut.getCount());
-		assertEquals(65, sut.getLen());
+		assertEquals(70, sut.getLen());
 		assertEquals(CSmsCounter.LEN_SMALL, sut.getLenOne());
 		assertEquals(CSmsCounter.LEN_SMALL, sut.getNextLimit());
 		assertEquals(0, sut.getOst());
-		assertEquals("0/65", sut.toString());
+		assertEquals("0/70", sut.toString());
 	}
 	
-	public void test66rus() {
+	public void test71rus() {
 		String txt = new String();
-		for (int i=0; i<66; i++) {
+		for (int i=0; i<71; i++) {
 			txt+="ÿ";
 		}
 		
 		CSmsCounter sut = new CSmsCounter(txt);
 		
 		assertEquals(2, sut.getCount());
-		assertEquals(66, sut.getLen());
+		assertEquals(71, sut.getLen());
 		assertEquals(CSmsCounter.LEN_SMALL, sut.getLenOne());
 		assertEquals(CSmsCounter.LEN_SMALL*2, sut.getNextLimit());
-		assertEquals(64, sut.getOst());
-		assertEquals("64/130(2)", sut.toString());
+		assertEquals(69, sut.getOst());
+		assertEquals("69/140(2)", sut.toString());
 	}		
 }
