@@ -14,7 +14,7 @@ public interface IMMain {
 	
 	void Open(Context context) throws MyException;
 	void SendSms(String phone, String text) throws MyException;
-	void handleSmsRecieved(int id);
+	void handleSmsRecieved(int smsId);
 	void Close();
 
 }

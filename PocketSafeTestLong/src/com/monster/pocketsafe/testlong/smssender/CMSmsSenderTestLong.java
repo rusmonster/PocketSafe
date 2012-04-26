@@ -1,10 +1,10 @@
 package com.monster.pocketsafe.testlong.smssender;
 
-import android.os.Looper;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.monster.pocketsafe.sms.sender.CMSmsSender;
+import com.monster.pocketsafe.sms.sender.IMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSenderObserver;
 import com.monster.pocketsafe.testlong.utils.CMTestThread;
 import com.monster.pocketsafe.utils.MyException;
@@ -15,7 +15,7 @@ public class CMSmsSenderTestLong extends AndroidTestCase implements IMSmsSenderO
 	private static String PHONE = "+7915"+"104"+"2215"; 
 	//private static String PHONE = "5556";
 	
-	private CMSmsSender mSmsSender;
+	private IMSmsSender mSmsSender;
 	private boolean mSentOk;
 	private boolean mDelivOk;
 
@@ -96,24 +96,24 @@ public class CMSmsSenderTestLong extends AndroidTestCase implements IMSmsSenderO
 	}
 
 	@Override
-	public void SmsSenderSent(CMSmsSender sender, int tag) {
+	public void SmsSenderSent(IMSmsSender sender, int tag) {
 		mSentOk = true;
 		Log.v("!!!", "SmsSenderSent");
 	}
 
 	@Override
-	public void SmsSenderSentError(CMSmsSender sender,int tag,  int err) {
+	public void SmsSenderSentError(IMSmsSender sender,int tag,  int err) {
 		Log.v("!!!", "SmsSenderSentError: "+err);
 	}
 
 	@Override
-	public void SmsSenderDelivered(CMSmsSender sender, int tag) {
+	public void SmsSenderDelivered(IMSmsSender sender, int tag) {
 		mDelivOk = true;
 		Log.v("!!!", "SmsSenderDelivered");
 	}
 
 	@Override
-	public void SmsSenderDeliverError(CMSmsSender sender, int tag, int err) {
+	public void SmsSenderDeliverError(IMSmsSender sender, int tag, int err) {
 		mDelivOk = true;
 		Log.v("!!!", "SmsSenderDeliverError: "+err);
 	}

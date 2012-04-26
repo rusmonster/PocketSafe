@@ -49,29 +49,25 @@ public class MyException extends Exception {
 		EAesErrEncrypt(38),
 		EAesErrDecrypt(39);
 		
-		   /**
-	     * Value for this difficulty
-	     */
-	    public final int Value;
+	    private final int mValue;
+	    
 	 
 	    private TTypMyException(int value)
 	    {
-	        Value = value;
+	        mValue = value;
+	    }
+	    
+	    public int getValue() {
+	    	return mValue;
 	    }
 	 
-	    // Mapping difficulty to difficulty id
 	    private static final Map<Integer, TTypMyException> _map = new HashMap<Integer, TTypMyException>();
 	    static
 	    {
 	        for (TTypMyException typ : TTypMyException.values())
-	            _map.put(typ.Value, typ);
+	            _map.put(typ.mValue, typ);
 	    }
 	 
-	    /**
-	     * Get difficulty from value
-	     * @param value Value
-	     * @return Difficulty
-	     */
 	    public static TTypMyException from(int value)
 	    {
 	        return _map.get(value);

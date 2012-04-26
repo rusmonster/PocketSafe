@@ -27,7 +27,7 @@ public class CMSmsNotificator implements IMSmsNotificator {
 	
         mNotificationIntent = new Intent(context, SmsMainActivity.class);
         mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        mNotificationIntent.putExtra(TTypEventStrings.EVENT_TYP, TTypEvent.ESmsRecieved.Value);
+        mNotificationIntent.putExtra(TTypEventStrings.EVENT_TYP, TTypEvent.ESmsRecieved.getValue());
         
         mNotificationPendingIntent = PendingIntent.getActivity(context, 0, mNotificationIntent, 0);
         
@@ -42,13 +42,13 @@ public class CMSmsNotificator implements IMSmsNotificator {
 	    
 	    CharSequence contentText=mContext.getResources().getText( R.string.sms_new_cnt )+Integer.toString(cnt_newsms);
         mNotification.setLatestEventInfo(mContext, mTickerText, contentText, mNotificationPendingIntent);
-        mNotifyMgr.cancel(TTypEvent.ESmsRecieved.Value);
-		mNotifyMgr.notify(TTypEvent.ESmsRecieved.Value, mNotification);
+        mNotifyMgr.cancel(TTypEvent.ESmsRecieved.getValue());
+		mNotifyMgr.notify(TTypEvent.ESmsRecieved.getValue(), mNotification);
 	}
 
 	public void Update(int cnt_newsms) {
 		if (cnt_newsms==0) {
-			mNotifyMgr.cancel(TTypEvent.ESmsRecieved.Value);
+			mNotifyMgr.cancel(TTypEvent.ESmsRecieved.getValue());
 			mNotification=null;
 		} else if (mNotification != null) {
 			CharSequence contentText=mContext.getResources().getText( R.string.sms_new_cnt )+Integer.toString(cnt_newsms);

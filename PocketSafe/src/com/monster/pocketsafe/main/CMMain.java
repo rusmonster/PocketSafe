@@ -13,7 +13,6 @@ import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
-import com.monster.pocketsafe.sms.sender.CMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSenderObserver;
 import com.monster.pocketsafe.utils.IMLocator;
@@ -129,10 +128,10 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 		return new_cnt;
 	}
 	
-	public void handleSmsRecieved(int id) {
+	public void handleSmsRecieved(int smsId) {	
         try {
         	IMSms sms = mLocator.createSms();
-			mDbEngine.TableSms().getById(sms, id);
+			mDbEngine.TableSms().getById(sms, smsId);
 			sms.setIsNew(TTypIsNew.ENew);
 			mDbEngine.TableSms().Update(sms);
 		} catch (MyException e) {
@@ -141,7 +140,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
         
         IMEventSimpleID ev = mLocator.createEventSimpleID();
         ev.setTyp(TTypEvent.ESmsRecieved);
-        ev.setId(id);
+        ev.setId(smsId);
         mDispatcher.pushEvent(ev);
 	}
 
@@ -153,7 +152,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 
 
 
-	public void SmsSenderSent(CMSmsSender sender, int tag) {
+	public void SmsSenderSent(IMSmsSender sender, int tag) {
 		
 		IMSms sms = mLocator.createSms();
 
@@ -174,7 +173,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 
 
 
-	public void SmsSenderSentError(CMSmsSender sender, int tag,  int err) {
+	public void SmsSenderSentError(IMSmsSender sender, int tag,  int err) {
 		IMEventErr ev = mLocator.createEventErr();
 		ev.setTyp(TTypEvent.ESmsSendError);
 		ev.setId(tag);
@@ -184,7 +183,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 
 
 
-	public void SmsSenderDelivered(CMSmsSender sender, int tag) {
+	public void SmsSenderDelivered(IMSmsSender sender, int tag) {
 		IMSms sms = mLocator.createSms();
 
 		try {
@@ -203,7 +202,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 
 
 
-	public void SmsSenderDeliverError(CMSmsSender sender, int tag, int err) {
+	public void SmsSenderDeliverError(IMSmsSender sender, int tag, int err) {
 		IMEventErr ev = mLocator.createEventErr();
 		ev.setTyp(TTypEvent.ESmsDeliverError);
 		ev.setId(tag);

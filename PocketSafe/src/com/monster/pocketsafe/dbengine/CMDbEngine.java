@@ -28,6 +28,7 @@ public class CMDbEngine implements IMDbEngine {
 		
 		mTabContact = mLocator.createDbTableContact();
 		mTabContact.SetContentResolver(mCr);
+		
 	}
 
 	public IMDbTableSms TableSms() {

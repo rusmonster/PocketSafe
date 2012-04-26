@@ -46,10 +46,10 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 	}
 	
 	public void testSettingInsert() throws MyException {
-		int id = TTypSetting.EDbPassTimout.ordinal();
+		int id = TTypSetting.EPassTimout.ordinal();
 		
 		IMSetting orig = mLocator.createSetting();
-		mDbEngine.TableSetting().getById(orig, TTypSetting.EDbPassTimout);
+		mDbEngine.TableSetting().getById(orig, TTypSetting.EPassTimout);
 		
 		IMSetting set = mLocator.createSetting();
 		set.setId(id);
@@ -57,14 +57,14 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		mDbEngine.TableSetting().Update(set);
 		
 		IMSetting dest = mLocator.createSetting();
-		mDbEngine.TableSetting().getById(dest, TTypSetting.EDbPassTimout);
+		mDbEngine.TableSetting().getById(dest, TTypSetting.EPassTimout);
 		
 		assertEquals(id, dest.getId());
 		assertEquals(set.getIntVal(), dest.getIntVal());
 		
 
 		mDbEngine.TableSetting().Update(orig);
-		mDbEngine.TableSetting().getById(dest, TTypSetting.EDbPassTimout);
+		mDbEngine.TableSetting().getById(dest, TTypSetting.EPassTimout);
 		
 		assertEquals(orig.getId(), dest.getId());
 		assertEquals(orig.getIntVal(), dest.getIntVal());

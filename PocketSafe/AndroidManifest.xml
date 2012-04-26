@@ -38,6 +38,7 @@
 		<activity android:name=".SmsNewActivity" android:label="@string/sms_new"></activity>
 		<activity android:name=".AboutActivity"></activity>
 		<activity android:name=".OptionsActivity"></activity>
+		<activity android:name=".SetPassActivity"></activity>
     </application>
 
 </manifest>

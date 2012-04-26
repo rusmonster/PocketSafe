@@ -5,22 +5,13 @@ import com.monster.pocketsafe.R;
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.main.IMEvent;
-import com.monster.pocketsafe.main.IMListener;
-import com.monster.pocketsafe.main.IMMain;
-import com.monster.pocketsafe.safeservice.CMSafeService;
 import com.monster.pocketsafe.utils.MyException;
-import com.monster.pocketsafe.utils.MyException.TTypMyException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -33,7 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class SmsMainActivity extends ListActivity implements IMListener {
+public class SmsMainActivity extends CMBaseListActivity  {
 	
 
 	protected static final int NEW_SMS_RESULT = 1002;
@@ -41,36 +32,9 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 	private static final int IDD_DELTHREAD = 1001;
 	private static final int IDD_DELALL = 1002;
 
-	private IMMain mMain;
 	private Button mBtNewSms;
 	private ArrayList<IMSmsGroup> mGroups = new ArrayList<IMSmsGroup>();
 	private final android.os.Handler mHandler = new android.os.Handler();
-	
-	@Override
-	protected void onResume() {
-        Log.d("!!!", "onResume "+this.toString());
-        
-        Intent stIntent = new Intent(this, CMSafeService.class);
-        startService(stIntent);
-        bindService(stIntent, serviceConncetion, BIND_AUTO_CREATE);
-        
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		Log.d("!!!", "onPause "+this.toString());
-		try {
-			getMain().Dispatcher().delListener(this);
-		} catch (MyException e) {
-			e.printStackTrace();
-		}
-		
-		mMain=null;
-		unbindService(serviceConncetion);
-		
-		super.onPause();
-	}
 	
 	private void GotoGroup(int idx) {
 		
@@ -127,38 +91,17 @@ public class SmsMainActivity extends ListActivity implements IMListener {
         setListAdapter(adapter);
 	}
 	
-    private ServiceConnection serviceConncetion = new ServiceConnection() {
-
-    	public void onServiceConnected(ComponentName name, IBinder service) {
-    		setMain( ((CMSafeService.MyBinder)service).getMain() );
-    		Log.d("!!!", "Service connected "+this.toString());
-    		try {
-    			getMain().Dispatcher().addListener(SmsMainActivity.this);
-				createListAdapter();
-			} catch (MyException e) {
-				ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().Value);
-			}
-    	}
-
-	    public void onServiceDisconnected(ComponentName name) {
-	        setMain( null );
-	        Log.d("!!!", "Service disconnected "+this.toString());
-	    }
-    };
     
     void GotoNewSms() {
     	Intent intent = new Intent(this, SmsNewActivity.class); 
         startActivityForResult(intent, NEW_SMS_RESULT);
     }
 	    
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-       // startService(new Intent(this, CMSafeService.class));
-       
         mBtNewSms = (Button) findViewById(R.id.btNewSms);
         mBtNewSms.setOnClickListener( new View.OnClickListener() {
 			
@@ -168,41 +111,13 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 		});
         
         registerForContextMenu(getListView());
-        
-        Log.d("!!!", "onCreate "+this.toString());
     }
     
-    
-    
-	@Override
-	protected void onStart() {
-		 Log.d("!!!", "onStart "+this.toString());
-		super.onStart();
-	}
 
-	@Override
-	protected void onStop() {
-		 Log.d("!!!", "onStop "+this.toString());
-		super.onStop();
-	}
-
-	private IMMain getMain() throws MyException {
-		if (mMain == null) {
-			Log.w("!!!", "mMain == null");
-			throw new MyException(TTypMyException.EErrServiceNotBinded);
-		}
-		return mMain;
-	}
-
-	private void setMain(IMMain mMain) {
-		this.mMain = mMain;
-	}
-
-	@Override
-	protected void onDestroy() {
-		Log.d("!!!", "onDestroy "+this.toString());
-		super.onDestroy();
-	}
+    public void onMainBind() throws MyException {
+    	createListAdapter();
+    }
+ 
 
 	private final Runnable mRunReload = new Runnable() {
 		
@@ -299,7 +214,7 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 				menu.setHeaderTitle(nam);
 			}
 		} catch (MyException e) {
-			ErrorDisplayer.displayError(this, e.getId().Value);
+			ErrorDisplayer.displayError(this, e.getId().getValue());
 		}
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
@@ -338,7 +253,7 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 				try {
 					getMain().DbWriter().SmsDeleteByPhone(phone);
 				} catch (MyException e) {
-					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().Value);
+					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}
 				
 			}
@@ -366,7 +281,7 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 				try {
 					getMain().DbWriter().SmsDelAll();
 				} catch (MyException e) {
-					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().Value);
+					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}
 				
 			}
@@ -395,7 +310,7 @@ public class SmsMainActivity extends ListActivity implements IMListener {
 				break;
 			}
 		} catch (MyException e) {
-			ErrorDisplayer.displayError(this, e.getId().Value);
+			ErrorDisplayer.displayError(this, e.getId().getValue());
 		}
 		return dlg;
 	}

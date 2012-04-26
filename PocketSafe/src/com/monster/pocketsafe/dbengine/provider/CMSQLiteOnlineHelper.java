@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 2;
+	public static final int DB_VERSION = 1;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
@@ -60,9 +60,25 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 		
 		ContentValues values = new ContentValues();
         
-        values.put(_ID, +TTypSetting.EDbPassTimout.ordinal());
+        values.put(_ID, +TTypSetting.EDbVersion.getValue());
+        values.put(SETTING_VAL, "1");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
+		values.clear();
+        values.put(_ID, +TTypSetting.EPassTimout.getValue());
         values.put(SETTING_VAL, "300");
         db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
+		values.clear();
+        values.put(_ID, +TTypSetting.ERsaPub.getValue());
+        values.put(SETTING_VAL, "");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
+		values.clear();
+        values.put(_ID, +TTypSetting.ERsaPriv.getValue());
+        values.put(SETTING_VAL, "");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
 		
 		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMS);
 		db.execSQL("CREATE TABLE "+TABLE_SMS+"("+
@@ -74,16 +90,13 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_TEXT + " TEXT," +
 				SMS_DATE + " DATETIME)");
 		
-		//2
 		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_PHONE);
 		db.execSQL("CREATE INDEX "+SMS_INDEX_PHONE+" ON "+TABLE_SMS+"("+SMS_PHONE+")");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (oldVersion<2) {
-			db.execSQL("CREATE INDEX "+SMS_INDEX_PHONE+" ON "+TABLE_SMS+"("+SMS_PHONE+")");
-		}
+
 	}
 
 }

@@ -1,9 +1,6 @@
 package com.monster.pocketsafe.sms.sender;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
@@ -55,19 +52,19 @@ public class CMSmsSender implements IMSmsSender {
                		mObserver.SmsSenderSent(CMSmsSender.this, tag);
                     break;
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                	mObserver.SmsSenderSentError(CMSmsSender.this, tag, TTypMyException.ESmsErrSentGeneric.Value);
+                	mObserver.SmsSenderSentError(CMSmsSender.this, tag, TTypMyException.ESmsErrSentGeneric.getValue());
                     break;
                 case SmsManager.RESULT_ERROR_NO_SERVICE:
-                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentNoService.Value);
+                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentNoService.getValue());
                     break;
                 case SmsManager.RESULT_ERROR_NULL_PDU:
-                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentNullPdu.Value);
+                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentNullPdu.getValue());
                     break;
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
-                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentRadioOff.Value);
+                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentRadioOff.getValue());
                     break;
                 default:
-                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentGeneral.Value);
+                	mObserver.SmsSenderSentError(CMSmsSender.this, tag,  TTypMyException.ESmsErrSentGeneral.getValue());
                 	break;
             }
         }
@@ -93,7 +90,7 @@ public class CMSmsSender implements IMSmsSender {
                 	mObserver.SmsSenderDelivered(CMSmsSender.this, tag);
                     break;
                 default:
-                	mObserver.SmsSenderDeliverError(CMSmsSender.this, tag, TTypMyException.ESmsErrDeliverGeneral.Value);
+                	mObserver.SmsSenderDeliverError(CMSmsSender.this, tag, TTypMyException.ESmsErrDeliverGeneral.getValue());
                     break;                        
             }
         }

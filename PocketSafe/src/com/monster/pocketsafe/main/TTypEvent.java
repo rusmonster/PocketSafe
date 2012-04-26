@@ -17,29 +17,24 @@ public enum TTypEvent
     ESmsDelMany(10), 
     ESmsDeleted(11);
  
-    /**
-     * Value for this difficulty
-     */
-    public final int Value;
+    private final int mValue;
  
     private TTypEvent(int value)
     {
-        Value = value;
+        mValue = value;
     }
  
-    // Mapping difficulty to difficulty id
+    public int getValue() {
+    	return mValue;
+    }
+    
     private static final Map<Integer, TTypEvent> _map = new HashMap<Integer, TTypEvent>();
     static
     {
         for (TTypEvent typevent : TTypEvent.values())
-            _map.put(typevent.Value, typevent);
+            _map.put(typevent.mValue, typevent);
     }
  
-    /**
-     * Get difficulty from value
-     * @param value Value
-     * @return Difficulty
-     */
     public static TTypEvent from(int value)
     {
         return _map.get(value);

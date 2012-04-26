@@ -1,9 +1,11 @@
 package com.monster.pocketsafe;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import com.monster.pocketsafe.main.IMEvent;
+import com.monster.pocketsafe.utils.MyException;
 
-public class OptionsActivity extends PreferenceActivity {
+import android.os.Bundle;
+
+public class OptionsActivity extends CMBasePreferenceActivity {
 
 	/** Called when the activity is first created. */
 	@Override
@@ -11,6 +13,14 @@ public class OptionsActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.xml.prefs);
+	}
+
+	public void onMainBind() throws MyException {
+		
+	}
+
+	public void listenerEvent(IMEvent event) throws Exception {
+		
 	}
 
 

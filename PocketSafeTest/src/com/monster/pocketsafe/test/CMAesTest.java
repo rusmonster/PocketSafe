@@ -37,7 +37,7 @@ public class CMAesTest extends TestCase {
 		
 		MyException exp=null;
 		try {
-			String clear = mAes.decrypt("1111", crypt);
+			mAes.decrypt("1111", crypt);
 		}catch(MyException e) {
 			exp=e;
 		}

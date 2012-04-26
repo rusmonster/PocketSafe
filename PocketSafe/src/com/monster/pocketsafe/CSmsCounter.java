@@ -1,7 +1,5 @@
 package com.monster.pocketsafe;
 
-import android.util.Log;
-
 public class CSmsCounter {
 	public static final int LEN_SMALL = 70;
 	public static final int LEN_LONG = 160;

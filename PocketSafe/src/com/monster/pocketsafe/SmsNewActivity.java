@@ -3,23 +3,15 @@ package com.monster.pocketsafe;
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
-import com.monster.pocketsafe.main.IMListener;
-import com.monster.pocketsafe.main.IMMain;
-import com.monster.pocketsafe.safeservice.CMSafeService;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
-import android.R.bool;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,12 +23,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class SmsNewActivity extends Activity implements IMListener {
+public class SmsNewActivity extends CMBaseActivity {
 	
 	private static final int IDD_SMS_SENDING = 1;
 	protected static final int CONTACT_PICKER_RESULT = 1001;
 	public static final String TEXT = "com.monster.pocketsafe.SMSNEW_TEXT";
-	private IMMain mMain;
 	private EditText mEdPhone;
 	private Button mBtBook;
 	private EditText mEdText;
@@ -45,34 +36,6 @@ public class SmsNewActivity extends Activity implements IMListener {
 	private String mPhone;
 	private String mLastEdPhoneVal;
 	private TextView mTxtCounter;
-
-	private IMMain getMain() throws MyException {
-		if (mMain == null)
-			throw new MyException(TTypMyException.EErrServiceNotBinded);
-		return mMain;
-	}
-
-	private void setMain(IMMain mMain) {
-		this.mMain = mMain;
-	}
-	
-    private ServiceConnection serviceConncetion = new ServiceConnection() {
-
-    	public void onServiceConnected(ComponentName name, IBinder service) {
-    		setMain( ((CMSafeService.MyBinder)service).getMain() );
-    		Log.d("!!!", "Service connected");
-    		try {
-    			getMain().Dispatcher().addListener(SmsNewActivity.this);
-			} catch (MyException e) {
-				e.printStackTrace();
-			}
-    	}
-
-	    public void onServiceDisconnected(ComponentName name) {
-	        setMain( null );
-	        Log.d("!!!", "Service disconnected");
-	    }
-    };
     
     private void Phone2Name() {
     	String phone = mEdPhone.getText().toString().trim();
@@ -86,7 +49,7 @@ public class SmsNewActivity extends Activity implements IMListener {
 		try {
 			c = getMain().DbReader().QueryContact().getByPhone(phone);
 		} catch (MyException e) {
-			ErrorDisplayer.displayError(this, e.getId().Value);
+			ErrorDisplayer.displayError(this, e.getId().getValue());
 			return;
 		}
 		
@@ -110,7 +73,6 @@ public class SmsNewActivity extends Activity implements IMListener {
     	getMain().SendSms(mPhone, mEdText.getText().toString());
     }
     
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -163,17 +125,14 @@ public class SmsNewActivity extends Activity implements IMListener {
 				try {
 					SendSms();
 				} catch (MyException e) {
-					ErrorDisplayer.displayError(SmsNewActivity.this, e.getId().Value);
+					ErrorDisplayer.displayError(SmsNewActivity.this, e.getId().getValue());
 				} catch (Exception e) {
-					ErrorDisplayer.displayError(SmsNewActivity.this, TTypMyException.ESmsErrSendGeneral.Value);
+					ErrorDisplayer.displayError(SmsNewActivity.this, TTypMyException.ESmsErrSendGeneral.getValue());
 				}
 				
 				
 			}
 		} );
-	    
-	    
-
 	}
 	
 	@Override
@@ -184,33 +143,6 @@ public class SmsNewActivity extends Activity implements IMListener {
 		super.onStart();
 	}
 
-	@Override
-	protected void onResume() {
-		Intent stIntent = new Intent(this, CMSafeService.class);
-        startService(stIntent);
-	    bindService(stIntent, serviceConncetion, BIND_AUTO_CREATE);
-	    
-	    super.onResume();
-	}
-	
-	
-	@Override
-	protected void onPause() {
-		try {
-			getMain().Dispatcher().delListener(this);
-		} catch (MyException e) {
-			e.printStackTrace();
-		}
-		
-		if (mDlg!=null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
-		
-		mMain=null;
-		unbindService(serviceConncetion);
-		
-		super.onPause();
-	}
-
-	
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
@@ -354,6 +286,10 @@ public class SmsNewActivity extends Activity implements IMListener {
             Log.w("!!!", "Warning: activity result not ok");
         }
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	public void onMainBind() throws MyException {
+
 	}
 	
 

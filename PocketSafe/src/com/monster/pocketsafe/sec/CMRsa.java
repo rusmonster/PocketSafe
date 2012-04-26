@@ -140,11 +140,11 @@ public class CMRsa implements IMRsa {
 		        mPrivateExp = priv.getPrivateExponent();
 		        
 		        mHandler.post(new Runnable() {
-					public void run() { GenerateFinish(0); }
+					public void run() { GenerateFinish(TTypMyException.ENoError.getValue()); }
 				});
 			} catch (Exception e) {
 		        mHandler.post(new Runnable() {
-					public void run() {	GenerateFinish(TTypMyException.ERsaErrGeneratingKeyPair.Value); }
+					public void run() {	GenerateFinish(TTypMyException.ERsaErrGeneratingKeyPair.getValue()); }
 				});
 			}
 		}
