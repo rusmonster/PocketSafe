@@ -162,10 +162,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 
 	                break;
 	            }
-
-	        } else {
-	            Log.w("!!!", "Warning: activity result not ok");
-	        }
+	       }
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -299,7 +296,10 @@ public class SmsMainActivity extends CMBaseListActivity  {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		AlertDialog dlg = null;
+		Dialog dlg = super.onCreateDialog(id);
+		if (dlg!=null)
+			return dlg;
+		
 		try {
 			switch(id) {
 			case IDD_DELTHREAD:

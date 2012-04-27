@@ -1,6 +1,8 @@
 package com.monster.pocketsafe;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -11,8 +13,10 @@ import android.util.Log;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.main.IMEvent;
+import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMListener;
 import com.monster.pocketsafe.main.IMMain;
+import com.monster.pocketsafe.main.TTypEvent;
 import com.monster.pocketsafe.safeservice.CMSafeService;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
@@ -22,10 +26,16 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 public class CMHelperBaseActivity implements IMListener {
 	
 	private static final int SET_PASS_RESULT = 1003;
+
+	private static final int IDD_GENERATE = 50;
 	
 	private Activity mOwner;
 	private IMLocator mLocator;
 	private IMMain mMain;
+	
+	private String mSettedPass;
+	
+	private ProgressDialog mDlg;
 	
 	private ServiceConnection serviceConncetion = new ServiceConnection() {
 
@@ -59,6 +69,19 @@ public class CMHelperBaseActivity implements IMListener {
 		
 		if (set.getStrVal().length()>0)
 			return;
+		
+		if (mSettedPass!=null) {
+			String pass = mSettedPass;
+			mSettedPass=null;
+			
+			try {
+				getMain().changePass(null, pass);
+			} catch (MyException e) {
+				Log.e("!!!", "Error in getMain().changePass:"+e.getId());
+				mOwner.finish();
+			}
+			return;
+		}
 		
 		mOwner.startActivityForResult(new Intent(mOwner, SetPassActivity.class), SET_PASS_RESULT);
 	}
@@ -117,6 +140,8 @@ public class CMHelperBaseActivity implements IMListener {
 
     public void onPause() {
 		Log.d("!!!", "onPause "+mOwner.toString());
+		if (mDlg != null) mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+		
 		try {
 			getMain().Dispatcher().delListener(this);
 		} catch (MyException e) {
@@ -128,21 +153,67 @@ public class CMHelperBaseActivity implements IMListener {
 	}
 	
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            switch (requestCode) {
-            case SET_PASS_RESULT:
-            	Log.d("!!!", "SetPass cancel recved");
-           		mOwner.finish();
-                break;
-            }
-        }
+		if (resultCode == Activity.RESULT_OK) {
+		    switch (requestCode) {
+		    case SET_PASS_RESULT:
+		    	mSettedPass = data.getStringExtra(SetPassActivity.PASS);
+		        break;
+		    }
+		} 
+		else if (resultCode == Activity.RESULT_CANCELED){
+		    switch (requestCode) {
+		    case SET_PASS_RESULT:
+		   		mOwner.finish();
+		        break;
+		    }
+		}
+		else {
+			Log.w("!!!", "Unknown result code: "+resultCode);
+		}
     }
-    
+    				
 	public void listenerEvent(IMEvent event) throws Exception {
-		Log.d("!!!", "listenerEvent: "+event.getTyp());
+		
+		TTypEvent typ = event.getTyp();
+		Log.d("!!!", "listenerEvent: "+typ);
+		
+		switch (typ) {
+			case ERsaKeyPairGenerateStart:
+				mOwner.showDialog(IDD_GENERATE);
+				Log.d("!!!", "showDialog: "+IDD_GENERATE);
+				break;
+			case ERsaKeyPairGenerated:
+				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+				break;
+			case ERsaKeyPairGenerateError:
+				IMEventErr evErr = (IMEventErr)event;
+				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+				ErrorDisplayer.displayError(mOwner, evErr.getErr());
+				break;
+		}
 		
 		if (mOwner instanceof IMListener) {
 			((IMListener) mOwner).listenerEvent(event);
 		}
+	}
+	
+	public Dialog onCreateDialog(int id) {
+		Log.d("!!!", "Helper onCreateDialog: : "+id);
+		Dialog dlg = null;
+		
+		switch (id) {
+		case IDD_GENERATE:
+			if (mDlg!=null) 
+				mOwner.dismissDialog(IDD_GENERATE);
+			mDlg = new ProgressDialog(mOwner);
+			mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			mDlg.setCancelable(false);
+			mDlg.setMessage(mOwner.getResources().getString(R.string.rsa_generate));
+			dlg = mDlg;
+			break;
+		}
+		
+		Log.d("!!!", "dlg created: "+dlg);
+		return dlg;
 	}
 }

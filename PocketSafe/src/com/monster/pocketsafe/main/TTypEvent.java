@@ -15,7 +15,11 @@ public enum TTypEvent
     ESmsDelivered(8), 
     ESmsDeliverError(9), 
     ESmsDelMany(10), 
-    ESmsDeleted(11);
+    ESmsDeleted(11), 
+    ERsaKeyPairGenerateStart(12),
+    ERsaKeyPairGenerated(13),
+    ERsaKeyPairGenerateError(14)
+    ;
  
     private final int mValue;
  

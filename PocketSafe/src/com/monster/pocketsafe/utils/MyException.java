@@ -47,7 +47,11 @@ public class MyException extends Exception {
 		ERsaErrDecrypt(36), 
 		ERsaNotReady(37), 
 		EAesErrEncrypt(38),
-		EAesErrDecrypt(39);
+		EAesErrDecrypt(39), 
+		EPassNotMatch(40), 
+		EPassEmpty(41), 
+		EPassInvalid(42)
+		;
 		
 	    private final int mValue;
 	    

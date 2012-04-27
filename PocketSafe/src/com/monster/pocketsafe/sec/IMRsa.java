@@ -12,6 +12,8 @@ public interface IMRsa {
 	public String getPublicKey() throws MyException;
 	public void setPublicKey(String _key) throws MyException;
 	
+	public void clearPrivateKey();
+	
 	public void startGenerateKeyPair() throws MyException;
 	
 	public byte[] EncryptBuffer(byte[] _data) throws MyException;

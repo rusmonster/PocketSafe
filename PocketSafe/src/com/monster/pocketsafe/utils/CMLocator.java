@@ -22,12 +22,14 @@ import com.monster.pocketsafe.main.CMEvent;
 import com.monster.pocketsafe.main.CMEventErr;
 import com.monster.pocketsafe.main.CMEventSimpleID;
 import com.monster.pocketsafe.main.CMMain;
+import com.monster.pocketsafe.main.CMPassHolder;
 import com.monster.pocketsafe.main.IMDbWriterInternal;
 import com.monster.pocketsafe.main.IMDispatcherSender;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.main.IMMain;
+import com.monster.pocketsafe.main.IMPassHolder;
 import com.monster.pocketsafe.main.notificator.CMSmsNotificator;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
 import com.monster.pocketsafe.sec.CMAes;
@@ -115,6 +117,10 @@ public class CMLocator implements IMLocator {
 
 	public IMAes createAes() {
 		return new CMAes(this);
+	}
+
+	public IMPassHolder createPassHolder() {
+		return new CMPassHolder(this);
 	}
 
 

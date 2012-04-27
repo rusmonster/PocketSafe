@@ -13,7 +13,7 @@
 
     <application
         android:icon="@drawable/contact"
-        android:label="@string/title_about" >
+        android:label="@string/app_name" >
         <provider
             android:name=".dbengine.provider.CMDbProvider"
             android:authorities="com.monster.pocketsafe.dbengine.provider.cmdbprovider" />
@@ -32,13 +32,11 @@
 			</intent-filter>
 		</receiver>
 		<service android:name=".safeservice.CMSafeService" />
-		<activity android:name=".SmsViewerActivity" 
-		    android:label="@string/app_name" 
-		    ></activity>
-		<activity android:name=".SmsNewActivity" android:label="@string/sms_new"></activity>
+		<activity android:name=".SmsViewerActivity"></activity>
+		<activity android:name=".SmsNewActivity" 	android:label="@string/sms_new"></activity>
 		<activity android:name=".AboutActivity"></activity>
 		<activity android:name=".OptionsActivity"></activity>
-		<activity android:name=".SetPassActivity"></activity>
+		<activity android:name=".SetPassActivity"	android:label="@string/set_pass" ></activity>
     </application>
 
 </manifest>

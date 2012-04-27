@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 public class ErrorDisplayer {
@@ -12,9 +13,14 @@ public class ErrorDisplayer {
 		Log.e("!!!", "ERROR for display: "+e);
 		return "Error: "+e;
 	}
+	
 	public static void displayError(Context context, int err) {
 		
 		String errstr = getErrStr(err);
 		Toast.makeText(context, errstr, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static void displayError(Context context, MyException e) {
+		displayError(context, e.getId().getValue());
 	}
 }

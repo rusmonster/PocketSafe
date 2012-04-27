@@ -16,5 +16,6 @@ public interface IMMain {
 	void SendSms(String phone, String text) throws MyException;
 	void handleSmsRecieved(int smsId);
 	void Close();
+	void changePass(String oldPass, String newPass) throws MyException;
 
 }

@@ -4,9 +4,11 @@ import com.monster.pocketsafe.main.IMListener;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.utils.MyException;
 
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public abstract class CMBaseListActivity extends ListActivity implements IMBaseActivity, IMHelperBaseActivityObserver, IMListener {
 	
@@ -56,11 +58,17 @@ public abstract class CMBaseListActivity extends ListActivity implements IMBaseA
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		mHelper.onActivityResult(requestCode, requestCode, data);
+		mHelper.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	public IMMain getMain() throws MyException {
 		return mHelper.getMain();
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Log.d("!!!", "onCreateDialog: : "+this);
+		return mHelper.onCreateDialog(id);
 	}
 }

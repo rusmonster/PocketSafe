@@ -106,6 +106,9 @@ public class CMRsa implements IMRsa {
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
+		if (_key==null)
+			throw new MyException(TTypMyException.ERsaInvalidKeyFormat);
+		
 		String[] strs = _key.split(" ");
 		
 		if (strs.length != 2)
@@ -219,6 +222,10 @@ public class CMRsa implements IMRsa {
 			Log.w("!!!", "DecryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrDecrypt);
 		}
+	}
+
+	public void clearPrivateKey() {
+		mPrivateExp = null;
 	}
 
 }

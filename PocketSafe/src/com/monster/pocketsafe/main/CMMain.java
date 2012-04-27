@@ -7,19 +7,24 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.monster.pocketsafe.dbengine.IMDbEngine;
+import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.monster.pocketsafe.dbengine.IMDbReader;
+import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
+import com.monster.pocketsafe.sec.IMAes;
+import com.monster.pocketsafe.sec.IMRsa;
+import com.monster.pocketsafe.sec.IMRsaObserver;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSenderObserver;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
-public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
+public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObserver {
 	
 	private Context mContext;
 	private IMLocator mLocator;
@@ -29,6 +34,9 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 	private IMSmsSender mSmsSender;
 	private IMSmsNotificator mSmsNotificator;
 	private Handler mHandler;
+	private IMAes mAes;
+	private IMRsa mRsa;
+	private IMPassHolder mPassHolder;
 	
 	private Runnable mRunUpdateNotificator = new Runnable() {
 		public void run() {
@@ -50,6 +58,12 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 		
 		mSmsNotificator = mLocator.createSmsNotificator();
 		mHandler = new Handler();
+		
+		mAes = mLocator.createAes();
+		mRsa = mLocator.createRsa();
+		mRsa.setObserver(this);
+		
+		mPassHolder = mLocator.createPassHolder();
     }
 
 	public void Open(Context context) throws MyException {
@@ -64,6 +78,10 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 		mSmsNotificator.Init(mContext /*getApplicationContext(); */);
 		
 		mDispatcher.addListener(this);
+		
+		IMSetting set = mLocator.createSetting();
+		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
+		mRsa.setPublicKey(set.getStrVal());
 	}
 	
 	public IMDbReader DbReader() {
@@ -227,5 +245,61 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener {
 			break;
 		}
 		
+	}
+
+	public void changePass(String oldPass, String newPass) throws MyException {
+		
+		IMSetting set = mLocator.createSetting();
+		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
+		String pub = set.getStrVal();
+		
+		if (pub.length()>0) {
+			mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPriv);
+			String priv = set.getStrVal();
+			
+			priv = mAes.decrypt(oldPass, priv);
+			priv = mAes.encrypt(newPass, priv);
+			
+			set.setStrVal(priv);
+			mDbEngine.TableSetting().Update(set);
+			mPassHolder.setPass(newPass);
+		}
+		else {
+			mRsa.startGenerateKeyPair();
+			mPassHolder.setPass(newPass);
+			IMEvent ev = mLocator.createEvent();
+			ev.setTyp(TTypEvent.ERsaKeyPairGenerateStart);
+			mDispatcher.pushEvent(ev);
+			
+		}
+	}
+
+	public void RsaKeyPairGenerated(IMRsa _sender) throws Exception {
+		String pub = mRsa.getPublicKey();
+		String priv = mRsa.getPrivateKey();
+		
+		priv = mAes.encrypt(mPassHolder.getPass(), priv);
+		
+		IMSetting set = mLocator.createSetting();
+		
+		set.setId(TTypSetting.ERsaPriv.getValue());
+		set.setStrVal(priv);
+		mDbEngine.TableSetting().Update(set);
+		
+		set.setId(TTypSetting.ERsaPub.getValue());
+		set.setStrVal(pub);
+		mDbEngine.TableSetting().Update(set);
+		
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.ERsaKeyPairGenerated);
+		mDispatcher.pushEvent(ev);
+		
+	}
+
+	public void RsaKeyPairGenerateError(IMRsa _sender, int _err) throws Exception {
+		IMEventErr ev = mLocator.createEventErr();
+		ev.setTyp(TTypEvent.ERsaKeyPairGenerateError);
+		ev.setErr(_err);
+		mDispatcher.pushEvent(ev);
 	}
 }
