@@ -25,7 +25,6 @@ public class CMRsa implements IMRsa {
 	
 	private BigInteger mModulus;
 	private BigInteger mPublicExp;
-	private BigInteger mPrivateExp;
 	
 	private Handler mHandler;
 	
@@ -42,46 +41,6 @@ public class CMRsa implements IMRsa {
 	
 	public void setObserver(IMRsaObserver _observer) {
 		mObserver = _observer;
-	}
-
-	public String getPrivateKey() throws MyException {
-		
-		if (mState!=TRsaState.EIdle)
-			throw new MyException(TTypMyException.ERsaNotReady);
-			
-		
-		IMBase64 base64 = mLocator.createBase64();
-		
-		byte[] modul = mModulus.toByteArray();
-		String m = new String( base64.encode(modul) );
-		
-		byte[] exp = mPrivateExp.toByteArray();
-		String e = new String( base64.encode(exp) );
-		
-		String res = new String(m+" "+e);
-		return res;
-	}
-
-	public void setPrivateKey(String _key) throws MyException {		
-	
-		if (mState!=TRsaState.EIdle)
-			throw new MyException(TTypMyException.ERsaNotReady);
-		
-		String[] strs = _key.split(" ");
-		
-		if (strs.length != 2)
-			throw new MyException(TTypMyException.ERsaInvalidKeyFormat);
-		
-		String m = strs[0];
-		String e = strs[1];
-		
-		IMBase64 base64 = mLocator.createBase64();
-		
-		byte[] modul = base64.decode(m.getBytes());
-		byte[] exp = base64.decode(e.getBytes());
-		
-		mModulus = new BigInteger(modul);
-		mPrivateExp = new BigInteger(exp);
 	}
 
 	public String getPublicKey() throws MyException {
@@ -114,16 +73,24 @@ public class CMRsa implements IMRsa {
 		if (strs.length != 2)
 			throw new MyException(TTypMyException.ERsaInvalidKeyFormat);
 		
-		String m = strs[0];
-		String e = strs[1];
+		try {
+			String m = strs[0];
+			String e = strs[1];
+			
+			IMBase64 base64 = mLocator.createBase64();
+			
+			byte[] modul = base64.decode(m.getBytes());
+			byte[] exp = base64.decode(e.getBytes());
+			
+			mModulus = new BigInteger(modul);
+			mPublicExp = new BigInteger(exp);
+			
+		}
+		catch (Exception e) {
+			Log.e("!!!", "Error in setPublicKey: "+e.getMessage()+"("+e.toString()+")");
+			throw new MyException(TTypMyException.ERsaInvalidKeyFormat);	
+		}
 		
-		IMBase64 base64 = mLocator.createBase64();
-		
-		byte[] modul = base64.decode(m.getBytes());
-		byte[] exp = base64.decode(e.getBytes());
-		
-		mModulus = new BigInteger(modul);
-		mPublicExp = new BigInteger(exp);
 	}
 	
 	private Runnable mRunGenerate = new Runnable() {
@@ -140,25 +107,25 @@ public class CMRsa implements IMRsa {
 		        
 		        mModulus = pub.getModulus();
 		        mPublicExp = pub.getPublicExponent();
-		        mPrivateExp = priv.getPrivateExponent();
+		        final BigInteger privateExp = priv.getPrivateExponent();
 		        
 		        mHandler.post(new Runnable() {
-					public void run() { GenerateFinish(TTypMyException.ENoError.getValue()); }
+					public void run() { GenerateFinish(TTypMyException.ENoError.getValue(), privateExp); }
 				});
 			} catch (Exception e) {
 		        mHandler.post(new Runnable() {
-					public void run() {	GenerateFinish(TTypMyException.ERsaErrGeneratingKeyPair.getValue()); }
+					public void run() {	GenerateFinish(TTypMyException.ERsaErrGeneratingKeyPair.getValue(), null); }
 				});
 			}
 		}
 	};
 	
-	private void GenerateFinish(int _err) {
+	private void GenerateFinish(int _err, BigInteger _key) {
 		mState = TRsaState.EIdle;
 		
 		try {
 			if (_err==0)
-				mObserver.RsaKeyPairGenerated(this);
+				mObserver.RsaKeyPairGenerated(this, _key);
 			else
 				mObserver.RsaKeyPairGenerateError(this, _err);
 		} catch(Exception e) {
@@ -189,12 +156,12 @@ public class CMRsa implements IMRsa {
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
 		try {
-			
 			KeyFactory kf = KeyFactory.getInstance("RSA");
 			PublicKey publicKey = kf.generatePublic( new RSAPublicKeySpec(mModulus, mPublicExp) );
 			
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			
 		    byte[] cipherData = cipher.doFinal(_data);
 		    return cipherData;
 		    
@@ -203,7 +170,7 @@ public class CMRsa implements IMRsa {
 		}
 	}
 
-	public byte[] DecryptBuffer(byte[] _data) throws MyException {
+	public byte[] DecryptBuffer(BigInteger _key, byte[] _data) throws MyException {
 		
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
@@ -211,7 +178,7 @@ public class CMRsa implements IMRsa {
 		try {
 			
 			KeyFactory kf = KeyFactory.getInstance("RSA");
-			PrivateKey privateKey = kf.generatePrivate( new RSAPrivateKeySpec(mModulus, mPrivateExp) );
+			PrivateKey privateKey = kf.generatePrivate( new RSAPrivateKeySpec(mModulus, _key) );
 			
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -222,10 +189,6 @@ public class CMRsa implements IMRsa {
 			Log.w("!!!", "DecryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrDecrypt);
 		}
-	}
-
-	public void clearPrivateKey() {
-		mPrivateExp = null;
 	}
 
 }

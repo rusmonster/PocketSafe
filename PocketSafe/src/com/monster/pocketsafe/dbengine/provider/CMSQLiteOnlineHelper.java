@@ -86,7 +86,7 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_DIRECTION + " INTEGER," +
 				SMS_FOLDER + "  INTEGER," +
 				SMS_ISNEW + " INTEGER," +
-				SMS_PHONE + " VARCHAR(50)," +
+				SMS_PHONE + " TEXT," +
 				SMS_TEXT + " TEXT," +
 				SMS_DATE + " DATETIME)");
 		

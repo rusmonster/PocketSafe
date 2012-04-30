@@ -1,5 +1,8 @@
 package com.monster.pocketsafe.testlong.rsa;
 
+import java.math.BigInteger;
+import java.util.Random;
+
 import android.util.Log;
 
 import com.monster.pocketsafe.sec.CMRsa;
@@ -15,13 +18,13 @@ import junit.framework.TestCase;
 public class CMRsaTestLong extends TestCase {
 
 	private CMRsa mRsa;
-	private boolean mKeyGenerated;
+	BigInteger mKey;
 		
 	private IMRsaObserver mObserver = new IMRsaObserver() {
 		
 		@Override
-		public void RsaKeyPairGenerated(IMRsa _sender) throws Exception {
-			mKeyGenerated=true;
+		public void RsaKeyPairGenerated(IMRsa _sender, BigInteger _key) throws Exception {
+			mKey = _key;
 			Log.i("!!!", "RsaKeyPairGenerated");
 		}
 		
@@ -33,7 +36,7 @@ public class CMRsaTestLong extends TestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		mKeyGenerated=false;
+		mKey=null;
 		mRsa = new CMRsa(new CMLocator());
 		mRsa.setObserver(mObserver);
 	}
@@ -54,46 +57,16 @@ public class CMRsaTestLong extends TestCase {
 		th.start();
 		
 		int k=0;
-		while (!mKeyGenerated && k++<30)
+		while (mKey==null && k++<30)
 			Thread.sleep(1000);
 		th.stopThread();
 		
-		if (!mKeyGenerated)
-			fail("Generate failed");
-		
-		String priv = mRsa.getPrivateKey();
 		String pub = mRsa.getPublicKey();
 		
-		assertNotNull(priv);
+		assertNotNull(mKey);
 		assertNotNull(pub);
 		
-		assertTrue(priv.length()>0);
 		assertTrue(pub.length()>0);
-	}
-	
-	public void testSetPublicKey() throws Exception {
-		testGenerateKeyPair();
-		
-		String priv = mRsa.getPrivateKey();
-		Log.i("!!!", "priv="+priv);
-		
-		mRsa.setPublicKey(priv);
-		String pub = mRsa.getPublicKey();
-		Log.i("!!!", "pub="+pub);
-		
-		assertEquals(priv, pub);
-	}
-	
-
-	public void testSetPrivateKey() throws Exception {
-		testGenerateKeyPair();
-		
-		String pub = mRsa.getPublicKey();
-		
-		mRsa.setPrivateKey(pub);
-		String priv = mRsa.getPrivateKey();
-		
-		assertEquals(pub, priv);
 	}
 	
 	public void testEncDecSuccess() throws Exception {
@@ -109,7 +82,7 @@ public class CMRsaTestLong extends TestCase {
 		Log.i("!!!", "encrypt finish");
 		
 		Log.i("!!!", "decrypt start");
-		byte[] dec = mRsa.DecryptBuffer(enc);
+		byte[] dec = mRsa.DecryptBuffer(mKey, enc);
 		Log.i("!!!", "decrypt finish");
 		
 		String newtxt = new String(dec);
@@ -124,8 +97,6 @@ public class CMRsaTestLong extends TestCase {
 		testGenerateKeyPair();
 		Log.i("!!!", "generate finish");
 		
-		mRsa.setPrivateKey(mRsa.getPublicKey());
-		
 		Log.i("!!!", "encript start");
 		byte[] enc = mRsa.EncryptBuffer(data);
 		Log.i("!!!", "encrypt finish");
@@ -135,7 +106,8 @@ public class CMRsaTestLong extends TestCase {
 		
 		Log.i("!!!", "decrypt start");
 		try {
-			dec = mRsa.DecryptBuffer(enc);
+			BigInteger invalidKey = new BigInteger(128, new Random());
+			dec = mRsa.DecryptBuffer(invalidKey, enc);
 		} catch(MyException e) {
 			exp=e;
 		}

@@ -17,5 +17,8 @@ public interface IMMain {
 	void handleSmsRecieved(int smsId);
 	void Close();
 	void changePass(String oldPass, String newPass) throws MyException;
+	void enterPass(String _pass) throws MyException;
+	String decryptString(String data) throws MyException;
+	boolean isPassValid();
 
 }

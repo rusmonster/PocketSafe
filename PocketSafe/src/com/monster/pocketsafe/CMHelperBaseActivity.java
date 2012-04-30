@@ -26,6 +26,7 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 public class CMHelperBaseActivity implements IMListener {
 	
 	private static final int SET_PASS_RESULT = 1003;
+	private static final int ENTER_PASS_RESULT = 1004;
 
 	private static final int IDD_GENERATE = 50;
 	
@@ -34,6 +35,7 @@ public class CMHelperBaseActivity implements IMListener {
 	private IMMain mMain;
 	
 	private String mSettedPass;
+	private String mEnteredPass;
 	
 	private ProgressDialog mDlg;
 	
@@ -63,12 +65,12 @@ public class CMHelperBaseActivity implements IMListener {
 		return mMain;
 	}
     
-	private void checkPassSet() throws MyException {
+	private boolean checkPassSet() throws MyException {
 		IMSetting set = mLocator.createSetting();
 		getMain().DbReader().QuerySetting().getById(set, TTypSetting.ERsaPub);
 		
 		if (set.getStrVal().length()>0)
-			return;
+			return true;
 		
 		if (mSettedPass!=null) {
 			String pass = mSettedPass;
@@ -78,21 +80,56 @@ public class CMHelperBaseActivity implements IMListener {
 				getMain().changePass(null, pass);
 			} catch (MyException e) {
 				Log.e("!!!", "Error in getMain().changePass:"+e.getId());
-				mOwner.finish();
+				
+				ErrorDisplayer.displayError(mOwner, e.getId().getValue());
+				
+				Intent i = new Intent(mOwner, SetPassActivity.class);
+				i.putExtra(SetPassActivity.MODE, SetPassActivity.TMode.ESetPass);
+				mOwner.startActivityForResult(i, SET_PASS_RESULT);
+				return false;
 			}
-			return;
+			return false;
 		}
-		
-		mOwner.startActivityForResult(new Intent(mOwner, SetPassActivity.class), SET_PASS_RESULT);
+		Intent i = new Intent(mOwner, SetPassActivity.class);
+		i.putExtra(SetPassActivity.MODE, SetPassActivity.TMode.ESetPass);
+		mOwner.startActivityForResult(i, SET_PASS_RESULT);
+		return false;
 	}
 	
-	private void checkPassActual() {
+	private boolean checkPassActual() throws MyException {
+		if (getMain().isPassValid())
+			return true;
 		
+		if (mEnteredPass!=null) {
+			String pass = mEnteredPass;
+			mEnteredPass=null;
+			
+			try {
+				getMain().enterPass(pass);
+			} catch (MyException e) {
+				Log.e("!!!", "Error in getMain().enterPass:"+e.getId());
+				
+				ErrorDisplayer.displayError(mOwner, e.getId().getValue());
+				
+				Intent i = new Intent(mOwner, EnterPassActivity.class);
+				mOwner.startActivityForResult(i, ENTER_PASS_RESULT);
+				return false;
+			}
+			
+			return true;
+		}
+		
+		Intent i = new Intent(mOwner, EnterPassActivity.class);
+		mOwner.startActivityForResult(i, ENTER_PASS_RESULT);
+		return false;			
 	}
 	
 	private void internalMainBind() throws MyException {
-		checkPassSet();
-		checkPassActual();
+		if (!checkPassSet()) 
+			return;
+		
+		if (!checkPassActual())
+			return;
 	}
 	
 	protected void onMainBind() throws MyException {
@@ -158,11 +195,15 @@ public class CMHelperBaseActivity implements IMListener {
 		    case SET_PASS_RESULT:
 		    	mSettedPass = data.getStringExtra(SetPassActivity.PASS);
 		        break;
+		    case ENTER_PASS_RESULT:
+		    	mEnteredPass = data.getStringExtra(EnterPassActivity.PASS);
+		    	break;
 		    }
 		} 
 		else if (resultCode == Activity.RESULT_CANCELED){
 		    switch (requestCode) {
 		    case SET_PASS_RESULT:
+		    case ENTER_PASS_RESULT:
 		   		mOwner.finish();
 		        break;
 		    }

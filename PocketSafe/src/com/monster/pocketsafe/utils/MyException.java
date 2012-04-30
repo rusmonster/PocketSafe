@@ -50,7 +50,11 @@ public class MyException extends Exception {
 		EAesErrDecrypt(39), 
 		EPassNotMatch(40), 
 		EPassEmpty(41), 
-		EPassInvalid(42)
+		EPassInvalid(42), 
+		EPassExpired(43), 
+		EErrStringEncode(44), 
+		EErrSha256(45), 
+		EErrSha256NullArgument(46)
 		;
 		
 	    private final int mValue;

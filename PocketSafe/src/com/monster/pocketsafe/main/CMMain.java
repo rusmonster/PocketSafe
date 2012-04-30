@@ -1,5 +1,6 @@
 package com.monster.pocketsafe.main;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 import android.content.Context;
@@ -16,6 +17,7 @@ import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
 import com.monster.pocketsafe.sec.IMAes;
+import com.monster.pocketsafe.sec.IMBase64;
 import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sec.IMRsaObserver;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
@@ -34,7 +36,6 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	private IMSmsSender mSmsSender;
 	private IMSmsNotificator mSmsNotificator;
 	private Handler mHandler;
-	private IMAes mAes;
 	private IMRsa mRsa;
 	private IMPassHolder mPassHolder;
 	
@@ -59,7 +60,6 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mSmsNotificator = mLocator.createSmsNotificator();
 		mHandler = new Handler();
 		
-		mAes = mLocator.createAes();
 		mRsa = mLocator.createRsa();
 		mRsa.setObserver(this);
 		
@@ -80,8 +80,20 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mDispatcher.addListener(this);
 		
 		IMSetting set = mLocator.createSetting();
+		
+		mDbEngine.TableSetting().getById(set, TTypSetting.EPassTimout);
+		long tim = set.getIntVal();
+		mPassHolder.setInterval(tim*1000);
+		
 		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
-		mRsa.setPublicKey(set.getStrVal());
+		
+		String pub = set.getStrVal();
+		if (pub.length()>0) {
+			mRsa.setPublicKey(pub);
+			
+			mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPriv);
+			mPassHolder.setKey(set.getStrVal());
+		}
 	}
 	
 	public IMDbReader DbReader() {
@@ -106,8 +118,20 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			throw new MyException(TTypMyException.ESmsErrSendNoText);
 		
 		IMSms sms = mLocator.createSms();
-		sms.setPhone(phone);
-		sms.setText(text);
+		
+		byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes());
+		byte[] cText = mRsa.EncryptBuffer(text.getBytes());
+		
+		try {
+			String encoding = IMDbEngine.ENCODING;
+			sms.setPhone(new String(cPhone, encoding));
+			sms.setText(new String(cText, encoding));
+		} catch (MyException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new MyException(TTypMyException.EErrStringEncode);
+		}
+		
 		sms.setDate( new Date() );
 		sms.setDirection( TTypDirection.EOutgoing );
 		sms.setFolder( TTypFolder.EOutbox );
@@ -116,7 +140,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		int id = mDbEngine.TableSms().Insert(sms);
 		sms.setId(id);
 		
-		mSmsSender.sendSms(sms.getPhone(), sms.getText(), sms.getId());
+		mSmsSender.sendSms(phone, text, sms.getId());
 		
 		IMEventSimpleID ev = mLocator.createEventSimpleID();
 		ev.setTyp(TTypEvent.ESmsSendStart);
@@ -252,21 +276,24 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		IMSetting set = mLocator.createSetting();
 		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
 		String pub = set.getStrVal();
+
+		mPassHolder.setPass(newPass);
 		
 		if (pub.length()>0) {
 			mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPriv);
 			String priv = set.getStrVal();
 			
-			priv = mAes.decrypt(oldPass, priv);
-			priv = mAes.encrypt(newPass, priv);
+			IMAes aes = mLocator.createAes();
+			priv = aes.decrypt(oldPass, priv);
+			priv = aes.encrypt(newPass, priv);
 			
 			set.setStrVal(priv);
 			mDbEngine.TableSetting().Update(set);
-			mPassHolder.setPass(newPass);
+			
+			mPassHolder.setKey(priv);
 		}
 		else {
 			mRsa.startGenerateKeyPair();
-			mPassHolder.setPass(newPass);
 			IMEvent ev = mLocator.createEvent();
 			ev.setTyp(TTypEvent.ERsaKeyPairGenerateStart);
 			mDispatcher.pushEvent(ev);
@@ -274,11 +301,15 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		}
 	}
 
-	public void RsaKeyPairGenerated(IMRsa _sender) throws Exception {
+	public void RsaKeyPairGenerated(IMRsa _sender, BigInteger _key) throws Exception {
 		String pub = mRsa.getPublicKey();
-		String priv = mRsa.getPrivateKey();
 		
-		priv = mAes.encrypt(mPassHolder.getPass(), priv);
+		IMBase64 b64 = mLocator.createBase64();
+		String priv = new String( b64.encode(_key.toByteArray()) );
+		
+		IMAes aes = mLocator.createAes();
+		priv = aes.encrypt(mPassHolder.getPass(), priv);
+		mPassHolder.setKey(priv);
 		
 		IMSetting set = mLocator.createSetting();
 		
@@ -301,5 +332,27 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		ev.setTyp(TTypEvent.ERsaKeyPairGenerateError);
 		ev.setErr(_err);
 		mDispatcher.pushEvent(ev);
+	}
+
+	public void enterPass(String _pass) throws MyException {
+		mPassHolder.setPass(_pass);
+	}
+
+	public String decryptString(String data) throws MyException {
+		byte[] buf=null;
+		try {
+			buf = data.getBytes(IMDbEngine.ENCODING);
+		} catch (Exception e) {
+			//never hapens
+			Log.e("!!!", "Error in getBytes: "+e.getMessage());
+			throw new MyException(TTypMyException.EErrStringEncode);
+		}
+		byte[] resBuf = mRsa.DecryptBuffer(mPassHolder.getKey(), buf);
+		String res = new String(resBuf);
+		return res;
+	}
+
+	public boolean isPassValid() {
+		return mPassHolder.isPassValid();
 	}
 }

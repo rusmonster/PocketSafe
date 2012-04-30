@@ -10,36 +10,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-public class SetPassActivity extends Activity {
+public class EnterPassActivity extends Activity {
 
-	public static final String MODE = "com.monster.pocketsafe.SetPassActivity.MODE";
-	public final static String PASS = "com.monster.pocketsafe.SetPassActivity.PASS";
+public final static String PASS = "com.monster.pocketsafe.EnterPassActivity.PASS";
 	
-	public enum TMode {
-		ESetPass,
-		EChangePass
-	};
-	
-	private EditText mPass1;
-	private EditText mPass2;
+	private EditText mPass;
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.setpass);
+	    setContentView(R.layout.enterpass);
 	    
-	    mPass1 = (EditText) findViewById(R.id.edPass1);
-	    mPass2 = (EditText) findViewById(R.id.edPass2);
+	    mPass = (EditText) findViewById(R.id.edPass);
 	}
 
 	public void onOkClick(View v) {
 		try {
-			String pass1 = mPass1.getText().toString();
-			String pass2 = mPass2.getText().toString();
-			
-			if (pass1.length()!=pass2.length() || !pass1.equals(pass2))
-				throw new MyException(TTypMyException.EPassNotMatch);
+			String pass1 = mPass.getText().toString();
 			
 			if (pass1.length()==0)
 				throw new MyException(TTypMyException.EPassEmpty);
@@ -60,3 +48,4 @@ public class SetPassActivity extends Activity {
         finish();	
 	}
 }
+

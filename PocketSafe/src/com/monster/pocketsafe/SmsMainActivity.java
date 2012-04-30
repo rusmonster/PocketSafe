@@ -36,7 +36,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	private ArrayList<IMSmsGroup> mGroups = new ArrayList<IMSmsGroup>();
 	private final android.os.Handler mHandler = new android.os.Handler();
 	
-	private void GotoGroup(int idx) {
+	private void GotoGroup(int idx) throws MyException {
 		
 		String phone = mGroups.get(idx).getPhone();
 		
@@ -50,7 +50,11 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		super.onListItemClick(l, v, position, id);
 		Log.d("!!!", "List item clicked");
 		
-		GotoGroup(position);
+		try {
+			GotoGroup(position);
+		} catch (MyException e) {
+			ErrorDisplayer.displayError(this, e);
+		}
 
 	}
 	
@@ -76,7 +80,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		for (int i=0; i<mGroups.size(); i++) {
 			IMSmsGroup gr = mGroups.get(i);
 			
-			String name = gr.getPhone();
+			String name = getMain().decryptString(gr.getPhone());
 			IMContact cont = getMain().DbReader().QueryContact().getByPhone(gr.getPhone());
 			if (cont != null)
 				name = cont.getName();
@@ -218,16 +222,20 @@ public class SmsMainActivity extends CMBaseListActivity  {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		int idx = info.position;
-		switch(item.getItemId()) {
-		case R.id.mnuMainView:
-			GotoGroup(idx);
-			break;
-		case R.id.mnuMainDelThread:
-			mThreadForDelId = idx;
-			showDialog(IDD_DELTHREAD);
-			break;
+		try {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+			int idx = info.position;
+			switch(item.getItemId()) {
+			case R.id.mnuMainView:
+				GotoGroup(idx);
+				break;
+			case R.id.mnuMainDelThread:
+				mThreadForDelId = idx;
+				showDialog(IDD_DELTHREAD);
+				break;
+			}
+		}catch (MyException e) {
+			ErrorDisplayer.displayError(this, e);
 		}
 		return super.onContextItemSelected(item);
 	}

@@ -35,9 +35,11 @@ import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
 import com.monster.pocketsafe.sec.CMAes;
 import com.monster.pocketsafe.sec.CMBase64;
 import com.monster.pocketsafe.sec.CMRsa;
+import com.monster.pocketsafe.sec.CMSha256;
 import com.monster.pocketsafe.sec.IMAes;
 import com.monster.pocketsafe.sec.IMBase64;
 import com.monster.pocketsafe.sec.IMRsa;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.sms.sender.CMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 
@@ -121,6 +123,14 @@ public class CMLocator implements IMLocator {
 
 	public IMPassHolder createPassHolder() {
 		return new CMPassHolder(this);
+	}
+
+	public IMTimer createTimer() {
+		return new CMTimer();
+	}
+
+	public IMSha256 createSha256() {
+		return new CMSha256();
 	}
 
 

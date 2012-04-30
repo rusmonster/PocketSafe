@@ -68,15 +68,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private void createListAdapter() throws MyException {
 		if (mPhone == null || mPhone.length() == 0) return;
 		
-		IMContact cont = getMain().DbReader().QueryContact().getByPhone(mPhone);
-		if (cont != null)
-			mName = cont.getName();
-		else 
-			mName = mPhone;
-		
-		setTitle(mName);
-		
-		
 		getMain().DbReader().QuerySms().QueryByPhoneOrderByDat(mSmsList, mPhone, 0, TStruct.PAGE_SIZE);
 		if (mSmsList.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSms> sms_list = new ArrayList<IMSms>();
@@ -92,11 +83,28 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		
 		for (int i=0; i<mSmsList.size(); i++) {
 			IMSms sms = mSmsList.get(i);
+			
 			if (sms.getIsNew() >= TTypIsNew.ENew) {
 				sms.setIsNew(TTypIsNew.EOld);
 				getMain().DbWriter().SmsUpdate(sms);
 			}
+			
+			String phone = getMain().decryptString(sms.getPhone());
+			sms.setPhone( phone );
+			
+			String text = getMain().decryptString(sms.getText());
+			sms.setText(text);
 		}
+		
+		mPhone = getMain().decryptString(mPhone);
+		
+		IMContact cont = getMain().DbReader().QueryContact().getByPhone(mPhone);
+		if (cont != null)
+			mName = cont.getName();
+		else 
+			mName = mPhone;
+		
+		setTitle(mName);
 		
         SmsAdapter adapter = new SmsAdapter(this, mSmsList, mName);
         setListAdapter(adapter);
@@ -155,7 +163,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			try {
 				createListAdapter();
 			} catch (MyException e) {
-				e.printStackTrace();
+				ErrorDisplayer.displayError(SmsViewerActivity.this, e);
 			}	
 		}
 	};

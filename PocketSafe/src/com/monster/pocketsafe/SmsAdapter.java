@@ -18,8 +18,6 @@ public class SmsAdapter extends BaseAdapter {
 	private final Context mContext;
 	private String mName;
 	private SimpleDateFormat mDateFormatFull = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	private View mEditor;
-	//private SimpleDateFormat mDateFormatTime = new SimpleDateFormat("HH:mm:ss");
 	
 	public SmsAdapter(Context context, List<IMSms> list, String nam) {
 		mContext = context;
@@ -53,6 +51,7 @@ public class SmsAdapter extends BaseAdapter {
 	    txt += ": "+sms.getText()+"\n"+mDateFormatFull.format(sms.getDate());
 	    
 	    tv.setText(txt);
-	    return tv;		}
+	    return tv;		
+	   }
 
 }

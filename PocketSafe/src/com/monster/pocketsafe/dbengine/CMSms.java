@@ -59,16 +59,12 @@ public class CMSms implements IMSms {
 	}
 
 	public void setPhone(String phone) throws MyException {
-		phone = phone.trim();
-		
-		if (phone.length()>50)
-			throw new MyException(TTypMyException.EPhoneTooLong);
 		/*
 		if (!phone.matches("^[+]{0,1}[0-9]{1,}$"))
 			throw new MyException(TTypMyException.EPhoneInvalid);
 		*/
 		
-		mPhone = phone;
+		mPhone = phone.trim();
 	}
 
 	public void setText(String Text) {
