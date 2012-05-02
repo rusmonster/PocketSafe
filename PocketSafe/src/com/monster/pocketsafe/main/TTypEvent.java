@@ -18,7 +18,9 @@ public enum TTypEvent
     ESmsDeleted(11), 
     ERsaKeyPairGenerateStart(12),
     ERsaKeyPairGenerated(13),
-    ERsaKeyPairGenerateError(14)
+    ERsaKeyPairGenerateError(14), 
+    EPassExpired(15), 
+    ESettingUpdated(16)
     ;
  
     private final int mValue;

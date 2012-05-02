@@ -20,5 +20,6 @@ public interface IMMain {
 	void enterPass(String _pass) throws MyException;
 	String decryptString(String data) throws MyException;
 	boolean isPassValid();
+	void lockNow();
 
 }

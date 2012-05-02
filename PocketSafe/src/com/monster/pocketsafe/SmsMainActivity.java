@@ -38,10 +38,10 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	
 	private void GotoGroup(int idx) throws MyException {
 		
-		String phone = mGroups.get(idx).getPhone();
+		String hash = mGroups.get(idx).getHash();
 		
         Intent intent = new Intent(this, SmsViewerActivity.class); 
-        intent.putExtra(SmsViewerActivity.PHONE, phone); 
+        intent.putExtra(SmsViewerActivity.HASH, hash); 
         startActivity(intent);	
 	}
 
@@ -62,14 +62,14 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		
 		Log.v("!!!", "createListAdapter()");
 		
-		getMain().DbReader().QuerySms().QueryGroupByPhoneOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
+		getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
 		
 		if (mGroups.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSmsGroup> gr_list = new ArrayList<IMSmsGroup>();
 			int k = TStruct.PAGE_SIZE;
 
 			do {
-				getMain().DbReader().QuerySms().QueryGroupByPhoneOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
+				getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
 				k+=TStruct.PAGE_SIZE;
 				for (int i=0; i<gr_list.size(); i++)
 					mGroups.add(gr_list.get(i));
@@ -156,11 +156,11 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	            switch (requestCode) {
 	            case NEW_SMS_RESULT:
 	            	
-	            	String phone = data.getStringExtra(SmsViewerActivity.PHONE);
+	            	String hash = data.getStringExtra(SmsViewerActivity.HASH);
 	            	
-	            	if (phone!=null && phone.length()>0) {
+	            	if (hash!=null && hash.length()>0) {
 		                Intent intent = new Intent(this, SmsViewerActivity.class); 
-		                intent.putExtra(SmsViewerActivity.PHONE, phone); 
+		                intent.putExtra(SmsViewerActivity.HASH, hash); 
 		                startActivity(intent);
 	            	}
 
@@ -256,7 +256,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDeleteByPhone(phone);
+					getMain().DbWriter().SmsDeleteByHash(phone);
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}

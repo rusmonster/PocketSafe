@@ -26,17 +26,14 @@
     
     <string name="copied">Text copyed to clipboard</string>
     
-    <string name="pref_pass">pass</string> 
-    <string name="pref_pass_title">Password</string> 
-    <string name="pref_pass_summary">change password</string> 
-    <string name="pref_passtimeout">passtimeout</string> 
-    <string name="pref_passtimeout_title">Password timeout</string> 
-    <string name="pref_passtimeout_summary">current timeout</string> 
-    <string name="pref_passtimeout_dialogTitle">Choose new timeout</string> 
-    <string name="enter_pass">Enter password:</string> 
+    <string name="enter_pass">Enter new password:</string> 
     <string name="repeat_pass">Repeat password:</string> 
     <string name="old_pass">Enter current password</string>
     <string name="set_pass">Password setup</string>
     <string name="rsa_generate">Generating keys...</string>
+    <string name="opt_changepass">Change password</string>
+    <string name="opt_passtimeout">Password timeout</string>
+    <string name="opt_locknow">Lock now</string>
+    <string name="pass_changed">Password changed succesfully</string>
 
 </resources>

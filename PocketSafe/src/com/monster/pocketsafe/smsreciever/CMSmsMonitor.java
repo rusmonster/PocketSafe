@@ -13,6 +13,7 @@ import com.monster.pocketsafe.main.TTypEvent;
 import com.monster.pocketsafe.main.TTypEventStrings;
 import com.monster.pocketsafe.safeservice.CMSafeService;
 import com.monster.pocketsafe.sec.IMRsa;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
 import android.content.BroadcastReceiver;
@@ -26,6 +27,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 	private static final IMLocator mLocator = new CMLocator();
 	private static final IMDbEngine mDbEngine = mLocator.createDbEngine();
 	private static final IMRsa mRsa = mLocator.createRsa();
+	private static final IMSha256 mSha = mLocator.createSha256();
 	
 	private boolean ProcessMessage(Context context, String phone, String text) throws Exception {
 		
@@ -45,6 +47,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 		sms.setFolder(TTypFolder.EInbox);
 		sms.setIsNew(TTypIsNew.EJustRecv);
 		sms.setPhone(new String(cPhone, IMDbEngine.ENCODING));
+		sms.setHash(mSha.getHash(phone));
 		sms.setText(new String(cText, IMDbEngine.ENCODING));
 		sms.setDate( new Date() );
 		

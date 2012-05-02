@@ -1,6 +1,8 @@
 package com.monster.pocketsafe.main;
 
 import com.monster.pocketsafe.dbengine.IMDbEngine;
+import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
@@ -41,8 +43,8 @@ public class CMDbWriter implements IMDbWriterInternal {
 		
 	}
 
-	public void SmsDeleteByPhone(String phone)  throws MyException  {
-		mDbEngine.TableSms().DeleteByPhone(phone);
+	public void SmsDeleteByHash(String hash)  throws MyException  {
+		mDbEngine.TableSms().DeleteByHash(hash);
 		
 		IMEvent ev = mLocator.createEvent();
 		ev.setTyp(TTypEvent.ESmsDelMany);
@@ -56,6 +58,20 @@ public class CMDbWriter implements IMDbWriterInternal {
 		ev.setTyp(TTypEvent.ESmsDeleted);
 		ev.setId(sms_id);
 		mDispatcher.pushEvent(ev);	
+	}
+
+	public void UpdateSetting(TTypSetting typ, String val) throws MyException {
+		IMSetting setting = mLocator.createSetting();
+		
+		setting.setId(typ.getValue());
+		setting.setStrVal(val);
+		
+		mDbEngine.TableSetting().Update(setting);
+		
+		IMEventSimpleID ev = mLocator.createEventSimpleID();
+		ev.setTyp(TTypEvent.ESettingUpdated);
+		ev.setId(typ.getValue());
+		mDispatcher.pushEvent(ev);			
 	}
 
 }

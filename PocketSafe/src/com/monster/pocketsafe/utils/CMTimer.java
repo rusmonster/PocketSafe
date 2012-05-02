@@ -3,6 +3,7 @@ package com.monster.pocketsafe.utils;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 import android.os.Handler;
+import android.util.Log;
 
 public class CMTimer implements IMTimer {
 
@@ -31,6 +32,7 @@ public class CMTimer implements IMTimer {
 			throw new MyException(TTypMyException.ETimerNotReady);
 		
 		mHandler.postDelayed(mRunner, ms);
+		Log.d("!!!", "Timer setted: "+ms);
 		
 	}
 

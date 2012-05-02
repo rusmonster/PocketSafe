@@ -24,12 +24,14 @@ public class CMDbTableSms implements IMDbTableSms {
         CMSQLiteOnlineHelper.SMS_DIRECTION,
         CMSQLiteOnlineHelper.SMS_FOLDER,
         CMSQLiteOnlineHelper.SMS_ISNEW,
+        CMSQLiteOnlineHelper.SMS_HASH,
         CMSQLiteOnlineHelper.SMS_PHONE,
         CMSQLiteOnlineHelper.SMS_TEXT,
         CMSQLiteOnlineHelper.SMS_DATE
     };
     
     private static final String[] mContentGroup = new String[] {
+    	CMSQLiteOnlineHelper.SMSGROUP_HASH,
     	CMSQLiteOnlineHelper.SMSGROUP_PHONE,
     	CMSQLiteOnlineHelper.SMSGROUP_COUNT,
     	CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW,
@@ -49,10 +51,11 @@ public class CMDbTableSms implements IMDbTableSms {
 		dest.setDirection(c.getInt(1));
 		dest.setFolder(c.getInt(2));
 		dest.setIsNew(c.getInt(3));
-		dest.setPhone(c.getString(4));
-		dest.setText(c.getString(5));
+		dest.setHash(c.getString(4));
+		dest.setPhone(c.getString(5));
+		dest.setText(c.getString(6));
 		
-		Date dat = new Date(c.getLong(6));
+		Date dat = new Date(c.getLong(7));
 		dest.setDate(dat);
 	}
 	
@@ -60,8 +63,8 @@ public class CMDbTableSms implements IMDbTableSms {
 		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnlineHelper._ID+"="+id, null);
 	}
 	
-	public void DeleteByPhone(String phone) throws MyException {
-		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnlineHelper.SMS_PHONE+"=?", new String[] {phone});
+	public void DeleteByHash(String hash) throws MyException {
+		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnlineHelper.SMS_HASH+"=?", new String[] {hash});
 	}
 
 	public int Insert(IMSms item) throws MyException {
@@ -70,6 +73,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_DIRECTION, item.getDirection());
         values.put(CMSQLiteOnlineHelper.SMS_FOLDER, item.getFolder());
         values.put(CMSQLiteOnlineHelper.SMS_ISNEW, item.getIsNew());
+        values.put(CMSQLiteOnlineHelper.SMS_HASH, item.getHash());
         values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
@@ -99,6 +103,12 @@ public class CMDbTableSms implements IMDbTableSms {
 		}
 	}
 
+	public String getHashById(int id) throws MyException {
+		IMSms sms = mLocator.createSms();
+		getById(sms, id);
+		return sms.getHash();
+	}
+	
 	public void SetContentResolver(ContentResolver cr) {
 		mCr = cr;
 	}
@@ -145,7 +155,7 @@ public class CMDbTableSms implements IMDbTableSms {
 		}
 	}
 
-	public void QueryGroupByPhoneOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) {
+	public void QueryGroupByHashOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) {
 		dest.clear();
 		
 		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, null, null, CMSQLiteOnlineHelper.SMSGROUP_MAXDATE+" DESC"); 
@@ -157,10 +167,11 @@ public class CMDbTableSms implements IMDbTableSms {
 			int end = start+count;
 			for (int i=start; i<end; i++) {
 				IMSmsGroup gr = mLocator.createSmsGroup();
-				gr.setPhone(c.getString(0));
-				gr.setCount(c.getInt(1));
-				gr.setCountNew(c.getInt(2));
-				gr.setDate( new Date(c.getLong(3)));
+				gr.setHash(c.getString(0));
+				gr.setPhone(c.getString(1));
+				gr.setCount(c.getInt(2));
+				gr.setCountNew(c.getInt(3));
+				gr.setDate( new Date(c.getLong(4)));
 				dest.add(gr);
 				if (!c.moveToNext()) return;
 			}
@@ -175,6 +186,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_DIRECTION, item.getDirection());
         values.put(CMSQLiteOnlineHelper.SMS_FOLDER, item.getFolder());
         values.put(CMSQLiteOnlineHelper.SMS_ISNEW, item.getIsNew());
+        values.put(CMSQLiteOnlineHelper.SMS_HASH, item.getHash());
         values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
@@ -182,12 +194,12 @@ public class CMDbTableSms implements IMDbTableSms {
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
 	}
 
-	public void QueryByPhoneOrderByDat(ArrayList<IMSms> dest, String phone,	int start, int count) throws MyException {
+	public void QueryByHashOrderByDat(ArrayList<IMSms> dest, String hash,	int start, int count) throws MyException {
 		
 		dest.clear();
 		
-		String[] args = new String[] { phone };
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_PHONE+"=?", args , CMSQLiteOnlineHelper.SMS_DATE); 
+		String[] args = new String[] { hash };
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_HASH+"=?", args , CMSQLiteOnlineHelper.SMS_DATE); 
 		
 		try {
 			if (!c.moveToFirst()) return;

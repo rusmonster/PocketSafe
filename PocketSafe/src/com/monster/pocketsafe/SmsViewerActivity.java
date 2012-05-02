@@ -39,6 +39,7 @@ import android.widget.Toast;
 public class SmsViewerActivity extends CMBaseListActivity implements IMListener {
 	
 
+	private String mHash;
 	private String mPhone;
 	private String mName;
 	ArrayList<IMSms> mSmsList = new ArrayList<IMSms>();
@@ -50,7 +51,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	
 	private CSmsCounter mSmsCou = new CSmsCounter();
 	
-	public static final String PHONE = "com.monster.pocketsafe.SmsViewerActivity.PHONE";
+	public static final String HASH = "com.monster.pocketsafe.SmsViewerActivity.HASH";
 	private static final int IDD_SMS_SENDING = 1;
 	
 	private static final int IDM_NEW = 101;
@@ -66,15 +67,15 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private static final int IDD_DELMESSAGE = 1002;
 	
 	private void createListAdapter() throws MyException {
-		if (mPhone == null || mPhone.length() == 0) return;
+		if (mHash == null || mHash.length() == 0) return;
 		
-		getMain().DbReader().QuerySms().QueryByPhoneOrderByDat(mSmsList, mPhone, 0, TStruct.PAGE_SIZE);
+		getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, TStruct.PAGE_SIZE);
 		if (mSmsList.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSms> sms_list = new ArrayList<IMSms>();
 			int k = TStruct.PAGE_SIZE;
 
 			do {
-				getMain().DbReader().QuerySms().QueryByPhoneOrderByDat(sms_list, mPhone, k, TStruct.PAGE_SIZE);
+				getMain().DbReader().QuerySms().QueryByHashOrderByDat(sms_list, mHash, k, TStruct.PAGE_SIZE);
 				k+=TStruct.PAGE_SIZE;
 				for (int i=0; i<sms_list.size(); i++)
 					mSmsList.add(sms_list.get(i));
@@ -91,12 +92,12 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			String phone = getMain().decryptString(sms.getPhone());
 			sms.setPhone( phone );
+			mPhone = phone;
 			
 			String text = getMain().decryptString(sms.getText());
 			sms.setText(text);
 		}
 		
-		mPhone = getMain().decryptString(mPhone);
 		
 		IMContact cont = getMain().DbReader().QueryContact().getByPhone(mPhone);
 		if (cont != null)
@@ -276,7 +277,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDeleteByPhone(phone);
+					getMain().DbWriter().SmsDeleteByHash(mHash);
 					GotoMain();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsViewerActivity.this, e.getId().getValue());
@@ -302,8 +303,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	protected void onStart() {
-	    mPhone = getIntent().getStringExtra(PHONE);
-	    Log.v("!!!", "PHONE: "+mPhone);
+	    mHash = getIntent().getStringExtra(HASH);
 	    
 		super.onStart();
 	}
@@ -350,10 +350,10 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
             switch (requestCode) {
             case NEW_SMS_RESULT:
             	
-            	String phone = data.getStringExtra(SmsViewerActivity.PHONE);
-            	if (phone!=null && phone.length()>0 && !phone.equalsIgnoreCase(mPhone)) {
+            	String hash = data.getStringExtra(SmsViewerActivity.HASH);
+            	if (hash!=null && hash.length()>0 && !hash.equalsIgnoreCase(mHash)) {
 	                Intent intent = new Intent(this, SmsViewerActivity.class); 
-	                intent.putExtra(SmsViewerActivity.PHONE, phone); 
+	                intent.putExtra(SmsViewerActivity.HASH, hash); 
 	                startActivity(intent);
 	                finish();
             	}

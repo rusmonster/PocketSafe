@@ -19,31 +19,40 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	public static final String SETTING_VAL = "VAL";
 	
 	public static final String TABLE_SMS = "M__SMS";
-	public static final String SMS_INDEX_PHONE = "idxPHONE";
+	public static final String SMS_INDEX_HASH = "idxHASH";
 	
 	public static final String SMS_DIRECTION = "DIRECTION";
 	public static final String SMS_FOLDER = "FOLDER";
 	public static final String SMS_ISNEW = "ISNEW";
+	public static final String SMS_HASH = "HASH";
 	public static final String SMS_PHONE = "PHONE";
 	public static final String SMS_TEXT = "TXT";
 	public static final String SMS_DATE = "DAT";
 	
-	public static final String QUERY_SMSGROUP = "(select "+
-			CMSQLiteOnlineHelper.SMS_PHONE+" as "+CMSQLiteOnlineHelper.SMSGROUP_PHONE+","+
-			"count(*) as "+CMSQLiteOnlineHelper.SMSGROUP_COUNT+","+
-    		"(select "+
-				"count(*) "+
-				"from "+CMSQLiteOnlineHelper.TABLE_SMS+" as A "+
-				"where A.PHONE=SMS.PHONE and A.FOLDER="+TTypFolder.EInbox+" and A.ISNEW>="+TTypIsNew.ENew+
-				") as "+CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW+","+
-			"MAX("+CMSQLiteOnlineHelper.SMS_DATE+") as "+CMSQLiteOnlineHelper.SMSGROUP_MAXDATE+" "+
-			"from  "+CMSQLiteOnlineHelper.TABLE_SMS+" as SMS "+
-			"group by "+CMSQLiteOnlineHelper.SMS_PHONE+
-			")";
+	
+	public static final String SMSGROUP_HASH = "HASH";
 	public static final String SMSGROUP_PHONE = "PHONE";
 	public static final String SMSGROUP_COUNT = "count";
 	public static final String SMSGROUP_COUNTNEW = "countnew";
-	public static final String SMSGROUP_MAXDATE = "maxdat";
+	public static final String SMSGROUP_MAXDATE = "maxdat";	
+	
+	public static final String QUERY_SMSGROUP = "(select "+
+			SMS_HASH+" as "+SMSGROUP_HASH+","+
+    		"(select "+SMS_PHONE+" "+
+				"from "+TABLE_SMS+" as B "+
+				"where B."+SMS_HASH+"=SMS."+SMS_HASH+" "+
+				"LIMIT 1"+
+				") as "+SMSGROUP_PHONE+","+
+			"count(*) as "+SMSGROUP_COUNT+","+
+    		"(select "+
+				"count(*) "+
+				"from "+TABLE_SMS+" as A "+
+				"where A."+SMS_HASH+"=SMS."+SMS_HASH+" and A."+SMS_FOLDER+"="+TTypFolder.EInbox+" and A."+SMS_ISNEW+">="+TTypIsNew.ENew+
+				") as "+SMSGROUP_COUNTNEW+","+
+			"MAX("+SMS_DATE+") as "+SMSGROUP_MAXDATE+" "+
+			"from  "+TABLE_SMS+" as SMS "+
+			"group by "+SMS_HASH+
+			")";
 	
 
 	public CMSQLiteOnlineHelper(Context context) {
@@ -86,12 +95,13 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_DIRECTION + " INTEGER," +
 				SMS_FOLDER + "  INTEGER," +
 				SMS_ISNEW + " INTEGER," +
+				SMS_HASH+ " varchar(100)," +
 				SMS_PHONE + " TEXT," +
 				SMS_TEXT + " TEXT," +
 				SMS_DATE + " DATETIME)");
 		
-		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_PHONE);
-		db.execSQL("CREATE INDEX "+SMS_INDEX_PHONE+" ON "+TABLE_SMS+"("+SMS_PHONE+")");
+		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASH);
+		db.execSQL("CREATE INDEX "+SMS_INDEX_HASH+" ON "+TABLE_SMS+"("+SMS_HASH+")");
 	}
 
 	@Override

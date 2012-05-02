@@ -15,6 +15,7 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 
 	private IMLocator mLocator;
+	private IMPassHolderObserver mObserver;
 	private String mPass;
 	private String mKey;
 	private IMAes mAes;
@@ -28,10 +29,6 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		mBase64 = mLocator.createBase64();
 		mTimer = mLocator.createTimer();
 		mTimer.SetObserver(this);
-	}
-	
-	public boolean isEmpty() {
-		return (mPass == null);
 	}
 
 	public void setPass(String pass) throws MyException {
@@ -79,12 +76,29 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	public void setInterval(long _ms) throws MyException {
 		mInterval = _ms;
 		
-		mTimer.cancelTimer();
-		mTimer.startTimer(mInterval);
+		if ( isPassValid() ) {
+			mTimer.cancelTimer();
+			mTimer.startTimer(mInterval);
+		}
 	}
 
 	public void timerEvent(IMTimer sender) throws Exception {
-		mPass=null;
+		if (mPass!=null) {
+			mPass = null;
+			if (mObserver!=null) 
+				mObserver.passExpired(this);
+		}
+	}
+
+	public void setObserever(IMPassHolderObserver observer) {
+		mObserver = observer;
+	}
+
+	public void clearPass() {
+		if (mPass!=null) {
+			mPass=null;
+			mTimer.cancelTimer();
+		}
 	}
 
 }

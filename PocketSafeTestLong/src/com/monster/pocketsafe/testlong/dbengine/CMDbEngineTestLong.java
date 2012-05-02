@@ -17,6 +17,7 @@ import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
@@ -123,6 +124,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		Date dat = new Date();
 		
 		IMSms sms  = null;
+		IMSha256 sha = mLocator.createSha256();
 
 		
 		ArrayList<IMSms> list = new ArrayList<IMSms>();
@@ -136,6 +138,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms.setIsNew(TTypIsNew.ENew);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
+			sms.setHash( sha.getHash(sms.getPhone()) );
 			int id = mDbEngine.TableSms().Insert(sms);
 			sms.setId(id);
 			list.add(sms);
@@ -153,6 +156,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		sms.setIsNew(TTypIsNew.EOld);
 		sms.setText("sended sms");
 		sms.setPhone("12345679");
+		sms.setHash( sha.getHash(sms.getPhone()) );
 		int id = mDbEngine.TableSms().Insert(sms);
 		sms.setId(id);
 		
@@ -173,6 +177,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getFolder(), dest.getFolder());
 			assertEquals(src.getIsNew(), dest.getIsNew());
 			assertEquals(src.getPhone(), dest.getPhone());
+			assertEquals(src.getHash(), dest.getHash());
 			assertEquals(src.getText(), dest.getText());
 		}
 		
@@ -189,6 +194,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getFolder(), dest.getFolder());
 			assertEquals(src.getIsNew(), dest.getIsNew());
 			assertEquals(src.getPhone(), dest.getPhone());
+			assertEquals(src.getHash(), dest.getHash());
 			assertEquals(src.getText(), dest.getText());
 		}
 		
@@ -205,14 +211,16 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		assertEquals(sms.getFolder(), dest.getFolder());
 		assertEquals(sms.getIsNew(), dest.getIsNew());
 		assertEquals(sms.getPhone(), dest.getPhone());
+		assertEquals(sms.getHash(), dest.getHash());
 		assertEquals(sms.getText(), dest.getText());
 	
 	}
 	
-	public void testSmsQueryGroupByPhoneOrderByMaxDatDesc() throws MyException {
+	public void testSmsQueryGroupByHashOrderByMaxDatDesc() throws MyException {
 		Date dat = new Date();
 		
 		IMSms sms  = null;
+		IMSha256 sha = mLocator.createSha256();
 
 		
 		ArrayList<IMSms> list = new ArrayList<IMSms>();
@@ -226,6 +234,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms.setIsNew(TTypIsNew.EOld);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
+			sms.setHash(sha.getHash(sms.getPhone()));
 			int id = mDbEngine.TableSms().Insert(sms);
 			sms.setId(id);
 			list.add(sms);
@@ -242,6 +251,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			sms.setIsNew(TTypIsNew.ENew);
 			sms.setText("hellow world");
 			sms.setPhone("1234567"+i);
+			sms.setHash(sha.getHash(sms.getPhone()));
 			int id = mDbEngine.TableSms().Insert(sms);
 			sms.setId(id);
 			list.add(sms);
@@ -256,6 +266,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		for (int i=0; i<5; i++) {
 			IMSmsGroup gr = mLocator.createSmsGroup();
 			gr.setPhone("1234567"+i);
+			gr.setHash(sha.getHash(gr.getPhone()));
 			
 			int cnt=0;
 			int cntnew=0;
@@ -295,7 +306,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		*/
 		//Log.v("!!!", "Checking...");
 		
-		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 0, 3);
+		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 0, 3);
 		assertEquals(3,res.size());
 		
 		for (int i=0; i<3; i++) {
@@ -303,26 +314,28 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			IMSmsGroup dest = res.get(i);
 			
 			//Log.d("!!!", "I="+i+"; PHONE: "+dest.getPhone()+"; COUNT: "+dest.getCount()+"; NEW: "+dest.getCountNew()+"; DAT: "+dest.getDate().getTime());
+			assertEquals(src.getHash(), dest.getHash());
 			assertEquals(src.getPhone(), dest.getPhone());
 			assertEquals(src.getCount(), dest.getCount());
 			assertEquals(src.getCountNew(), dest.getCountNew());
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 3, 3);
+		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 3, 3);
 		assertEquals(2,res.size());
 		
 		for (int i=0; i<2; i++) {
 			IMSmsGroup src = temp.get(i+3);
 			IMSmsGroup dest = res.get(i);
 			
+			assertEquals(src.getHash(), dest.getHash());
 			assertEquals(src.getPhone(), dest.getPhone());
 			assertEquals(src.getCount(), dest.getCount());
 			assertEquals(src.getCountNew(), dest.getCountNew());
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByPhoneOrderByMaxDatDesc(res, 6, 3);
+		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 6, 3);
 		assertEquals(0,res.size());
 	}
 	

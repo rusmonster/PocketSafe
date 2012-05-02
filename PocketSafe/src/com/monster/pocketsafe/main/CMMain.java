@@ -20,13 +20,14 @@ import com.monster.pocketsafe.sec.IMAes;
 import com.monster.pocketsafe.sec.IMBase64;
 import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sec.IMRsaObserver;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.sms.sender.IMSmsSender;
 import com.monster.pocketsafe.sms.sender.IMSmsSenderObserver;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
-public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObserver {
+public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObserver, IMPassHolderObserver {
 	
 	private Context mContext;
 	private IMLocator mLocator;
@@ -37,6 +38,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	private IMSmsNotificator mSmsNotificator;
 	private Handler mHandler;
 	private IMRsa mRsa;
+	private IMSha256 mSha;
 	private IMPassHolder mPassHolder;
 	
 	private Runnable mRunUpdateNotificator = new Runnable() {
@@ -63,7 +65,10 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mRsa = mLocator.createRsa();
 		mRsa.setObserver(this);
 		
+		mSha = mLocator.createSha256();
+		
 		mPassHolder = mLocator.createPassHolder();
+		mPassHolder.setObserever(this);
     }
 
 	public void Open(Context context) throws MyException {
@@ -118,6 +123,8 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			throw new MyException(TTypMyException.ESmsErrSendNoText);
 		
 		IMSms sms = mLocator.createSms();
+		
+		sms.setHash( mSha.getHash(phone) );
 		
 		byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes());
 		byte[] cText = mRsa.EncryptBuffer(text.getBytes());
@@ -267,17 +274,38 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			mHandler.removeCallbacks(mRunUpdateNotificator);
 			mHandler.postDelayed(mRunUpdateNotificator, 500);
 			break;
+		case ESettingUpdated:
+			int id = ((IMEventSimpleID)event).getId();
+			SettingUpdated( TTypSetting.from(id) );
+			break;
 		}
 		
 	}
 
+	private void SettingUpdated(TTypSetting typ) {
+		try {
+			IMSetting set = mLocator.createSetting();
+			mDbEngine.QuerySetting().getById(set, typ);
+			
+			switch (typ) {
+			case EPassTimout:
+				mPassHolder.setInterval(set.getIntVal()*1000);
+				break;
+			}
+		} catch (MyException e) {
+			IMEventErr ev = mLocator.createEventErr();
+			ev.setTyp(TTypEvent.EErrMyException);
+			ev.setErr(e.getId().getValue());
+			mDispatcher.pushEvent(ev);
+		}
+	}
+	
 	public void changePass(String oldPass, String newPass) throws MyException {
 		
 		IMSetting set = mLocator.createSetting();
 		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
 		String pub = set.getStrVal();
 
-		mPassHolder.setPass(newPass);
 		
 		if (pub.length()>0) {
 			mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPriv);
@@ -291,8 +319,10 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			mDbEngine.TableSetting().Update(set);
 			
 			mPassHolder.setKey(priv);
+			mPassHolder.setPass(newPass);
 		}
 		else {
+			mPassHolder.setPass(newPass);
 			mRsa.startGenerateKeyPair();
 			IMEvent ev = mLocator.createEvent();
 			ev.setTyp(TTypEvent.ERsaKeyPairGenerateStart);
@@ -354,5 +384,17 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 
 	public boolean isPassValid() {
 		return mPassHolder.isPassValid();
+	}
+
+	public void passExpired(IMPassHolder sender) {
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.EPassExpired);
+		mDispatcher.pushEvent(ev);
+		Log.d("!!!", "EPassExpired pushed");
+	}
+
+	public void lockNow() {
+		mPassHolder.clearPass();
+		passExpired(null);
 	}
 }

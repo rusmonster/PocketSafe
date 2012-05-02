@@ -231,6 +231,10 @@ public class CMHelperBaseActivity implements IMListener {
 				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
 				ErrorDisplayer.displayError(mOwner, evErr.getErr());
 				break;
+			case EPassExpired:
+				Log.d("!!!", "EPassExpired received");
+				checkPassActual();
+				break;
 		}
 		
 		if (mOwner instanceof IMListener) {

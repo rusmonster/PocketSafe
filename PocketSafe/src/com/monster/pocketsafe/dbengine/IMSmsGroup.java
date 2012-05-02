@@ -4,6 +4,9 @@ import java.util.Date;
 
 public interface IMSmsGroup {
 	
+	String getHash();
+	void setHash(String hash);
+	
 	String getPhone();
 	void setPhone(String phone);
 	

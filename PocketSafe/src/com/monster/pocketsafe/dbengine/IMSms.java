@@ -12,6 +12,8 @@ public interface IMSms extends IMDbItem {
 	public void setFolder(int folder);
 	public int getIsNew();
 	public void setIsNew(int is_new);
+	public String getHash();
+	public void setHash(String Hash);
 	public String getPhone();
 	public void setPhone(String phone) throws MyException;
 	public String getText();

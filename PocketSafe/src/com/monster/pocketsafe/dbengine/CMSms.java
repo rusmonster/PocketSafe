@@ -12,6 +12,7 @@ public class CMSms implements IMSms {
 	private int mDirection;
 	private int mFolder;
 	private int mIsNew;
+	private String mHash;
 	private String mPhone;
 	private String mText;
 	private Date mDate;
@@ -77,6 +78,14 @@ public class CMSms implements IMSms {
 
 	public void setFolder(int folder) {
 		mFolder = folder;
+	}
+
+	public String getHash() {
+		return mHash;
+	}
+
+	public void setHash(String Hash) {
+		mHash = Hash;
 	}
 
 }

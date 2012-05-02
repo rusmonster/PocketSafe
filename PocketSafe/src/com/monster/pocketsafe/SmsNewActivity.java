@@ -1,8 +1,11 @@
 package com.monster.pocketsafe;
 
 import com.monster.pocketsafe.dbengine.IMContact;
+import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
+import com.monster.pocketsafe.main.IMEventSimpleID;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
@@ -167,8 +170,13 @@ public class SmsNewActivity extends CMBaseActivity {
 		case ESmsSent:
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
 			
+			IMEventSimpleID evID = (IMEventSimpleID)event;
+			int id = evID.getId();
+			
+			String hash = getMain().DbReader().QuerySms().getHashById(id);
+			
 	        Intent intent = new Intent(this, SmsViewerActivity.class); 
-	        intent.putExtra(SmsViewerActivity.PHONE, mPhone); 
+	        intent.putExtra(SmsViewerActivity.HASH, hash); 
 	        
 			mEdPhone.getText().clear();
 			mEdText.getText().clear();

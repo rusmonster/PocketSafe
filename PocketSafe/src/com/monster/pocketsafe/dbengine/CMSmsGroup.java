@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class CMSmsGroup implements IMSmsGroup {
 	
+	private String mHash;
 	private String mPhone;
 	private int mCount;
 	private int mCountNew;
@@ -39,6 +40,14 @@ public class CMSmsGroup implements IMSmsGroup {
 
 	public void setDate(Date dat) {
 		mDate = dat;
+	}
+
+	public String getHash() {
+		return mHash;
+	}
+
+	public void setHash(String hash) {
+		mHash = hash;
 	}
 
 }
