@@ -35,5 +35,6 @@
     <string name="opt_passtimeout">Password timeout</string>
     <string name="opt_locknow">Lock now</string>
     <string name="pass_changed">Password changed succesfully</string>
+    <string name="pair_generated">All new sms will be shown here</string>
 
 </resources>

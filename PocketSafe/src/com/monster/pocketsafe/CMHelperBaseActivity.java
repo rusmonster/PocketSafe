@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.monster.pocketsafe.dbengine.IMSetting;
@@ -225,6 +226,7 @@ public class CMHelperBaseActivity implements IMListener {
 				break;
 			case ERsaKeyPairGenerated:
 				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+				Toast.makeText(mOwner, R.string.pair_generated, Toast.LENGTH_LONG).show();
 				break;
 			case ERsaKeyPairGenerateError:
 				IMEventErr evErr = (IMEventErr)event;
