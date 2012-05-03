@@ -53,6 +53,8 @@ public class CMSmsNotificator implements IMSmsNotificator {
 		} else if (mNotification != null) {
 			CharSequence contentText=mContext.getResources().getText( R.string.sms_new_cnt )+Integer.toString(cnt_newsms);
 	        mNotification.setLatestEventInfo(mContext, mTickerText, contentText, mNotificationPendingIntent);
+		} else {
+			Popup(cnt_newsms);
 		}
 	}
 

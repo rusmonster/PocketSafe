@@ -99,6 +99,8 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPriv);
 			mPassHolder.setKey(set.getStrVal());
 		}
+		
+		mRunUpdateNotificator.run();
 	}
 	
 	public IMDbReader DbReader() {
