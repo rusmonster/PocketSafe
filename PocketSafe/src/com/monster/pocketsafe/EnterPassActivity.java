@@ -47,5 +47,6 @@ public final static String PASS = "com.monster.pocketsafe.EnterPassActivity.PASS
         setResult(RESULT_CANCELED);        
         finish();
 	}
+
 }
 
