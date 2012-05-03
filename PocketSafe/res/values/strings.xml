@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">SmsSafe-MO</string>
-    <string name="sms_new">New sms message</string>
+    <string name="sms_new">New message</string>
     <string name="sms_new_cnt">new messages: </string>
     <string name="sms_sending">Sending message...</string>
     <string name="sms_newsms">New</string>
@@ -35,7 +35,14 @@
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
     <string name="opt_locknow">Lock now</string>
+    <string name="locknow">Lock now</string>
     <string name="pass_changed">Password changed succesfully</string>
     <string name="pair_generated">All new sms will be shown here</string>
 
+	<string name="min1">1 min</string>
+	<string name="min3">3 min</string>
+	<string name="min5">5 min</string>
+	<string name="min10">10 min</string>
+	<string name="min30">30 min</string>
+	<string name="min60">1 hour</string>
 </resources>

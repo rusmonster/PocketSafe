@@ -13,7 +13,7 @@
         android:icon="@android:drawable/ic_menu_delete">
     </item>
     <item android:id="@+id/mnuSmsViewerLock" 
-        android:title="@string/opt_locknow" 
+        android:title="@string/locknow" 
         android:icon="@android:drawable/ic_lock_lock">
     </item>
 </menu>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmsSafe-MO</string>
+    <string name="sms_new">Новое смс</string>
+    <string name="sms_new_cnt">новые смс: </string>
+    <string name="sms_sending">Отправка...</string>
+    <string name="sms_newsms">Новое смс</string>
+    <string name="sms_delall">Удалить все</string>
+    <string name="about">О программе</string>
+    <string name="siteurl">http://www.soft-mo.com</string>
+    <string name="title_about">О программе</string>
+    <string name="sms_view_thread">Смотреть</string>
+    <string name="sms_del_thread">Удалить</string>
+    <string name="sms_delmessageconf">Удалить смс?</string>
+    <string name="sms_delthreadconf">Удалить историю сообщений для %s?</string>
+    <string name="sms_delallconf">Удалить все сообщения?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="sms_allsms">Все сообщения</string>
+    <string name="sms_message">Сообщение</string>
+    <string name="sms_forward">Переслать</string>
+    <string name="sms_copymessage">Копировать</string>
+    <string name="sms_delmessage">Удалить</string>
+    <string name="options">Настройка</string>
+    
+    <string name="copied">Текст скопирован в буфер</string>
+    
+    <string name="enter_pass">Введите пароль:</string> 
+    <string name="enter_new_pass">Задайте новый пароль:</string> 
+    <string name="repeat_pass">Повторите пароль:</string> 
+    <string name="old_pass">Введите Ваш пароль</string>
+    <string name="set_pass">Установка пароля</string>
+    <string name="rsa_generate">Генерация ключей...</string>
+    <string name="opt_changepass">Сменить пароль</string>
+    <string name="opt_passtimeout">Помнить пароль</string>
+    <string name="opt_locknow">Заблокировать сейчас</string>
+    <string name="locknow">Заблокировать</string>
+    <string name="pass_changed">Пароль успешно изменен</string>
+    <string name="pair_generated">Новые смс будут отображаться тут</string>
+    
+    <string name="min1">1 мин</string>
+	<string name="min3">3 мин</string>
+	<string name="min5">5 мин</string>
+	<string name="min10">10 мин</string>
+	<string name="min30">30 мин</string>
+	<string name="min60">1 час</string>
+
+</resources>

@@ -8,7 +8,7 @@
         android:id="@+id/btNewSms"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New message" />
+        android:text="@string/sms_new" />
 
     <ListView
         android:id="@android:id/list"
