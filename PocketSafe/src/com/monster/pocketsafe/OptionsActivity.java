@@ -94,10 +94,10 @@ public class OptionsActivity extends CMBaseListActivity {
 		String enter = mEnteredPass;
 		String newpass = mNewPass;
 		
-		mEnteredPass=null;
-		mNewPass=null;
-		
 		if (enter!=null && newpass!=null) {
+			mEnteredPass=null;
+			mNewPass=null;
+			
 			getHelper().getMain().changePass(enter, newpass);
 			Toast.makeText(this, R.string.pass_changed, Toast.LENGTH_SHORT).show();
 		}

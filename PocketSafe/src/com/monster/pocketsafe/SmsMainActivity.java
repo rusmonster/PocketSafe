@@ -6,6 +6,8 @@ import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.utils.MyException;
+import com.monster.pocketsafe.utils.MyException.TTypMyException;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -77,18 +79,23 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		}
 		
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i=0; i<mGroups.size(); i++) {
-			IMSmsGroup gr = mGroups.get(i);
-			
-			String name = getHelper().getMain().decryptString(gr.getPhone());
-			IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(gr.getPhone());
-			if (cont != null)
-				name = cont.getName();
-			
-			if (gr.getCountNew()>0)
-				list.add(name+" ("+gr.getCountNew()+"/"+gr.getCount()+")");
-			else
-				list.add(name+" ("+gr.getCount()+")");
+		int cnt = mGroups.size();
+		for (int i=0; i<cnt; i++) {
+			try {
+				IMSmsGroup gr = mGroups.get(i);
+				
+				String name = getHelper().getMain().decryptString(gr.getPhone());
+				IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(name);
+				if (cont != null)
+					name = cont.getName();
+				
+				if (gr.getCountNew()>0)
+					list.add(name+" ("+gr.getCountNew()+"/"+gr.getCount()+")");
+				else
+					list.add(name+" ("+gr.getCount()+")");
+			} catch(MyException e) {
+				ErrorDisplayer.displayError(this, e);
+			}
 		}
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         
@@ -181,24 +188,27 @@ public class SmsMainActivity extends CMBaseListActivity  {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-		case R.id.mnuMainNewSms:
-			GotoNewSms();
-			break;
-		case R.id.mnuMainDelAll:
-			showDialog(IDD_DELALL);
-			break;
-		case R.id.mnuMainSettings:
-			startActivity(new Intent(this, OptionsActivity.class));
-			break;
-		case R.id.mnuMainAbout:
-			startActivity(new Intent(this, AboutActivity.class));
-			break;
-		case R.id.mnuMainLock:
-			getHelper().lockNow();
-			break;
+		try {
+			switch(item.getItemId()) {
+			case R.id.mnuMainNewSms:
+				GotoNewSms();
+				break;
+			case R.id.mnuMainDelAll:
+				showDialog(IDD_DELALL);
+				break;
+			case R.id.mnuMainSettings:
+				startActivity(new Intent(this, OptionsActivity.class));
+				break;
+			case R.id.mnuMainAbout:
+				startActivity(new Intent(this, AboutActivity.class));
+				break;
+			case R.id.mnuMainLock:
+				getHelper().lockNow();
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 	
@@ -213,6 +223,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 				
 				String nam = mGroups.get(info.position).getPhone();
+				nam = getHelper().getMain().decryptString(nam);
 				IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 				if (c!=null) nam = c.getName();
 				menu.setHeaderTitle(nam);
@@ -239,14 +250,17 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			}
 		}catch (MyException e) {
 			ErrorDisplayer.displayError(this, e);
+		}catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
 		return super.onContextItemSelected(item);
 	}
 	
 	
 	AlertDialog ShowDelThreadDialog(int idx) throws MyException {
-		final String phone = mGroups.get(idx).getPhone();
-		String nam = new String( phone );
+		final String hash = mGroups.get(idx).getHash();
+		String nam = mGroups.get(idx).getPhone();
+		nam = getHelper().getMain().decryptString(nam);
 		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
@@ -259,7 +273,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getHelper().getMain().DbWriter().SmsDeleteByHash(phone);
+					getHelper().getMain().DbWriter().SmsDeleteByHash(hash);
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}

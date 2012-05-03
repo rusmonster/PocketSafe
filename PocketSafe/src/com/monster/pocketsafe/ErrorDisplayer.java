@@ -60,6 +60,7 @@ public class ErrorDisplayer {
 		case EErrSha256NullArgument: return R.string.EErrSha256NullArgument; 
 		case EErrBase64Encode: return R.string.EErrBase64Encode;
 		case EErrBase64Decode: return R.string.EErrBase64Decode;
+		case EErrUnknown: return R.string.ErrUnknown;
 		default:
 			return R.string.ErrUnknown;
 		}

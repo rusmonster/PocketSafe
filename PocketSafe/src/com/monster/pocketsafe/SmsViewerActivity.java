@@ -322,21 +322,24 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.mnuSmsViewerShowAll:
-			GotoMain();
-			break;
-		case R.id.mnuSmsViewerNewSms:
-	        startActivityForResult(new Intent(this, SmsNewActivity.class), NEW_SMS_RESULT);
-			break;
-		case R.id.mnuSmsViewerDelThread:
-			showDialog(IDD_DELTHREAD);
-			break;
-		case R.id.mnuSmsViewerLock:
-			getHelper().lockNow();
-			break;
+		try {
+			switch (item.getItemId()) {
+			case R.id.mnuSmsViewerShowAll:
+				GotoMain();
+				break;
+			case R.id.mnuSmsViewerNewSms:
+		        startActivityForResult(new Intent(this, SmsNewActivity.class), NEW_SMS_RESULT);
+				break;
+			case R.id.mnuSmsViewerDelThread:
+				showDialog(IDD_DELTHREAD);
+				break;
+			case R.id.mnuSmsViewerLock:
+				getHelper().lockNow();
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
-		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -368,22 +371,26 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		
-		switch(item.getItemId()) {
-		case IDM_FORWARD:
-			ForwardMessage(info.position);
-			break;
-		case IDM_COPYMESSAGE:
-			ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-			String txt = new String( mSmsList.get(info.position).getText() );
-			clipboard.setText(txt);
-			Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
-			break;
-		case IDM_DELMESSAGE:
-			mMessageForDel = mSmsList.get(info.position).getId();
-			showDialog(IDD_DELMESSAGE);
-			break;
+		try {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+			
+			switch(item.getItemId()) {
+			case IDM_FORWARD:
+				ForwardMessage(info.position);
+				break;
+			case IDM_COPYMESSAGE:
+				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+				String txt = new String( mSmsList.get(info.position).getText() );
+				clipboard.setText(txt);
+				Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
+				break;
+			case IDM_DELMESSAGE:
+				mMessageForDel = mSmsList.get(info.position).getId();
+				showDialog(IDD_DELMESSAGE);
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -397,7 +404,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		if (v.getId() == android.R.id.list) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+		
+		if (v.getId() == android.R.id.list && info.id>=0) {
 			menu.setHeaderTitle(R.string.sms_message);
 			
 			menu.add(Menu.NONE, IDM_FORWARD, Menu.NONE, R.string.sms_forward);

@@ -240,11 +240,12 @@ public class SmsNewActivity extends CMBaseActivity {
                     }
                     
                     mEdPhone.setText(phone);
+                    /*
                     if (phone.length()>0) {
                     	Phone2Name();
                     	mEdText.requestFocus();
                     }
-
+					*/
                 }
 
                 break;
@@ -298,7 +299,8 @@ public class SmsNewActivity extends CMBaseActivity {
 	}
 
 	public void onMainBind() throws MyException {
-
+		Phone2Name();
+    	mEdText.requestFocus();
 	}
 
 	@Override
@@ -318,6 +320,13 @@ public class SmsNewActivity extends CMBaseActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	protected void onPause() {
+		if (mDlg!=null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
+		super.onPause();
+	}
+	
 	
 	
 }

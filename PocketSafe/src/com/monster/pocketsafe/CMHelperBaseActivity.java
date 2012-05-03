@@ -141,24 +141,32 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 			return true;
 		}
 		
+		ErrorDisplayer.displayError(mOwner, TTypMyException.EPassExpired.getValue());
 		Intent i = new Intent(mOwner, EnterPassActivity.class);
 		mOwner.startActivityForResult(i, ENTER_PASS_RESULT);
 		return false;			
 	}
 	
-	private void internalMainBind() throws MyException {
+	private boolean internalMainBind() throws MyException {
+		if (mKillReceived) {
+			mKillReceived = false;
+			return false;
+		}
+		
 		if (!checkPassSet()) 
-			return;
+			return false;
 		
 		if (!checkPassActual())
-			return;
+			return false;
+		
+		return true;
 	}
 	
 	protected void onMainBind() throws MyException {
 		Log.d("!!!", "Service connected "+mOwner.toString());
-		if (mKillReceived) return;
 		try {
-			internalMainBind();
+			if (!internalMainBind()) return;
+			
 			if (mOwner instanceof IMHelperBaseActivityObserver) {
 				IMHelperBaseActivityObserver ba = (IMHelperBaseActivityObserver)mOwner;
 				ba.onMainBind();

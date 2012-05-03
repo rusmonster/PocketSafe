@@ -65,7 +65,7 @@ public class CMSms implements IMSms {
 			throw new MyException(TTypMyException.EPhoneInvalid);
 		*/
 		
-		mPhone = phone.trim();
+		mPhone = phone; //phone.trim();
 	}
 
 	public void setText(String Text) {
