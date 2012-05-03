@@ -27,15 +27,10 @@ public class CMBase64 implements IMBase64 {
 		
 		int len=cnt-2;
 		int k=0;
+		
 		for (int i=0; i<len; i+=3) {
-			long tmp = (_data[i] << 16) | (_data[i+1] << 8) | _data[i+2];
+			int tmp = ((_data[i]&0xFF) << 16) | ((_data[i+1]&0xFF)<< 8) | (_data[i+2]&0xFF);
 			
-			Log.d("!!!", "data[i]="+_data[i]);
-			Log.d("!!!", "data[i+1]="+_data[i+1]);
-			Log.d("!!!", "data[i+2]="+_data[i+2]);
-			Log.d("!!!", "data[i+3]="+_data[i+3]);
-			
-			Log.d("!!!", "encode: tmp="+tmp+"; (byte) (tmp>>18)="+String.valueOf((byte) (tmp>>18)));
 			res[k++] = BASE64_BYTES[(int) (tmp>>18)];
 			res[k++] = BASE64_BYTES[(int) ((tmp>>12)&0x3F)];
 			res[k++] = BASE64_BYTES[(int) ((tmp>>6)&0x3F)];
@@ -47,10 +42,10 @@ public class CMBase64 implements IMBase64 {
 		if (len<cnt) {
 			int n=len;
 			
-			long tmp = _data[n++] << 8;
-			if (n<cnt) tmp|=_data[n++];
+			int tmp = (_data[n++]&0xFF) << 8;
+			if (n<cnt) tmp|=_data[n++]&0xFF;
 			tmp <<= 8;
-			if (n<cnt) tmp|=_data[n++];
+			if (n<cnt) tmp|=_data[n++]&0xFF;
 			
 			res[k++] = BASE64_BYTES[(int) (tmp>>18)];
 			res[k++] = BASE64_BYTES[(int) ((tmp>>12)&0x3F)];
@@ -79,7 +74,7 @@ public class CMBase64 implements IMBase64 {
 		int len=cnt-7;
 		
 		for (int i=0; i<len; i+=4) {
-			long tmp = (mMap.get(_data[i])<<18) | (mMap.get(_data[i+1])<<12) | (mMap.get(_data[i+2])<<6) | mMap.get(_data[i+3]);
+			int tmp = (mMap.get(_data[i])<<18) | (mMap.get(_data[i+1])<<12) | (mMap.get(_data[i+2])<<6) | mMap.get(_data[i+3]);
 			
 			res[k++] = (byte) (tmp >> 16);
 			res[k++] = (byte) ((tmp>>8)&0xFF);
@@ -88,7 +83,7 @@ public class CMBase64 implements IMBase64 {
 		
 		len=cnt-4;
 		
-		long tmp =  (mMap.get(_data[len++])<<18);
+		int tmp =  (mMap.get(_data[len++])<<18);
 		tmp |= (mMap.get(_data[len++])<<12);
 		
 		if (_data[len] != BASE64_ZERO)

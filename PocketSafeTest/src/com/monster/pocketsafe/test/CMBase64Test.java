@@ -135,4 +135,18 @@ public class CMBase64Test extends TestCase {
 		for (int i=0; i<src.length; i++)
 			assertEquals(src[i], dec[i]);
 	}
+	
+	public void testEncDec() {
+		byte[] src = "привет".getBytes();
+		
+		byte[] enc = mBase64.encode(src);
+		Log.i("!!!", "encoded: "+new String(enc));
+		
+		byte[] dec = mBase64.decode(enc);
+		String res = new String(dec);
+		Log.i("!!!", "decoded: "+res);
+		
+		for (int i=0; i<src.length; i++)
+			assertEquals(src[i], dec[i]);
+	}
 }
