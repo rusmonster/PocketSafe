@@ -62,14 +62,14 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		
 		Log.v("!!!", "createListAdapter()");
 		
-		getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
+		getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
 		
 		if (mGroups.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSmsGroup> gr_list = new ArrayList<IMSmsGroup>();
 			int k = TStruct.PAGE_SIZE;
 
 			do {
-				getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
+				getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
 				k+=TStruct.PAGE_SIZE;
 				for (int i=0; i<gr_list.size(); i++)
 					mGroups.add(gr_list.get(i));
@@ -80,8 +80,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		for (int i=0; i<mGroups.size(); i++) {
 			IMSmsGroup gr = mGroups.get(i);
 			
-			String name = getMain().decryptString(gr.getPhone());
-			IMContact cont = getMain().DbReader().QueryContact().getByPhone(gr.getPhone());
+			String name = getHelper().getMain().decryptString(gr.getPhone());
+			IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(gr.getPhone());
 			if (cont != null)
 				name = cont.getName();
 			
@@ -194,11 +194,14 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		case R.id.mnuMainAbout:
 			startActivity(new Intent(this, AboutActivity.class));
 			break;
+		case R.id.mnuMainLock:
+			getHelper().lockNow();
+			break;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		try {
@@ -210,7 +213,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 				
 				String nam = mGroups.get(info.position).getPhone();
-				IMContact c = getMain().DbReader().QueryContact().getByPhone(nam);
+				IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 				if (c!=null) nam = c.getName();
 				menu.setHeaderTitle(nam);
 			}
@@ -244,7 +247,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	AlertDialog ShowDelThreadDialog(int idx) throws MyException {
 		final String phone = mGroups.get(idx).getPhone();
 		String nam = new String( phone );
-		IMContact c = getMain().DbReader().QueryContact().getByPhone(nam);
+		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
@@ -256,7 +259,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDeleteByHash(phone);
+					getHelper().getMain().DbWriter().SmsDeleteByHash(phone);
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}
@@ -284,7 +287,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDelAll();
+					getHelper().getMain().DbWriter().SmsDelAll();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}

@@ -65,7 +65,7 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SETTING);;
 		db.execSQL("CREATE TABLE "+TABLE_SETTING+"("+
 				_ID + " INTEGER PRIMARY KEY, "
-				+SETTING_VAL+" VARCHAR(250))");
+				+SETTING_VAL+" TEXT)");
 		
 		ContentValues values = new ContentValues();
         

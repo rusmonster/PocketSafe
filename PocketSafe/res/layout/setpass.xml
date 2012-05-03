@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enter_pass"
+        android:text="@string/enter_new_pass"
         android:textSize="24dip" />
     
     <EditText 

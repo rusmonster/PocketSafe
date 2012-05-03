@@ -3,8 +3,11 @@ package com.monster.pocketsafe;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -24,12 +27,14 @@ import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
-public class CMHelperBaseActivity implements IMListener {
+public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 	
 	private static final int SET_PASS_RESULT = 1003;
 	private static final int ENTER_PASS_RESULT = 1004;
 
 	private static final int IDD_GENERATE = 50;
+	
+	public static final String KILL_ACTION = "com.monster.pocketsafe.CMHelperBaseActivity.KILL_ACTION";
 	
 	private Activity mOwner;
 	private IMLocator mLocator;
@@ -39,6 +44,18 @@ public class CMHelperBaseActivity implements IMListener {
 	private String mEnteredPass;
 	
 	private ProgressDialog mDlg;
+	
+	private KillReceiver mKillReceiver;
+	private boolean mKillReceived = false;
+	
+    private final class KillReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        	Log.d("!!!", "Kill recv: "+mOwner.toString());
+        	mKillReceived = true;
+            mOwner.finish();
+        }
+    }
 	
 	private ServiceConnection serviceConncetion = new ServiceConnection() {
 
@@ -58,6 +75,10 @@ public class CMHelperBaseActivity implements IMListener {
 	    }
     };
 	
+    public IMLocator getLocator() {
+    	return mLocator;
+    }
+    
 	public IMMain getMain() throws MyException {
 		if (mMain == null) {
 			Log.w("!!!", "mMain == null");
@@ -135,6 +156,7 @@ public class CMHelperBaseActivity implements IMListener {
 	
 	protected void onMainBind() throws MyException {
 		Log.d("!!!", "Service connected "+mOwner.toString());
+		if (mKillReceived) return;
 		try {
 			internalMainBind();
 			if (mOwner instanceof IMHelperBaseActivityObserver) {
@@ -153,10 +175,13 @@ public class CMHelperBaseActivity implements IMListener {
 	
     public void onCreate(Bundle savedInstanceState) {
     	Log.d("!!!", "onCreate "+mOwner.toString());
+        mKillReceiver = new KillReceiver();
+        mOwner.registerReceiver(mKillReceiver, new IntentFilter(KILL_ACTION));    	
     }
 	   
     public void onDestroy() {
 		Log.d("!!!", "onDestroy "+mOwner.toString());
+		mOwner.unregisterReceiver(mKillReceiver);
 	}
 	
     public void onStart() {
@@ -205,7 +230,10 @@ public class CMHelperBaseActivity implements IMListener {
 		    switch (requestCode) {
 		    case SET_PASS_RESULT:
 		    case ENTER_PASS_RESULT:
-		   		mOwner.finish();
+		   		//mOwner.finish();
+		        
+		        Intent i = new Intent(CMHelperBaseActivity.KILL_ACTION);
+		        mOwner.sendBroadcast(i);
 		        break;
 		    }
 		}
@@ -263,4 +291,14 @@ public class CMHelperBaseActivity implements IMListener {
 		Log.d("!!!", "dlg created: "+dlg);
 		return dlg;
 	}
+	
+	public void lockNow() {
+		try {	        
+			getMain().lockNow();			
+	        mOwner.sendBroadcast( new Intent(CMHelperBaseActivity.KILL_ACTION) );			
+		} catch (MyException e) {
+			e.printStackTrace();
+			ErrorDisplayer.displayError(mOwner, e);
+		}
+	}		
 }

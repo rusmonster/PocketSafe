@@ -1,16 +1,13 @@
 package com.monster.pocketsafe;
 
 import com.monster.pocketsafe.main.IMListener;
-import com.monster.pocketsafe.main.IMMain;
-import com.monster.pocketsafe.utils.MyException;
-
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-public abstract class CMBaseListActivity extends ListActivity implements IMBaseActivity, IMHelperBaseActivityObserver, IMListener {
+public abstract class CMBaseListActivity extends ListActivity implements IMHelperBaseActivityObserver, IMListener {
 	
 	private CMHelperBaseActivity mHelper;
 	
@@ -62,13 +59,13 @@ public abstract class CMBaseListActivity extends ListActivity implements IMBaseA
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	public IMMain getMain() throws MyException {
-		return mHelper.getMain();
-	}
-	
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		Log.d("!!!", "onCreateDialog: : "+this);
+		Log.d("!!!", "onCreateDialog: "+this);
 		return mHelper.onCreateDialog(id);
+	}
+
+	public IMBaseActivity getHelper() {
+		return mHelper;
 	}
 }

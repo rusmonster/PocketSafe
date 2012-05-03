@@ -9,8 +9,6 @@ import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.TTypEvent;
-import com.monster.pocketsafe.utils.CMLocator;
-import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 
 import android.app.AlertDialog;
@@ -39,8 +37,6 @@ public class OptionsActivity extends CMBaseListActivity {
     private String mEnteredPass;
     private String mNewPass;
     
-	private IMLocator mLocator = new CMLocator();
-	
 	private Dialog mDlg;
 	
 	
@@ -56,8 +52,8 @@ public class OptionsActivity extends CMBaseListActivity {
       
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
-        IMSetting set = mLocator.createSetting();
-        getMain().DbReader().QuerySetting().getById(set, TTypSetting.EPassTimout);
+        IMSetting set = getHelper().getLocator().createSetting();
+        getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.EPassTimout);
         String val = set.getStrVal();
         
         for (int i=0; i<mTimout_vals.length; i++)
@@ -102,7 +98,7 @@ public class OptionsActivity extends CMBaseListActivity {
 		mNewPass=null;
 		
 		if (enter!=null && newpass!=null) {
-			getMain().changePass(enter, newpass);
+			getHelper().getMain().changePass(enter, newpass);
 			Toast.makeText(this, R.string.pass_changed, Toast.LENGTH_SHORT).show();
 		}
 		
@@ -130,7 +126,7 @@ public class OptionsActivity extends CMBaseListActivity {
 			passTimout();
 			break;
 		case 2:
-			lockNow();
+			getHelper().lockNow();
 			break;
 		}
 	}	
@@ -142,15 +138,6 @@ public class OptionsActivity extends CMBaseListActivity {
 	
 	private void passTimout() {
 		showDialog(IDD_PASSTIMOUT);
-	}
-	
-	private void lockNow() {
-		try {
-			getMain().lockNow();
-		} catch (MyException e) {
-			e.printStackTrace();
-			ErrorDisplayer.displayError(this, e);
-		}
 	}
 	
 	@Override
@@ -171,7 +158,7 @@ public class OptionsActivity extends CMBaseListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					String val = mTimout_vals[which];
 					try {
-						getMain().DbWriter().UpdateSetting(TTypSetting.EPassTimout, val);
+						getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.EPassTimout, val);
 					} catch (MyException e) {
 						e.printStackTrace();
 						ErrorDisplayer.displayError(OptionsActivity.this, e);

@@ -57,6 +57,6 @@ public class SetPassActivity extends Activity {
 	public void onCancelClick(View v) {
 		Log.d("!!!", "SetPass Canceled");
         setResult(RESULT_CANCELED);
-        finish();	
+        finish();
 	}
 }

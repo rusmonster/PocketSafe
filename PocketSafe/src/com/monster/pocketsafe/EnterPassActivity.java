@@ -44,8 +44,8 @@ public final static String PASS = "com.monster.pocketsafe.EnterPassActivity.PASS
 	
 	public void onCancelClick(View v) {
 		Log.d("!!!", "SetPass Canceled");
-        setResult(RESULT_CANCELED);
-        finish();	
+        setResult(RESULT_CANCELED);        
+        finish();
 	}
 }
 
