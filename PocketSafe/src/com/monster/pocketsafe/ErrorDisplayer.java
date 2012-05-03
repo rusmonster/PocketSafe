@@ -69,12 +69,12 @@ public class ErrorDisplayer {
 		TTypMyException e = TTypMyException.from(err);
 		int id = getResId(e);
 		Log.e("!!!", "ERROR for display: "+e+"("+id+")");
-		String str = "Error: "+e+"("+id+")";
+		String str = "Error: "+e;
 		
 		try {
 			str = context.getResources().getString(id);
-		} catch(Exception e) {
-			Log.e("!!!", "Error reading resource: "+e.getMessage());
+		} catch(Exception e1) {
+			Log.e("!!!", "Error reading resource: "+e1.getMessage());
 		}
 		
 		return str;
