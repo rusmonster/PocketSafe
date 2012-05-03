@@ -55,9 +55,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	public static final String HASH = "com.monster.pocketsafe.SmsViewerActivity.HASH";
 	private static final int IDD_SMS_SENDING = 1;
 	
-	private static final int IDM_NEW = 101;
-	private static final int IDM_DEL = 102;
-	private static final int IDM_SHOWALL = 103;
 	private static final int IDM_FORWARD = 104;
 	private static final int IDM_DELMESSAGE = 105;
 	private static final int IDM_COPYMESSAGE = 106;
@@ -298,7 +295,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	}
 
 	private void handleSmsSendError(IMEventErr event) {
-		String errstr = ErrorDisplayer.getErrStr(event.getErr());
+		String errstr = ErrorDisplayer.getErrStr(getBaseContext(), event.getErr());
 		Toast.makeText(getBaseContext(), errstr, Toast.LENGTH_SHORT).show();		
 	}
 
