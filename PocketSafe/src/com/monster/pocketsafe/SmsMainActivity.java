@@ -6,6 +6,8 @@ import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSmsGroup;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.utils.MyException;
+import com.monster.pocketsafe.utils.MyException.TTypMyException;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -62,14 +64,14 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		
 		Log.v("!!!", "createListAdapter()");
 		
-		getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
+		getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
 		
 		if (mGroups.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSmsGroup> gr_list = new ArrayList<IMSmsGroup>();
 			int k = TStruct.PAGE_SIZE;
 
 			do {
-				getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
+				getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
 				k+=TStruct.PAGE_SIZE;
 				for (int i=0; i<gr_list.size(); i++)
 					mGroups.add(gr_list.get(i));
@@ -77,18 +79,23 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		}
 		
 		ArrayList<String> list = new ArrayList<String>();
-		for (int i=0; i<mGroups.size(); i++) {
-			IMSmsGroup gr = mGroups.get(i);
-			
-			String name = getMain().decryptString(gr.getPhone());
-			IMContact cont = getMain().DbReader().QueryContact().getByPhone(gr.getPhone());
-			if (cont != null)
-				name = cont.getName();
-			
-			if (gr.getCountNew()>0)
-				list.add(name+" ("+gr.getCountNew()+"/"+gr.getCount()+")");
-			else
-				list.add(name+" ("+gr.getCount()+")");
+		int cnt = mGroups.size();
+		for (int i=0; i<cnt; i++) {
+			try {
+				IMSmsGroup gr = mGroups.get(i);
+				
+				String name = getHelper().getMain().decryptString(gr.getPhone());
+				IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(name);
+				if (cont != null)
+					name = cont.getName();
+				
+				if (gr.getCountNew()>0)
+					list.add(name+" ("+gr.getCountNew()+"/"+gr.getCount()+")");
+				else
+					list.add(name+" ("+gr.getCount()+")");
+			} catch(MyException e) {
+				ErrorDisplayer.displayError(this, e);
+			}
 		}
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         
@@ -181,24 +188,30 @@ public class SmsMainActivity extends CMBaseListActivity  {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-		case R.id.mnuMainNewSms:
-			GotoNewSms();
-			break;
-		case R.id.mnuMainDelAll:
-			showDialog(IDD_DELALL);
-			break;
-		case R.id.mnuMainSettings:
-			startActivity(new Intent(this, OptionsActivity.class));
-			break;
-		case R.id.mnuMainAbout:
-			startActivity(new Intent(this, AboutActivity.class));
-			break;
+		try {
+			switch(item.getItemId()) {
+			case R.id.mnuMainNewSms:
+				GotoNewSms();
+				break;
+			case R.id.mnuMainDelAll:
+				showDialog(IDD_DELALL);
+				break;
+			case R.id.mnuMainSettings:
+				startActivity(new Intent(this, OptionsActivity.class));
+				break;
+			case R.id.mnuMainAbout:
+				startActivity(new Intent(this, AboutActivity.class));
+				break;
+			case R.id.mnuMainLock:
+				getHelper().lockNow();
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		try {
@@ -210,7 +223,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 				
 				String nam = mGroups.get(info.position).getPhone();
-				IMContact c = getMain().DbReader().QueryContact().getByPhone(nam);
+				nam = getHelper().getMain().decryptString(nam);
+				IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 				if (c!=null) nam = c.getName();
 				menu.setHeaderTitle(nam);
 			}
@@ -236,15 +250,18 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			}
 		}catch (MyException e) {
 			ErrorDisplayer.displayError(this, e);
+		}catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
 		return super.onContextItemSelected(item);
 	}
 	
 	
 	AlertDialog ShowDelThreadDialog(int idx) throws MyException {
-		final String phone = mGroups.get(idx).getPhone();
-		String nam = new String( phone );
-		IMContact c = getMain().DbReader().QueryContact().getByPhone(nam);
+		final String hash = mGroups.get(idx).getHash();
+		String nam = mGroups.get(idx).getPhone();
+		nam = getHelper().getMain().decryptString(nam);
+		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
@@ -256,7 +273,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDeleteByHash(phone);
+					getHelper().getMain().DbWriter().SmsDeleteByHash(hash);
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}
@@ -284,7 +301,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDelAll();
+					getHelper().getMain().DbWriter().SmsDelAll();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
 				}

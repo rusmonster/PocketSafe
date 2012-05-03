@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -54,9 +55,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	public static final String HASH = "com.monster.pocketsafe.SmsViewerActivity.HASH";
 	private static final int IDD_SMS_SENDING = 1;
 	
-	private static final int IDM_NEW = 101;
-	private static final int IDM_DEL = 102;
-	private static final int IDM_SHOWALL = 103;
 	private static final int IDM_FORWARD = 104;
 	private static final int IDM_DELMESSAGE = 105;
 	private static final int IDM_COPYMESSAGE = 106;
@@ -69,13 +67,13 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private void createListAdapter() throws MyException {
 		if (mHash == null || mHash.length() == 0) return;
 		
-		getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, TStruct.PAGE_SIZE);
+		getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, TStruct.PAGE_SIZE);
 		if (mSmsList.size()==TStruct.PAGE_SIZE) {
 			ArrayList<IMSms> sms_list = new ArrayList<IMSms>();
 			int k = TStruct.PAGE_SIZE;
 
 			do {
-				getMain().DbReader().QuerySms().QueryByHashOrderByDat(sms_list, mHash, k, TStruct.PAGE_SIZE);
+				getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(sms_list, mHash, k, TStruct.PAGE_SIZE);
 				k+=TStruct.PAGE_SIZE;
 				for (int i=0; i<sms_list.size(); i++)
 					mSmsList.add(sms_list.get(i));
@@ -87,19 +85,19 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			if (sms.getIsNew() >= TTypIsNew.ENew) {
 				sms.setIsNew(TTypIsNew.EOld);
-				getMain().DbWriter().SmsUpdate(sms);
+				getHelper().getMain().DbWriter().SmsUpdate(sms);
 			}
 			
-			String phone = getMain().decryptString(sms.getPhone());
+			String phone = getHelper().getMain().decryptString(sms.getPhone());
 			sms.setPhone( phone );
 			mPhone = phone;
 			
-			String text = getMain().decryptString(sms.getText());
+			String text = getHelper().getMain().decryptString(sms.getText());
 			sms.setText(text);
 		}
 		
 		
-		IMContact cont = getMain().DbReader().QueryContact().getByPhone(mPhone);
+		IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(mPhone);
 		if (cont != null)
 			mName = cont.getName();
 		else 
@@ -143,7 +141,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 				String text = mEdText.getText().toString();
 				if (text.length()>0)
 					try {
-						getMain().SendSms(mPhone, text);
+						getHelper().getMain().SendSms(mPhone, text);
 					} catch (MyException e) {
 						ErrorDisplayer.displayError(SmsViewerActivity.this, e.getId().getValue());
 					} catch (Exception e) {
@@ -244,7 +242,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDelete(mMessageForDel);
+					getHelper().getMain().DbWriter().SmsDelete(mMessageForDel);
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsViewerActivity.this, e.getId().getValue());
 				}
@@ -265,7 +263,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private Dialog ShowDelThreadDlg() throws MyException {
 		final String phone = mPhone;
 		String nam = new String( phone );
-		IMContact c = getMain().DbReader().QueryContact().getByPhone(nam);
+		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
@@ -277,7 +275,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
-					getMain().DbWriter().SmsDeleteByHash(mHash);
+					getHelper().getMain().DbWriter().SmsDeleteByHash(mHash);
 					GotoMain();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsViewerActivity.this, e.getId().getValue());
@@ -297,7 +295,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	}
 
 	private void handleSmsSendError(IMEventErr event) {
-		String errstr = ErrorDisplayer.getErrStr(event.getErr());
+		String errstr = ErrorDisplayer.getErrStr(getBaseContext(), event.getErr());
 		Toast.makeText(getBaseContext(), errstr, Toast.LENGTH_SHORT).show();		
 	}
 
@@ -316,24 +314,31 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, IDM_SHOWALL, Menu.NONE, R.string.sms_allsms);
-		menu.add(Menu.NONE, IDM_NEW, Menu.NONE, R.string.sms_newsms);
-		menu.add(Menu.NONE, IDM_DEL, Menu.NONE, R.string.sms_del_thread);
+		MenuInflater i = getMenuInflater();
+		i.inflate(R.menu.menu_smsviewer, menu);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case IDM_SHOWALL:
-			GotoMain();
-			break;
-		case IDM_NEW:
-	        startActivityForResult(new Intent(this, SmsNewActivity.class), NEW_SMS_RESULT);
-			break;
-		case IDM_DEL:
-			showDialog(IDD_DELTHREAD);
-			break;
+		try {
+			switch (item.getItemId()) {
+			case R.id.mnuSmsViewerShowAll:
+				GotoMain();
+				break;
+			case R.id.mnuSmsViewerNewSms:
+		        startActivityForResult(new Intent(this, SmsNewActivity.class), NEW_SMS_RESULT);
+				break;
+			case R.id.mnuSmsViewerDelThread:
+				showDialog(IDD_DELTHREAD);
+				break;
+			case R.id.mnuSmsViewerLock:
+				getHelper().lockNow();
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -366,22 +371,26 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		
-		switch(item.getItemId()) {
-		case IDM_FORWARD:
-			ForwardMessage(info.position);
-			break;
-		case IDM_COPYMESSAGE:
-			ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-			String txt = new String( mSmsList.get(info.position).getText() );
-			clipboard.setText(txt);
-			Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
-			break;
-		case IDM_DELMESSAGE:
-			mMessageForDel = mSmsList.get(info.position).getId();
-			showDialog(IDD_DELMESSAGE);
-			break;
+		try {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+			
+			switch(item.getItemId()) {
+			case IDM_FORWARD:
+				ForwardMessage(info.position);
+				break;
+			case IDM_COPYMESSAGE:
+				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+				String txt = new String( mSmsList.get(info.position).getText() );
+				clipboard.setText(txt);
+				Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
+				break;
+			case IDM_DELMESSAGE:
+				mMessageForDel = mSmsList.get(info.position).getId();
+				showDialog(IDD_DELMESSAGE);
+				break;
+			}
+		} catch(Exception e) {
+			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
 		return super.onContextItemSelected(item);
 	}
@@ -395,7 +404,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		if (v.getId() == android.R.id.list) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+		
+		if (v.getId() == android.R.id.list && info.id>=0) {
 			menu.setHeaderTitle(R.string.sms_message);
 			
 			menu.add(Menu.NONE, IDM_FORWARD, Menu.NONE, R.string.sms_forward);

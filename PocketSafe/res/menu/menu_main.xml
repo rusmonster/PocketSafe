@@ -12,6 +12,10 @@
         android:title="@string/options" 
         android:icon="@android:drawable/ic_menu_preferences">
     </item>
+        <item android:id="@+id/mnuMainLock" 
+        android:title="@string/locknow" 
+        android:icon="@android:drawable/ic_lock_lock">
+    </item>
     <item android:id="@+id/mnuMainAbout" 
         android:title="@string/about" 
         android:icon="@android:drawable/ic_menu_info_details">

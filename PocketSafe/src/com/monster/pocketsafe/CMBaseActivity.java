@@ -8,12 +8,11 @@ import android.util.Log;
 
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMListener;
-import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.utils.MyException;
 
-public abstract class CMBaseActivity extends Activity implements IMBaseActivity, IMHelperBaseActivityObserver, IMListener {
+public abstract class CMBaseActivity extends Activity implements IMHelperBaseActivityObserver, IMListener {
 	
-	private CMHelperBaseActivity mHelper;
+	protected CMHelperBaseActivity mHelper;
 	
 	public CMBaseActivity() {
 		super();
@@ -62,10 +61,6 @@ public abstract class CMBaseActivity extends Activity implements IMBaseActivity,
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public IMMain getMain() throws MyException {
-		return mHelper.getMain();
-	}
-
 	public void listenerEvent(IMEvent event) throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -82,4 +77,7 @@ public abstract class CMBaseActivity extends Activity implements IMBaseActivity,
 		return mHelper.onCreateDialog(id);
 	}
 
+	public IMBaseActivity getHelper() {
+		return mHelper;
+	}
 }

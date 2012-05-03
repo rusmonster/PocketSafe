@@ -17,6 +17,9 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -48,7 +51,7 @@ public class SmsNewActivity extends CMBaseActivity {
     	
 		IMContact c=null;
 		try {
-			c = getMain().DbReader().QueryContact().getByPhone(phone);
+			c = getHelper().getMain().DbReader().QueryContact().getByPhone(phone);
 		} catch (MyException e) {
 			ErrorDisplayer.displayError(this, e.getId().getValue());
 			return;
@@ -71,7 +74,7 @@ public class SmsNewActivity extends CMBaseActivity {
 		if (phone==null)
 			mPhone = mEdPhone.getText().toString();	
 	
-    	getMain().SendSms(mPhone, mEdText.getText().toString());
+		getHelper().getMain().SendSms(mPhone, mEdText.getText().toString());
     }
     
 	@Override
@@ -171,7 +174,7 @@ public class SmsNewActivity extends CMBaseActivity {
 			IMEventSimpleID evID = (IMEventSimpleID)event;
 			int id = evID.getId();
 			
-			String hash = getMain().DbReader().QuerySms().getHashById(id);
+			String hash = getHelper().getMain().DbReader().QuerySms().getHashById(id);
 			
 	        Intent intent = new Intent(this, SmsViewerActivity.class); 
 	        intent.putExtra(SmsViewerActivity.HASH, hash); 
@@ -237,11 +240,12 @@ public class SmsNewActivity extends CMBaseActivity {
                     }
                     
                     mEdPhone.setText(phone);
+                    /*
                     if (phone.length()>0) {
                     	Phone2Name();
                     	mEdText.requestFocus();
                     }
-
+					*/
                 }
 
                 break;
@@ -295,8 +299,34 @@ public class SmsNewActivity extends CMBaseActivity {
 	}
 
 	public void onMainBind() throws MyException {
+		Phone2Name();
+    	mEdText.requestFocus();
+	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater i = getMenuInflater();
+		i.inflate(R.menu.menu_smsnew, menu);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.mnuSmsNewLock:
+			getHelper().lockNow();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onPause() {
+		if (mDlg!=null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
+		super.onPause();
 	}
 	
-
+	
+	
 }

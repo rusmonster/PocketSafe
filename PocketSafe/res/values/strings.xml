@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">SmsSafe-MO</string>
-    <string name="sms_new">New sms message</string>
+    <string name="sms_new">New message</string>
     <string name="sms_new_cnt">new messages: </string>
     <string name="sms_sending">Sending message...</string>
     <string name="sms_newsms">New</string>
@@ -26,7 +26,8 @@
     
     <string name="copied">Text copyed to clipboard</string>
     
-    <string name="enter_pass">Enter new password:</string> 
+    <string name="enter_pass">Enter password:</string> 
+    <string name="enter_new_pass">Enter new password:</string> 
     <string name="repeat_pass">Repeat password:</string> 
     <string name="old_pass">Enter current password</string>
     <string name="set_pass">Password setup</string>
@@ -34,7 +35,65 @@
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
     <string name="opt_locknow">Lock now</string>
+    <string name="locknow">Lock now</string>
     <string name="pass_changed">Password changed succesfully</string>
     <string name="pair_generated">All new sms will be shown here</string>
 
+	<string name="min1">1 min</string>
+	<string name="min3">3 min</string>
+	<string name="min5">5 min</string>
+	<string name="min10">10 min</string>
+	<string name="min30">30 min</string>
+	<string name="min60">1 hour</string>
+	
+	<string name="ErrUnknown">Unknown error</string>
+	<string name="ENoError">No Error</string>
+	<string name="EInvalidDbId">Invalid database ID</string>
+	<string name="EPhoneTooLong">Phone too long</string>
+	<string name="EPhoneInvalid">Invalid phone</string>
+	<string name="EDbAlreadyOpened">Database already opened</string>
+	<string name="EDbNotOpened">Database not opened</string>
+	<string name="EDbVersionError">Invalid database version</string>
+	<string name="EDbErrCreateFolder">Error creating folder</string>
+	<string name="EDbIdNotFoundSetting">Setting not found</string>
+	<string name="EDbErrorGetLastID">Error getting last ID</string>
+	<string name="EDbIdNotFoundSms">Sms not found</string>
+	<string name="EDbErrGetCountSms">Error getting sms count</string>
+	<string name="EDbErrGetCountSetting">Error getting settings count</string>
+	<string name="EDbErrInsertSms">Error inserting sms</string>
+	<string name="EErrServiceNotBinded">Error bind service</string>
+	<string name="EDbErrGetCountContact">Error getting contacts count</string>
+	<string name="ETimerNotReady">Timer not ready</string>
+	<string name="ESmsErrSentGeneric">Error send sms</string>
+	<string name="ESmsErrSentNoService">Error send: no service</string>
+	<string name="ESmsErrSentNullPdu">Error send sms</string>
+	<string name="ESmsErrSentRadioOff">Error send: radio off</string>
+	<string name="ESmsErrSentGeneral">Error send sms</string>
+	<string name="ESmsErrDeliverGeneral">Error deliver sms</string>
+	<string name="ESmsErrSenderAlreadyOpened">Sender already opened</string>
+	<string name="ESmsErrSenderObserverIsNull">Sender observer is null</string>
+	<string name="ESmsErrSenderContextIsNull">Sender context is null</string>
+	<string name="ESmsErrSenderClosed">Sender closed</string>
+	<string name="ESmsErrSenderAlreadySending">Already sending</string>
+	<string name="ESmsErrSendNoPhone">No phone</string>
+	<string name="ESmsErrSendNoText">No text</string>
+	<string name="EDbErrGetCountSmsNew">Error getting count new sms</string>
+	<string name="EErrPhoneFormat">Invalid phone format</string>	         
+	<string name="ESmsErrSendGeneral">Error send sms</string>
+	<string name="ERsaInvalidKeyFormat">Invalid RSA key format</string>
+	<string name="ERsaErrGeneratingKeyPair">Generate keys error</string>
+	<string name="ERsaErrEncrypt">RSA encrypt error</string>
+	<string name="ERsaErrDecrypt">RSA decrypt error</string>
+	<string name="ERsaNotReady">RSA not ready</string>
+	<string name="EAesErrEncrypt">AES encrypt error</string>
+	<string name="EAesErrDecrypt">Incorrect password</string>
+	<string name="EPassNotMatch">Passwords not match</string>
+	<string name="EPassEmpty">Enter password</string>
+	<string name="EPassInvalid">Incorrect password</string>
+	<string name="EPassExpired">Password expired</string>
+	<string name="EErrStringEncode">Encoding error</string>
+	<string name="EErrSha256">SHA256 error</string>
+	<string name="EErrSha256NullArgument">SHA256 null argument</string>
+	<string name="EErrBase64Encode">Base64 encoding error</string>
+	<string name="EErrBase64Decode">Base64 decoding error</string>
 </resources>

@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>  
 
     <application
-        android:icon="@drawable/contact"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name" >
         <provider
             android:name=".dbengine.provider.CMDbProvider"

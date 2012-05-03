@@ -395,6 +395,6 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 
 	public void lockNow() {
 		mPassHolder.clearPass();
-		passExpired(null);
+		//passExpired(null);
 	}
 }

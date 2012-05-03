@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.util.Log;
 
+import com.monster.pocketsafe.dbengine.IMDbEngine;
 import com.monster.pocketsafe.sec.CMRsa;
 import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sec.IMRsaObserver;
@@ -87,6 +88,32 @@ public class CMRsaTestLong extends TestCase {
 		
 		String newtxt = new String(dec);
 		assertEquals(text, newtxt);
+	}
+	
+	public void testEncDecSuccess100() throws Exception {
+		String text = "Привет мир";
+		byte[] data = text.getBytes();
+		
+		Log.i("!!!", "generate start");
+		testGenerateKeyPair();
+		Log.i("!!!", "generate finish");
+		
+		for (int i=0; i<100; i++) {
+			Log.i("!!!", "encript start");
+			byte[] enc = mRsa.EncryptBuffer(data);
+			Log.i("!!!", "encrypt finish");
+			
+			String encStr = new String(enc, "ISO_8859_1");
+			
+			byte[] forDec = encStr.getBytes("ISO_8859_1");
+			
+			Log.i("!!!", "decrypt start");
+			byte[] dec = mRsa.DecryptBuffer(mKey, forDec);
+			Log.i("!!!", "decrypt finish");
+			
+			String newtxt = new String(dec);
+			assertEquals(text, newtxt);
+		}
 	}
 	
 	public void testEncDecWrongKey() throws Exception {
