@@ -28,6 +28,7 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	public static final String SMS_PHONE = "PHONE";
 	public static final String SMS_TEXT = "TXT";
 	public static final String SMS_DATE = "DAT";
+	public static final String SMS_STATUS = "STATUS";
 	
 	
 	public static final String SMSGROUP_HASH = "HASH";
@@ -98,7 +99,8 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_HASH+ " varchar(100)," +
 				SMS_PHONE + " TEXT," +
 				SMS_TEXT + " TEXT," +
-				SMS_DATE + " DATETIME)");
+				SMS_DATE + " DATETIME,"+
+				SMS_STATUS+ " INTEGER)");
 		
 		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASH);
 		db.execSQL("CREATE INDEX "+SMS_INDEX_HASH+" ON "+TABLE_SMS+"("+SMS_HASH+")");

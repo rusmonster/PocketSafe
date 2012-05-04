@@ -116,6 +116,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	public void clearPass() {
 		if (mPass!=null) {
 			mPass=null;
+			mTimExpire=null;
 			mTimer.cancelTimer();
 		}
 	}
