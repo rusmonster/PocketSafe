@@ -35,7 +35,7 @@ public class CMSmsNotificator implements IMSmsNotificator {
 	}
 	
 	public void Popup(int cnt_newsms) {
-	    int icon = R.drawable.android_happy;
+	    int icon = R.drawable.notificator;
 		long when = System.currentTimeMillis();
 		mNotification = new Notification(icon, mTickerText, when);
 	    mNotification.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;

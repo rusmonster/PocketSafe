@@ -1,6 +1,7 @@
 package com.monster.pocketsafe.main;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import android.util.Log;
 
@@ -22,6 +23,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	private IMBase64 mBase64;
 	private long mInterval;
 	private IMTimer mTimer;
+	private Date mTimExpire;
 	
 	public CMPassHolder(IMLocator locator) {
 		mLocator = locator;
@@ -31,6 +33,14 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		mTimer.SetObserver(this);
 	}
 
+	private void restartTimer() throws MyException {
+		Date dat = new Date();
+		mTimExpire = new Date(dat.getTime()+mInterval);
+		
+		mTimer.cancelTimer();
+		mTimer.startTimer(mInterval);
+	}
+	
 	public void setPass(String pass) throws MyException {
 		if (pass==null || pass.length()==0)
 			throw new MyException(TTypMyException.EPassInvalid);
@@ -46,8 +56,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 			throw e;
 		}
 		
-		mTimer.cancelTimer();
-		mTimer.startTimer(mInterval);
+		restartTimer();
 	}
 
 	public String getPass() throws MyException {
@@ -59,6 +68,16 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	}
 
 	public BigInteger getKey() throws MyException {
+		Date dat = new Date();
+		if (mTimExpire!=null && dat.after(mTimExpire)) {
+			mTimer.cancelTimer();
+			try {
+				timerEvent(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (mPass==null)
 			throw new MyException(TTypMyException.EPassExpired);
 		
@@ -77,14 +96,14 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		mInterval = _ms;
 		
 		if ( isPassValid() ) {
-			mTimer.cancelTimer();
-			mTimer.startTimer(mInterval);
+			restartTimer();
 		}
 	}
 
 	public void timerEvent(IMTimer sender) throws Exception {
 		if (mPass!=null) {
 			mPass = null;
+			mTimExpire=null;
 			if (mObserver!=null) 
 				mObserver.passExpired(this);
 		}
