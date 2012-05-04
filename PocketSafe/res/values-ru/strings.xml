@@ -22,6 +22,7 @@
     <string name="sms_forward">Переслать</string>
     <string name="sms_copymessage">Копировать</string>
     <string name="sms_delmessage">Удалить</string>
+	<string name="sms_resend">Отправить заново</string>    
     <string name="options">Настройка</string>
     
     <string name="copied">Текст скопирован в буфер</string>
@@ -46,6 +47,8 @@
 	<string name="min30">30 мин</string>
 	<string name="min60">1 час</string>
 
+	<string name="Me">Я</string>
+	    
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
 	<string name="EInvalidDbId">Неверный ID базы данных</string>
@@ -95,5 +98,6 @@
 	<string name="EErrSha256">Ошибка SHA256</string>
 	<string name="EErrSha256NullArgument">SHA256 нулевой аргумент</string>
 	<string name="EErrBase64Encode">Ошибка кодирования Base64</string>
-	<string name="EErrBase64Decode">Ошибка декодирования Base64</string>	    
+	<string name="EErrBase64Decode">Ошибка декодирования Base64</string>
+	<string name="ESmsErrResend">Не могу отправить заново</string>	    
 </resources>

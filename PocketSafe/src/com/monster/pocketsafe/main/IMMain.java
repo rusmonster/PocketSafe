@@ -21,5 +21,6 @@ public interface IMMain {
 	String decryptString(String data) throws MyException;
 	boolean isPassValid();
 	void lockNow();
+	void ResendSms(int id) throws MyException;
 
 }

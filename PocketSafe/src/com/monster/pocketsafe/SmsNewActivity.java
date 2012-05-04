@@ -166,11 +166,6 @@ public class SmsNewActivity extends CMBaseActivity {
 	public void listenerEvent(IMEvent event) throws Exception {
 		switch (event.getTyp()) {
 		case ESmsSendStart:
-			showDialog(IDD_SMS_SENDING); 
-			break;
-		case ESmsSent:
-			dismissDialog(IDD_SMS_SENDING); mDlg = null;
-			
 			IMEventSimpleID evID = (IMEventSimpleID)event;
 			int id = evID.getId();
 			
@@ -178,18 +173,27 @@ public class SmsNewActivity extends CMBaseActivity {
 			
 	        Intent intent = new Intent(this, SmsViewerActivity.class); 
 	        intent.putExtra(SmsViewerActivity.HASH, hash); 
+	        intent.putExtra(SmsViewerActivity.SMS_ID, id);
 	        
 			mEdPhone.getText().clear();
 			mEdText.getText().clear();
 			
 	        setResult(RESULT_OK, intent);
 	        finish();
+	        
+			//showDialog(IDD_SMS_SENDING); 
+			break;
+			/*
+		case ESmsSent:
+			dismissDialog(IDD_SMS_SENDING); mDlg = null;
+			
 			break;
 		case ESmsSendError:
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
 			IMEventErr ev = (IMEventErr) event;
 			ErrorDisplayer.displayError(this, ev.getErr());
 			break;
+			*/
 		}
 		
 	}

@@ -89,6 +89,26 @@ public class CMRsaTestLong extends TestCase {
 		assertEquals(text, newtxt);
 	}
 	
+	public void testEncDecSuccess100K() throws Exception {
+		int len = 100*1024;
+		byte[] data = new byte[len];
+		
+		Log.i("!!!", "generate start");
+		testGenerateKeyPair();
+		Log.i("!!!", "generate finish");
+		
+		Log.i("!!!", "encript start");
+		byte[] enc = mRsa.EncryptBuffer(data);
+		Log.i("!!!", "encrypt finish");
+		
+		Log.i("!!!", "decrypt start");
+		byte[] dec = mRsa.DecryptBuffer(mKey, enc);
+		Log.i("!!!", "decrypt finish");
+		
+		for (int i=0; i<len; i++)
+			assertEquals(data[i], dec[i]);
+	}
+	
 	public void testEncDecSuccess100() throws Exception {
 		String text = "Привет мир";
 		byte[] data = text.getBytes();

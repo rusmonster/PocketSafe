@@ -70,12 +70,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	public BigInteger getKey() throws MyException {
 		Date dat = new Date();
 		if (mTimExpire!=null && dat.after(mTimExpire)) {
-			mTimer.cancelTimer();
-			try {
-				timerEvent(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			mPass=null;
 		}
 		
 		if (mPass==null)

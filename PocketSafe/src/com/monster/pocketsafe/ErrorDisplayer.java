@@ -61,6 +61,7 @@ public class ErrorDisplayer {
 		case EErrBase64Encode: return R.string.EErrBase64Encode;
 		case EErrBase64Decode: return R.string.EErrBase64Decode;
 		case EErrUnknown: return R.string.ErrUnknown;
+		case ESmsErrResend: return R.string.ESmsErrResend;
 		default:
 			return R.string.ErrUnknown;
 		}

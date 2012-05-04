@@ -1,9 +1,12 @@
 package com.monster.pocketsafe;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMListener;
@@ -41,6 +44,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	
 
 	private String mHash;
+	private int mSmsId;
 	private String mPhone;
 	private String mName;
 	ArrayList<IMSms> mSmsList = new ArrayList<IMSms>();
@@ -52,12 +56,17 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	
 	private CSmsCounter mSmsCou = new CSmsCounter();
 	
+	private SmsAdapter mAdapter;
+	
 	public static final String HASH = "com.monster.pocketsafe.SmsViewerActivity.HASH";
+	public static final String SMS_ID = "com.monster.pocketsafe.SmsViewerActivity.SMS_ID";
+	
 	private static final int IDD_SMS_SENDING = 1;
 	
 	private static final int IDM_FORWARD = 104;
 	private static final int IDM_DELMESSAGE = 105;
 	private static final int IDM_COPYMESSAGE = 106;
+	private static final int IDM_RESEND = 107;
 	
 	private static final int NEW_SMS_RESULT = 1002;
 	
@@ -67,19 +76,10 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private void createListAdapter() throws MyException {
 		if (mHash == null || mHash.length() == 0) return;
 		
-		getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, TStruct.PAGE_SIZE);
-		if (mSmsList.size()==TStruct.PAGE_SIZE) {
-			ArrayList<IMSms> sms_list = new ArrayList<IMSms>();
-			int k = TStruct.PAGE_SIZE;
-
-			do {
-				getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(sms_list, mHash, k, TStruct.PAGE_SIZE);
-				k+=TStruct.PAGE_SIZE;
-				for (int i=0; i<sms_list.size(); i++)
-					mSmsList.add(sms_list.get(i));
-			} while (sms_list.size()==TStruct.PAGE_SIZE);
-		}
+		getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, Integer.MAX_VALUE);
 		
+		mPhone="";
+		String phone=null;
 		for (int i=0; i<mSmsList.size(); i++) {
 			IMSms sms = mSmsList.get(i);
 			
@@ -88,9 +88,11 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 				getHelper().getMain().DbWriter().SmsUpdate(sms);
 			}
 			
-			String phone = getHelper().getMain().decryptString(sms.getPhone());
+			if (phone==null) {
+				phone = getHelper().getMain().decryptString(sms.getPhone());
+				mPhone = phone;
+			}
 			sms.setPhone( phone );
-			mPhone = phone;
 			
 			String text = getHelper().getMain().decryptString(sms.getText());
 			sms.setText(text);
@@ -104,9 +106,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			mName = mPhone;
 		
 		setTitle(mName);
-		
-        SmsAdapter adapter = new SmsAdapter(this, mSmsList, mName);
-        setListAdapter(adapter);
 	}
     
 	/** Called when the activity is first created. */
@@ -161,6 +160,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		public void run() {
 			try {
 				createListAdapter();
+				mAdapter.notifyDataSetChanged();
 			} catch (MyException e) {
 				ErrorDisplayer.displayError(SmsViewerActivity.this, e);
 			}	
@@ -180,11 +180,11 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
 		case ESmsSendStart:
+			mEdText.getText().clear();			
 			showDialog(IDD_SMS_SENDING); 
 			break;
 		case ESmsSent:
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
-			mEdText.getText().clear();
 			
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(mEdText.getWindowToken(), 0);
@@ -302,6 +302,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	@Override
 	protected void onStart() {
 	    mHash = getIntent().getStringExtra(HASH);
+	    mSmsId = getIntent().getIntExtra(SMS_ID, -1);
 	    
 		super.onStart();
 	}
@@ -375,6 +376,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			
 			switch(item.getItemId()) {
+			case IDM_RESEND:
+				getHelper().getMain().ResendSms( mSmsList.get(info.position).getId() );
+				break;
 			case IDM_FORWARD:
 				ForwardMessage(info.position);
 				break;
@@ -409,6 +413,13 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		if (v.getId() == android.R.id.list && info.id>=0) {
 			menu.setHeaderTitle(R.string.sms_message);
 			
+			try {
+				IMSms sms = getHelper().getLocator().createSms();
+				getHelper().getMain().DbReader().QuerySms().getById(sms, mSmsList.get(info.position).getId());
+				if (sms.getStatus() == TTypStatus.ESendError)
+					menu.add(Menu.NONE, IDM_RESEND, Menu.NONE, R.string.sms_resend);
+			}catch(Exception e)
+			{}
 			menu.add(Menu.NONE, IDM_FORWARD, Menu.NONE, R.string.sms_forward);
 			menu.add(Menu.NONE, IDM_COPYMESSAGE, Menu.NONE, R.string.sms_copymessage);
 			menu.add(Menu.NONE, IDM_DELMESSAGE, Menu.NONE, R.string.sms_delmessage);
@@ -416,10 +427,25 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
-	public void onMainBind() throws MyException {
+	public void onMainBind() throws MyException {        
 		createListAdapter();
+		
+        mAdapter = new SmsAdapter(this, mSmsList, mName);
+        setListAdapter(mAdapter);	
+
+        try {
+			if (mSmsId != -1) {
+				IMSms sms = getHelper().getLocator().createSms();
+				getHelper().getMain().DbReader().QuerySms().getById(sms, mSmsId);
+				
+				if (sms.getStatus() == TTypStatus.ESending) {
+					showDialog(IDD_SMS_SENDING); 
+				}
+			}
+        } catch (Exception e) {
+        	Log.e("!!!", "Error in SmsViewerActivity onMainBind: "+e.getMessage());
+        }
+        
 	}
-	
-	
 
 }

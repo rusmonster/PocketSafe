@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.monster.pocketsafe.dbengine.CMDbEngine;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypFolder;
+import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
@@ -37,6 +38,25 @@ public class CMDbEnginePrintAllSms extends AndroidTestCase {
 			}
 			k+=1000;
 			mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.EInbox, k, 1000);
+		}
+		
+	}
+	
+	public void testMarkSendError() throws MyException {
+		Log.d("!!!","Starting testMarkSendError");
+		
+		ArrayList<IMSms> res = new ArrayList<IMSms>();
+		mDbEngine.TableSms().QueryByFolderOrderByDatDesc(res, TTypFolder.ESent, 0, Integer.MAX_VALUE);
+		int cnt = res.size();
+		
+		for (int i=0; i<cnt; i++) {
+			IMSms sms = res.get(i);
+			if (sms.getFolder() == TTypFolder.ESent) {
+				sms.setFolder(TTypFolder.EOutbox);
+				sms.setStatus(TTypStatus.ESendError);
+				mDbEngine.TableSms().Update(sms);
+				Log.i("!!!", "Mark SendError");
+			}
 		}
 		
 	}
