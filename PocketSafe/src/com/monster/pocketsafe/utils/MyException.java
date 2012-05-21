@@ -57,7 +57,8 @@ public class MyException extends Exception {
 		EErrSha256NullArgument(46), 
 		EErrBase64Encode(47),
 		EErrBase64Decode(48), 
-		EErrUnknown(49)
+		EErrUnknown(49), 
+		ESmsErrResend(50)
 		;
 		
 	    private final int mValue;

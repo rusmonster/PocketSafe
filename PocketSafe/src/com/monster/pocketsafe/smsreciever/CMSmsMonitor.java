@@ -11,6 +11,7 @@ import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.main.TTypEvent;
 import com.monster.pocketsafe.main.TTypEventStrings;
 import com.monster.pocketsafe.safeservice.CMSafeService;
@@ -52,6 +53,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 		sms.setHash(mSha.getHash(phone));
 		sms.setText(new String(cText, IMDbEngine.ENCODING));
 		sms.setDate( new Date() );
+		sms.setStatus(TTypStatus.ERecv);
 		
 		int id = mDbEngine.TableSms().Insert(sms);
 		

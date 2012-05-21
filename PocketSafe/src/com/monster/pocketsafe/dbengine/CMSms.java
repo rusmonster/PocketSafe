@@ -16,6 +16,7 @@ public class CMSms implements IMSms {
 	private String mPhone;
 	private String mText;
 	private Date mDate;
+	private int mStatus;
 	
 	public Date getDate() {
 		return mDate;
@@ -86,6 +87,14 @@ public class CMSms implements IMSms {
 
 	public void setHash(String Hash) {
 		mHash = Hash;
+	}
+
+	public int getStatus() {
+		return mStatus;
+	}
+
+	public void setStatus(int status) {
+		mStatus = status;
 	}
 
 }

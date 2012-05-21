@@ -22,6 +22,7 @@
     <string name="sms_forward">Forward</string>
     <string name="sms_copymessage">Copy</string>
     <string name="sms_delmessage">Delete</string>
+    <string name="sms_resend">Resend</string>
     <string name="options">Settings</string>
     
     <string name="copied">Text copyed to clipboard</string>
@@ -45,6 +46,8 @@
 	<string name="min10">10 min</string>
 	<string name="min30">30 min</string>
 	<string name="min60">1 hour</string>
+	
+	<string name="Me">Me</string>
 	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
@@ -96,4 +99,5 @@
 	<string name="EErrSha256NullArgument">SHA256 null argument</string>
 	<string name="EErrBase64Encode">Base64 encoding error</string>
 	<string name="EErrBase64Decode">Base64 decoding error</string>
+	<string name="ESmsErrResend">Cannot resend</string>
 </resources>

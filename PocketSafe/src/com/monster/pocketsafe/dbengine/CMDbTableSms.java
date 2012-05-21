@@ -27,7 +27,8 @@ public class CMDbTableSms implements IMDbTableSms {
         CMSQLiteOnlineHelper.SMS_HASH,
         CMSQLiteOnlineHelper.SMS_PHONE,
         CMSQLiteOnlineHelper.SMS_TEXT,
-        CMSQLiteOnlineHelper.SMS_DATE
+        CMSQLiteOnlineHelper.SMS_DATE,
+        CMSQLiteOnlineHelper.SMS_STATUS
     };
     
     private static final String[] mContentGroup = new String[] {
@@ -57,6 +58,8 @@ public class CMDbTableSms implements IMDbTableSms {
 		
 		Date dat = new Date(c.getLong(7));
 		dest.setDate(dat);
+		
+		dest.setStatus(c.getInt(8));
 	}
 	
 	public void Delete(int id) throws MyException {
@@ -77,6 +80,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
+        values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
         
         Uri uriId = mCr.insert(CMDbProvider.CONTENT_URI_SMS, values);
         if (uriId == null) throw new MyException(TTypMyException.EDbErrInsertSms);
@@ -190,6 +194,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
+        values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
         
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
 	}

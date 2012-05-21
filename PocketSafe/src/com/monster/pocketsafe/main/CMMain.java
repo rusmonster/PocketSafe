@@ -15,6 +15,7 @@ import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.main.notificator.IMSmsNotificator;
 import com.monster.pocketsafe.sec.IMAes;
 import com.monster.pocketsafe.sec.IMBase64;
@@ -145,11 +146,15 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		sms.setDirection( TTypDirection.EOutgoing );
 		sms.setFolder( TTypFolder.EOutbox );
 		sms.setIsNew(TTypIsNew.ENew);
+		sms.setStatus(TTypStatus.ESendError);
 		
 		int id = mDbEngine.TableSms().Insert(sms);
 		sms.setId(id);
 		
 		mSmsSender.sendSms(phone, text, sms.getId());
+		
+		sms.setStatus(TTypStatus.ESending);
+		mDbEngine.TableSms().Update(sms);
 		
 		IMEventSimpleID ev = mLocator.createEventSimpleID();
 		ev.setTyp(TTypEvent.ESmsSendStart);
@@ -162,6 +167,42 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mDispatcher.pushEvent(insertEv);
 	}
 
+	public void ResendSms(int id) throws MyException {
+		
+		IMSms sms = mLocator.createSms();
+		mDbEngine.TableSms().getById(sms, id);
+		
+		if (sms.getFolder() != TTypFolder.EOutbox || sms.getStatus() != TTypStatus.ESendError)
+			throw new MyException(TTypMyException.ESmsErrResend);
+
+		String phone, text;
+		try {
+			byte[] bPhone = sms.getPhone().getBytes(IMDbEngine.ENCODING);
+			byte[] bText = sms.getText().getBytes(IMDbEngine.ENCODING);
+			phone = new String( mRsa.DecryptBuffer(mPassHolder.getKey(), bPhone) );
+			text  = new String( mRsa.DecryptBuffer(mPassHolder.getKey(), bText) );
+		} catch (MyException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new MyException(TTypMyException.EErrStringEncode);
+		}
+		
+		mSmsSender.sendSms(phone, text, sms.getId());
+		
+		sms.setStatus(TTypStatus.ESending);
+		mDbEngine.TableSms().Update(sms);
+		
+		IMEventSimpleID ev = mLocator.createEventSimpleID();
+		ev.setTyp(TTypEvent.ESmsSendStart);
+		ev.setId(sms.getId());
+		mDispatcher.pushEvent(ev);
+		
+		IMEventSimpleID insertEv = mLocator.createEventSimpleID();
+		insertEv.setTyp(TTypEvent.ESmsUpdated);
+		insertEv.setId(sms.getId());
+		mDispatcher.pushEvent(insertEv);
+	}
+	
 	private void pushMyException(MyException e) {
 		IMEventSimpleID ev = mLocator.createEventSimpleID();
         ev.setTyp(TTypEvent.EErrMyException);
@@ -210,6 +251,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		try {
 			mDbEngine.TableSms().getById(sms, tag);
 			sms.setFolder( TTypFolder.ESent );
+			sms.setStatus( TTypStatus.ESent );
 			mDbEngine.TableSms().Update(sms);
 		} catch (MyException e) {
 			pushMyException(e);
@@ -225,11 +267,23 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 
 
 	public void SmsSenderSentError(IMSmsSender sender, int tag,  int err) {
-		IMEventErr ev = mLocator.createEventErr();
-		ev.setTyp(TTypEvent.ESmsSendError);
-		ev.setId(tag);
-		ev.setErr(err);
-		mDispatcher.pushEvent(ev);
+		IMSms sms = mLocator.createSms();
+
+		try {
+			mDbEngine.TableSms().getById(sms, tag);
+			if (sms.getStatus() != TTypStatus.ESendError) {
+				sms.setStatus( TTypStatus.ESendError );
+				mDbEngine.TableSms().Update(sms);
+				
+				IMEventErr ev = mLocator.createEventErr();
+				ev.setTyp(TTypEvent.ESmsSendError);
+				ev.setId(tag);
+				ev.setErr(err);
+				mDispatcher.pushEvent(ev);				
+			}
+		} catch (MyException e) {
+			pushMyException(e);
+		}
 	}
 
 
