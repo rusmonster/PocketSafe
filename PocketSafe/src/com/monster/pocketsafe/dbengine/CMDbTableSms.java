@@ -237,5 +237,23 @@ public class CMDbTableSms implements IMDbTableSms {
 			c.close();
 		}
 	}
+	
+	public int getCountByHash(String hash) throws MyException {
+		
+		String[] args = new String[] { hash };
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mCount, 
+				CMSQLiteOnlineHelper.SMS_HASH+"=?", args, null);
+		
+		try {
+			if ( c.moveToFirst() ) {
+				int cnt = c.getInt(0);
+				return cnt;
+			}
+			
+			throw  new MyException(TTypMyException.EDbErrGetCountSmsByHash);
+		} finally {
+			c.close();
+		}
+	}
 
 }

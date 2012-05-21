@@ -62,6 +62,7 @@ public class ErrorDisplayer {
 		case EErrBase64Decode: return R.string.EErrBase64Decode;
 		case EErrUnknown: return R.string.ErrUnknown;
 		case ESmsErrResend: return R.string.ESmsErrResend;
+		case EDbErrGetCountSmsByHash: return R.string.EDbErrGetCountSmsByHash;
 		default:
 			return R.string.ErrUnknown;
 		}
