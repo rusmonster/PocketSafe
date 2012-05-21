@@ -48,6 +48,7 @@
 	<string name="min60">1 hour</string>
 	
 	<string name="Me">Me</string>
+	<string name="smsLoading">Loading...</string>
 	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>

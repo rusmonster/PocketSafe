@@ -9,11 +9,14 @@ import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypStatus;
 
 import android.app.Activity;
+import android.graphics.Canvas.VertexMode;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class SmsAdapter extends ArrayAdapter<IMSms> {
@@ -29,10 +32,12 @@ public class SmsAdapter extends ArrayAdapter<IMSms> {
 	private static final SimpleDateFormat mDateFormatDate = new SimpleDateFormat("ddMMyyyy");
 	
 	private static class SmsAdapterView {
-		//public ImageView mImgMsg;
+		public LinearLayout mItem;
+		public ImageView mImgMsg;
 		public TextView  mCap;
 		public ImageView mImgStatus;
 		public TextView  mText;
+		public TextView	 mSmsLoading;
 	}
 	
 	public SmsAdapter(Activity activity, List<IMSms> list, String nam) {
@@ -66,10 +71,12 @@ public class SmsAdapter extends ArrayAdapter<IMSms> {
 			v = inflater.inflate(LAYOUT, null, true);
 			
 			sav = new SmsAdapterView();
-			//sav.mImgMsg = (ImageView)v.findViewById(R.id.msg_icon);
+			sav.mSmsLoading = (TextView)v.findViewById(R.id.smsLoading);
+			sav.mImgMsg = (ImageView)v.findViewById(R.id.msg_icon);
 			sav.mCap	= (TextView)v.findViewById(R.id.smsCap);
 			sav.mImgStatus 	= (ImageView)v.findViewById(R.id.msg_status);
 			sav.mText		= (TextView)v.findViewById(R.id.smsText);
+			sav.mItem		= (LinearLayout)v.findViewById(R.id.smsItem);
 			
 			v.setTag(sav);
 		} else {

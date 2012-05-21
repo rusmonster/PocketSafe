@@ -48,6 +48,7 @@
 	<string name="min60">1 час</string>
 
 	<string name="Me">Я</string>
+	<string name="smsLoading">Загрузка...</string>
 	    
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>

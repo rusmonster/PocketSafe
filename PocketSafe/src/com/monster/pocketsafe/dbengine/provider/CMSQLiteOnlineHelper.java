@@ -2,6 +2,7 @@ package com.monster.pocketsafe.dbengine.provider;
 
 import com.monster.pocketsafe.dbengine.TTypFolder;
 import com.monster.pocketsafe.dbengine.TTypIsNew;
+import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
 
 import android.content.ContentValues;
@@ -13,7 +14,7 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 2;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
@@ -108,6 +109,11 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		if (oldVersion<2) {
+			db.execSQL("ALTER TABLE "+TABLE_SMS+" ADD "+SMS_STATUS+" INTEGER");
+			db.execSQL("UPDATE "+TABLE_SMS+" SET "+SMS_STATUS+"="+TTypStatus.ESent);
+			oldVersion = 2;
+		}
 
 	}
 
