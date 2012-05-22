@@ -11,6 +11,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.concurrent.BlockingQueue;
 
 import javax.crypto.Cipher;
 import android.os.Handler;
@@ -22,7 +23,8 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 public class CMRsa implements IMRsa {
 	
-	private static int LEN_MAX_BLOCK = 245;
+	private static int LEN_BLOCK_ENC = 245;
+	private static int LEN_BLOCK_DEC = 256;
 	
 	private IMLocator mLocator;
 	private IMRsaObserver mObserver;
@@ -159,8 +161,6 @@ public class CMRsa implements IMRsa {
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		
 		try {
 			KeyFactory kf = KeyFactory.getInstance("RSA");
 			PublicKey publicKey = kf.generatePublic( new RSAPublicKeySpec(mModulus, mPublicExp) );
@@ -170,32 +170,28 @@ public class CMRsa implements IMRsa {
 
 			int len_data = _data.length;
 			
-			int offset=0;
-			int len = (len_data>LEN_MAX_BLOCK)?LEN_MAX_BLOCK:len_data;
+			int offset_in=0;
+			int offset_out=0;
+			int len = (len_data>LEN_BLOCK_ENC)?LEN_BLOCK_ENC:len_data;
+			
+			int siz = (len_data/LEN_BLOCK_ENC+1)*LEN_BLOCK_DEC;
+			byte[] res = new byte [siz];
 			
 			do {
-				byte[] cipherData = cipher.doFinal(_data,offset,len);
-			    int len_ci = cipherData.length;
-			    Log.i("!!!", "len_ci="+len_ci);
+				cipher.doFinal(_data,offset_in,len,res,offset_out);
 			    
-			    baos.write((len_ci >> 8)&0xFF);
-			    baos.write(len_ci&0xFF);
-			    baos.write(cipherData);
-			    
-			    offset+=len;
-			    len = len_data-offset;
-			    if (len>LEN_MAX_BLOCK) len =LEN_MAX_BLOCK;
+				offset_out += LEN_BLOCK_DEC;
+				
+			    offset_in+=len;
+			    len = len_data-offset_in;
+			    if (len>LEN_BLOCK_ENC) len =LEN_BLOCK_ENC;
 			} while(len>0);
 		    
-		    return baos.toByteArray();
+		    return res;
 		    
 		} catch(Exception e) {
 			Log.e("!!!", "EncryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrEncrypt);
-		} finally {
-			try {
-				baos.close();
-			} catch (IOException e) {}
 		}
 	}
 
@@ -203,8 +199,6 @@ public class CMRsa implements IMRsa {
 		
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		
 		try {
 			
@@ -215,27 +209,27 @@ public class CMRsa implements IMRsa {
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			
 			int len_data = _data.length;
-			int offset = 0;
+			int offset_in = 0;
+			int offset_out = 0;
 			
-			while (offset<len_data) {			
-				int len = _data[offset++] << 8;
-				len |= _data[offset++];
-				byte[] cipherData = cipher.doFinal(_data, offset, len);
-				
-				baos.write(cipherData);
-				
-				offset += len;
+			int siz = (len_data/LEN_BLOCK_DEC+1) * LEN_BLOCK_ENC;
+			byte[] res = new byte[siz];
+			
+			while (offset_in<len_data) {			
+				offset_out += cipher.doFinal(_data, offset_in, LEN_BLOCK_DEC,res,offset_out);;
+				offset_in += LEN_BLOCK_DEC;
 			}
 
-			return baos.toByteArray();
+			if (offset_out<siz) {
+				byte[] tmp = new byte[offset_out];
+				System.arraycopy(res, 0, tmp, 0, offset_out);
+				res = tmp;
+			}
+			return res;
 		    
 		} catch(Exception e) {
 			Log.e("!!!", "DecryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrDecrypt);
-		} finally {
-			try {
-				baos.close();
-			} catch (IOException e) {}
 		}
 	}
 
