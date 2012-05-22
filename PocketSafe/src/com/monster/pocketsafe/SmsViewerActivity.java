@@ -1,11 +1,8 @@
 package com.monster.pocketsafe;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
-
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSms;
-import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventErr;
@@ -47,7 +44,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private int mSmsId;
 	private String mPhone;
 	private String mName;
-	ArrayList<IMSms> mSmsList = new ArrayList<IMSms>();
 	private final Handler mHandler = new Handler();
 	private View mEditorView;
 	private EditText mEdText;
@@ -73,41 +69,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private static final int IDD_DELTHREAD = 1001;
 	private static final int IDD_DELMESSAGE = 1002;
 	
-	private void createListAdapter() throws MyException {
-		if (mHash == null || mHash.length() == 0) return;
-		
-		getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(mSmsList, mHash, 0, Integer.MAX_VALUE);
-		
-		mPhone="";
-		String phone=null;
-		for (int i=0; i<mSmsList.size(); i++) {
-			IMSms sms = mSmsList.get(i);
-			
-			if (sms.getIsNew() >= TTypIsNew.ENew) {
-				sms.setIsNew(TTypIsNew.EOld);
-				getHelper().getMain().DbWriter().SmsUpdate(sms);
-			}
-			
-			if (phone==null) {
-				phone = getHelper().getMain().decryptString(sms.getPhone());
-				mPhone = phone;
-			}
-			sms.setPhone( phone );
-			
-			String text = getHelper().getMain().decryptString(sms.getText());
-			sms.setText(text);
-		}
-		
-		
-		IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(mPhone);
-		if (cont != null)
-			mName = cont.getName();
-		else 
-			mName = mPhone;
-		
-		setTitle(mName);
-	}
-    
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -158,12 +119,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private final Runnable mRunReload = new Runnable() {
 		
 		public void run() {
-			try {
-				createListAdapter();
-				mAdapter.notifyDataSetChanged();
-			} catch (MyException e) {
-				ErrorDisplayer.displayError(SmsViewerActivity.this, e);
-			}	
+			mAdapter.notifyDataSetChanged();
 		}
 	};
 	private ProgressDialog mDlg;
@@ -310,6 +266,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	@Override
 	protected void onPause() {	
 		if (mDlg != null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
+		mAdapter.Close();
 		super.onPause();
 	}
 
@@ -374,22 +331,25 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	public boolean onContextItemSelected(MenuItem item) {
 		try {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+			int id = (int) mAdapter.getItemId(info.position);
 			
 			switch(item.getItemId()) {
 			case IDM_RESEND:
-				getHelper().getMain().ResendSms( mSmsList.get(info.position).getId() );
+				getHelper().getMain().ResendSms( id );
 				break;
 			case IDM_FORWARD:
-				ForwardMessage(info.position);
+				ForwardMessage(id);
 				break;
 			case IDM_COPYMESSAGE:
 				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-				String txt = new String( mSmsList.get(info.position).getText() );
+				IMSms sms = getHelper().getLocator().createSms(); 
+				getHelper().getMain().DbReader().QuerySms().getById(sms, id);
+				String txt = getHelper().getMain().decryptString(sms.getText());
 				clipboard.setText(txt);
 				Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
 				break;
 			case IDM_DELMESSAGE:
-				mMessageForDel = mSmsList.get(info.position).getId();
+				mMessageForDel = id;
 				showDialog(IDD_DELMESSAGE);
 				break;
 			}
@@ -399,8 +359,11 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		return super.onContextItemSelected(item);
 	}
 
-	private void ForwardMessage(int position) {
-		String text = mSmsList.get(position).getText();
+	private void ForwardMessage(int id) throws MyException {
+		IMSms sms = getHelper().getLocator().createSms(); 
+		getHelper().getMain().DbReader().QuerySms().getById(sms, id);
+		String text = getHelper().getMain().decryptString(sms.getText());
+		
 		Intent i = new Intent(this, SmsNewActivity.class);
 		i.putExtra(SmsNewActivity.TEXT, text);
 		startActivityForResult(i, NEW_SMS_RESULT);
@@ -415,7 +378,8 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			
 			try {
 				IMSms sms = getHelper().getLocator().createSms();
-				getHelper().getMain().DbReader().QuerySms().getById(sms, mSmsList.get(info.position).getId());
+				int id =  (int) mAdapter.getItemId(info.position);
+				getHelper().getMain().DbReader().QuerySms().getById(sms,id);
 				if (sms.getStatus() == TTypStatus.ESendError)
 					menu.add(Menu.NONE, IDM_RESEND, Menu.NONE, R.string.sms_resend);
 			}catch(Exception e)
@@ -427,10 +391,24 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
-	public void onMainBind() throws MyException {        
-		createListAdapter();
+	public void onMainBind() throws MyException {     
 		
-        mAdapter = new SmsAdapter(this, mSmsList, mName);
+		ArrayList<IMSms> dest = new ArrayList<IMSms>(1);
+		getHelper().getMain().DbReader().QuerySms().QueryByHashOrderByDat(dest, mHash, 0, 1);
+		
+		if (dest.size()>0) {
+			IMSms sms = dest.get(0);
+			mPhone = getHelper().getMain().decryptString(sms.getPhone());
+			IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(mPhone);
+			if (cont != null)
+				mName = cont.getName();
+			else 
+				mName = mPhone;
+			
+			setTitle(mName);
+		}
+
+        mAdapter = new SmsAdapter(this, getHelper().getMain(), mName, mHash);
         setListAdapter(mAdapter);	
 
         try {

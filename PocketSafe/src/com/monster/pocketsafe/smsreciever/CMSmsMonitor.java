@@ -93,7 +93,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 				if (ProcessMessage(context, smsfrom, smstext)) {
 					Log.d("!!!", "SMS stored");
 					writeFile(context, smsfrom+": "+smstext);
-					abortBroadcast();
+					//abortBroadcast();
 				}
 	
 			}

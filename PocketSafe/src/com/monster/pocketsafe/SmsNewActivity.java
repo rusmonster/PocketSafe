@@ -2,7 +2,6 @@ package com.monster.pocketsafe;
 
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.main.IMEvent;
-import com.monster.pocketsafe.main.IMEventErr;
 import com.monster.pocketsafe.main.IMEventSimpleID;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;

@@ -48,6 +48,7 @@
 	<string name="min60">1 час</string>
 
 	<string name="Me">Я</string>
+	<string name="smsLoading">Загрузка...</string>
 	    
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
@@ -99,5 +100,6 @@
 	<string name="EErrSha256NullArgument">SHA256 нулевой аргумент</string>
 	<string name="EErrBase64Encode">Ошибка кодирования Base64</string>
 	<string name="EErrBase64Decode">Ошибка декодирования Base64</string>
-	<string name="ESmsErrResend">Не могу отправить заново</string>	    
+	<string name="ESmsErrResend">Не могу отправить заново</string>	 
+	<string name="EDbErrGetCountSmsByHash">Ошибка получения количества смс</string>   
 </resources>

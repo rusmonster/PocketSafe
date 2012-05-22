@@ -58,7 +58,8 @@ public class MyException extends Exception {
 		EErrBase64Encode(47),
 		EErrBase64Decode(48), 
 		EErrUnknown(49), 
-		ESmsErrResend(50)
+		ESmsErrResend(50),
+		EDbErrGetCountSmsByHash(51)
 		;
 		
 	    private final int mValue;

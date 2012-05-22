@@ -14,12 +14,9 @@ import java.security.spec.RSAPublicKeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.SealedObject;
-
 import android.os.Handler;
 import android.util.Log;
 
-import com.monster.pocketsafe.dbengine.IMDbEngine;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
@@ -200,7 +197,6 @@ public class CMRsa implements IMRsa {
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
 		try {
-			
 			KeyFactory kf = KeyFactory.getInstance("RSA");
 			PrivateKey privateKey = kf.generatePrivate( new RSAPrivateKeySpec(mModulus, _key) );
 			

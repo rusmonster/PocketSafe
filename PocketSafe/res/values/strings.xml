@@ -48,6 +48,7 @@
 	<string name="min60">1 hour</string>
 	
 	<string name="Me">Me</string>
+	<string name="smsLoading">Loading...</string>
 	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
@@ -100,4 +101,5 @@
 	<string name="EErrBase64Encode">Base64 encoding error</string>
 	<string name="EErrBase64Decode">Base64 decoding error</string>
 	<string name="ESmsErrResend">Cannot resend</string>
+	<string name="EDbErrGetCountSmsByHash">Error getting sms count</string>
 </resources>
