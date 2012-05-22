@@ -105,9 +105,42 @@ public class CMRsaTestLong extends TestCase {
 		byte[] dec = mRsa.DecryptBuffer(mKey, enc);
 		Log.i("!!!", "decrypt finish");
 		
+		assertEquals(len, dec.length);
+		
 		for (int i=0; i<len; i++)
 			assertEquals(data[i], dec[i]);
 	}
+	
+	/*
+	public void testEncDecFindLimit() throws Exception {
+		
+		Log.i("!!!", "generate start");
+		testGenerateKeyPair();
+		Log.i("!!!", "generate finish");
+		
+		int len=0;
+		try {
+			while(++len<1000) {
+				Log.d("!!!", "len="+len);
+				byte[] data = new byte[len];
+				Log.i("!!!", "encript start");
+				byte[] enc = mRsa.EncryptBuffer(data);
+				Log.i("!!!", "encrypt finish");
+				
+				Log.i("!!!", "decrypt start");
+				byte[] dec = mRsa.DecryptBuffer(mKey, enc);
+				Log.i("!!!", "decrypt finish");
+				
+				assertEquals(len, dec.length);
+				
+				for (int i=0; i<len; i++)
+					assertEquals(data[i], dec[i]);
+			}
+		} catch (MyException e) {
+			Log.i("!!!", "Fail limit: "+len+"; with: "+e.getId()); //returns 246 => 245 id last succes value
+		}
+	}
+	*/
 	
 	public void testEncDecSuccess100() throws Exception {
 		String text = "Привет мир";

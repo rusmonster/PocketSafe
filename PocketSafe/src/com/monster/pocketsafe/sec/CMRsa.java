@@ -2,6 +2,7 @@ package com.monster.pocketsafe.sec;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -12,8 +13,6 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import android.os.Handler;
 import android.util.Log;
 
@@ -22,6 +21,8 @@ import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 public class CMRsa implements IMRsa {
+	
+	private static int LEN_MAX_BLOCK = 245;
 	
 	private IMLocator mLocator;
 	private IMRsaObserver mObserver;
@@ -158,36 +159,43 @@ public class CMRsa implements IMRsa {
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		
 		try {
 			KeyFactory kf = KeyFactory.getInstance("RSA");
 			PublicKey publicKey = kf.generatePublic( new RSAPublicKeySpec(mModulus, mPublicExp) );
 			
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-			
-			//SealedObject myEncyptedMessage = new SealedObject( new String(_data, IMDbEngine.ENCODING), cipher);
-			//myEncyptedMessage.
-			
-			ByteArrayInputStream bais = new ByteArrayInputStream(_data);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			CipherOutputStream cos = new CipherOutputStream(baos, cipher);
 
-			byte[] block = new byte[128];
-			int i;
-			while ((i = bais.read(block)) != -1) {
-				Log.d("!!!", "i="+i);
-				cos.write(block, 0, i);
-			}			
-		    byte[] cipherData = baos.toByteArray();
-
-		    bais.close();
-			cos.close();
+			int len_data = _data.length;
+			
+			int offset=0;
+			int len = (len_data>LEN_MAX_BLOCK)?LEN_MAX_BLOCK:len_data;
+			
+			do {
+				byte[] cipherData = cipher.doFinal(_data,offset,len);
+			    int len_ci = cipherData.length;
+			    Log.i("!!!", "len_ci="+len_ci);
+			    
+			    baos.write((len_ci >> 8)&0xFF);
+			    baos.write(len_ci&0xFF);
+			    baos.write(cipherData);
+			    
+			    offset+=len;
+			    len = len_data-offset;
+			    if (len>LEN_MAX_BLOCK) len =LEN_MAX_BLOCK;
+			} while(len>0);
 		    
-		    return cipherData;
+		    return baos.toByteArray();
 		    
 		} catch(Exception e) {
-			Log.e("!!!", "RSA.EncryptBuffer: "+e.getMessage());
+			Log.e("!!!", "EncryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrEncrypt);
+		} finally {
+			try {
+				baos.close();
+			} catch (IOException e) {}
 		}
 	}
 
@@ -196,33 +204,38 @@ public class CMRsa implements IMRsa {
 		if (mState!=TRsaState.EIdle)
 			throw new MyException(TTypMyException.ERsaNotReady);
 		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		
 		try {
+			
 			KeyFactory kf = KeyFactory.getInstance("RSA");
 			PrivateKey privateKey = kf.generatePrivate( new RSAPrivateKeySpec(mModulus, _key) );
 			
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			
-			ByteArrayInputStream bais = new ByteArrayInputStream(_data);
-			CipherInputStream cis = new CipherInputStream(bais, cipher);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int len_data = _data.length;
+			int offset = 0;
 			
-			byte[] block = new byte[128];
-			int i;
-			while ((i = cis.read(block)) != -1) {
-				baos.write(block, 0, i);
+			while (offset<len_data) {			
+				int len = _data[offset++] << 8;
+				len |= _data[offset++];
+				byte[] cipherData = cipher.doFinal(_data, offset, len);
+				
+				baos.write(cipherData);
+				
+				offset += len;
 			}
-						
-			byte[] cipherData = baos.toByteArray();
-			
-			cis.close();
-			baos.close();
-			
-			return cipherData;
+
+			return baos.toByteArray();
 		    
 		} catch(Exception e) {
-			Log.e("!!!", "RSA.DecryptBuffer: "+e.getMessage());
+			Log.e("!!!", "DecryptBuffer: "+e.getMessage());
 			throw new MyException(TTypMyException.ERsaErrDecrypt);
+		} finally {
+			try {
+				baos.close();
+			} catch (IOException e) {}
 		}
 	}
 
