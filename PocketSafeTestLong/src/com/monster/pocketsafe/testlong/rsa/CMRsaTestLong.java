@@ -1,8 +1,10 @@
 package com.monster.pocketsafe.testlong.rsa;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.Random;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.monster.pocketsafe.sec.CMRsa;
@@ -198,4 +200,90 @@ public class CMRsaTestLong extends TestCase {
 		String newtxt = new String(dec);
 		assertFalse(text.equals(newtxt));
 	}
+
+
+	private int mThreadOk;
+	private int mThreadFinished;
+	
+	private class EncDecThread extends AsyncTask<Void, Void, Boolean> {
+
+		private int mId;
+		private byte[] mData;
+		
+		public EncDecThread(byte[] data, int id) {
+			mData = data;
+			mId = id;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
+			Boolean res = Boolean.FALSE;
+			try {
+				Log.i("!!!", "encript start" + mId);
+				byte[] enc = mRsa.EncryptBuffer(mData);
+				Log.i("!!!", "encrypt finish" + mId);
+				
+				Log.i("!!!", "decrypt start" + mId);
+				byte[] dec = mRsa.DecryptBuffer(mKey, enc);
+				Log.i("!!!", "decrypt finish" + mId);
+				
+				if (mData.length != dec.length)
+					throw new RuntimeException("threadId: "+mId+": Assert len failed");
+				
+				for (int i=0; i<mData.length; i++)
+					if (mData[i] != dec[i])
+						throw new RuntimeException("threadId: "+mId+": Assert data failed i="+i);
+				
+				res = Boolean.TRUE;
+			} catch (Exception e) {
+				Log.e("!!!", "Thread: "+mId+"; Exception: "+e);
+			}
+			return res;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			mThreadFinished++;
+			
+			if (result)
+				mThreadOk++;
+			
+			super.onPostExecute(result);
+		}
+		
+		
+		
+	}
+	public void testEncDec100Thread() throws Exception {
+		Log.i("!!!", "generate start");
+		testGenerateKeyPair();
+		Log.i("!!!", "generate finish");
+		
+		int cnt=100;
+		
+		mThreadFinished = 0;
+		mThreadOk = 0;
+		
+		Date dat = new Date();
+		Random random = new Random( dat.getTime() );
+		
+		for (int i=0; i<cnt; i++) {
+			int rnd = Math.abs(random.nextInt())%500;
+			Log.i("!!!", "rnd="+rnd);
+			
+			byte[] data = new byte[rnd];
+			for (int j=0; j<rnd; j++)
+				data[j] = (byte) (random.nextInt()&0xFF);
+			
+			(new EncDecThread(data, i)).execute();
+		}
+
+		int n=0;
+		while (mThreadFinished<cnt && n++ <60)
+			Thread.sleep(1000);
+		
+		assertEquals(cnt, mThreadFinished);
+		assertEquals(cnt, mThreadOk);
+	}
+
 }

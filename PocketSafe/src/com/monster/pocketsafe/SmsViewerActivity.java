@@ -266,7 +266,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	@Override
 	protected void onPause() {	
 		if (mDlg != null) dismissDialog(IDD_SMS_SENDING); mDlg = null;
-		mAdapter.Close();
 		super.onPause();
 	}
 

@@ -1,6 +1,5 @@
 package com.monster.pocketsafe.sec;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -176,7 +175,6 @@ public class CMRsa implements IMRsa {
 			do {
 				byte[] cipherData = cipher.doFinal(_data,offset,len);
 			    int len_ci = cipherData.length;
-			    Log.i("!!!", "len_ci="+len_ci);
 			    
 			    baos.write((len_ci >> 8)&0xFF);
 			    baos.write(len_ci&0xFF);

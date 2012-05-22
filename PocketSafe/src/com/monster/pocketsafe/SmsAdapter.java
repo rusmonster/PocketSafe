@@ -3,9 +3,6 @@ package com.monster.pocketsafe;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import com.monster.pocketsafe.dbengine.IMDbReader;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypDirection;
@@ -39,16 +36,6 @@ public class SmsAdapter extends BaseAdapter {
 	private String mMe;
 	private int mColorRed;
 	private int mColorBlue;
-	
-	private class TQItem {
-		public int mPostion;
-		public SmsAdapterView mSav;
-		public TQItem(int pos, SmsAdapterView sav) {
-			mPostion = pos;
-			mSav=sav;
-		}
-	}
-	private LinkedList<TQItem> mQueue = new LinkedList<TQItem>();
 	
 	private static final SimpleDateFormat mDateFormatFull = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	private static final SimpleDateFormat mDateFormatSmall = new SimpleDateFormat("HH:mm");
@@ -131,51 +118,56 @@ public class SmsAdapter extends BaseAdapter {
 		@Override
 		protected String doInBackground(Void... params) {
 			
-			ArrayList<IMSms> dest = new ArrayList<IMSms>(1);
+			String text = "Error";
+			
 			try {
-				mDbReader.QuerySms().QueryByHashOrderByDat(dest, mHash, mPosition, 1);
-			} catch (MyException e) {
-				String err = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
-			}
-			
-			if (dest.size()==0) {
-				return null;
-			}
-			
-			IMSms sms = dest.get(0);
-			mSms = sms;
-			
-			String text=null;
-			for (int i=0; i<10; i++)
+				ArrayList<IMSms> dest = new ArrayList<IMSms>(1);
 				try {
-					text = mMain.decryptString(sms.getText());
-					break;
+					mDbReader.QuerySms().QueryByHashOrderByDat(dest, mHash, mPosition, 1);
 				} catch (MyException e) {
-					text = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
+					//String err = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
 				}
-			
-			String cap;
-			if (sms.getDirection() == TTypDirection.EIncoming) { 
-		    	cap = new String(mName);
-		    	mSav.mCap.setTextColor(mColorRed);
-		    }
-		    else {
-		    	cap = new String(mMe);
-		    	mSav.mCap.setTextColor(mColorBlue);
-		    }
-		    
-		    String strDat = mDateFormatDate.format(sms.getDate());
-		    String strNow = mDateFormatDate.format(new Date());
-		    
-		    if (strDat.equals(strNow))
-		    	strDat = mDateFormatSmall.format(sms.getDate());
-		    else
-		    	strDat = mDateFormatFull.format(sms.getDate());
-		    
-		    cap += " ("+strDat+")";
-		    
-		    mCap = cap;
-		    
+				
+				if (dest.size()==0) {
+					return null;
+				}
+				
+				IMSms sms = dest.get(0);
+				mSms = sms;
+				
+				for (int i=0; i<10; i++)
+					try {
+						text = mMain.decryptString(sms.getText());
+						break;
+					} catch (MyException e) {
+						text = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
+					}
+				
+				String cap;
+				if (sms.getDirection() == TTypDirection.EIncoming) { 
+			    	cap = new String(mName);
+			    	mSav.mCap.setTextColor(mColorRed);
+			    }
+			    else {
+			    	cap = new String(mMe);
+			    	mSav.mCap.setTextColor(mColorBlue);
+			    }
+			    
+			    String strDat = mDateFormatDate.format(sms.getDate());
+			    String strNow = mDateFormatDate.format(new Date());
+			    
+			    if (strDat.equals(strNow))
+			    	strDat = mDateFormatSmall.format(sms.getDate());
+			    else
+			    	strDat = mDateFormatFull.format(sms.getDate());
+			    
+			    cap += " ("+strDat+")";
+			    
+			    mCap = cap;
+			}catch(Exception e) {
+			    	
+			}
+			    
 			return text;
 		}
 		
@@ -183,11 +175,11 @@ public class SmsAdapter extends BaseAdapter {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			
-			mLoader=null;
-			ProcessQueue();
-			
 			if (result == null) return;
-			if (mSav.mPos != mPosition) return;
+			if (mSav.mPos != mPosition) {
+				Log.d("!!!", "onPostExecute: position changed");
+				return;
+			}
 			
 			if (mSms.getIsNew() >= TTypIsNew.ENew) {
 				mSms.setIsNew(TTypIsNew.EOld);
@@ -210,8 +202,6 @@ public class SmsAdapter extends BaseAdapter {
 		    mSav.mSmsLoading.setVisibility(View.INVISIBLE);
 		}
 	}
-	
-	private SmsLoader mLoader = null;
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Log.d("!!!", "SmsAdapter::getView: "+position);
@@ -241,34 +231,12 @@ public class SmsAdapter extends BaseAdapter {
 		sav.mSmsLoading.setVisibility(View.VISIBLE);
 		sav.mPos = position;
 		
-		mQueue.add(new TQItem(position, sav));
-		ProcessQueue();
+		(new SmsLoader(position, sav)).execute();
 		
 		return v;		
 	}
 	
-	private void ProcessQueue() {
-		if (mLoader != null) return;
-		
-		TQItem item = mQueue.poll();
-		
-		while (item!=null) {
-			if (item.mPostion == item.mSav.mPos) {
-				mLoader = new SmsLoader(item.mPostion, item.mSav);
-				mLoader.execute();
-				return;
-			}
-			Log.d("!!!","SKIP QUEUE");
-			item = mQueue.poll();
-		}
-		
-		
-	}
 	
-	public void Close() {
-		mQueue.clear();
-	}
-
 	@Override
 	public void notifyDataSetChanged() {
 		mCount=-1;
