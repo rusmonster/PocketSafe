@@ -115,6 +115,8 @@ public class CMDbProvider extends ContentProvider {
 	        
 		return c;
 	}
+	
+	
 
 	@Override
 	public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {

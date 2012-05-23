@@ -84,7 +84,15 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			try {
 				IMSmsGroup gr = mGroups.get(i);
 				
-				String name = getHelper().getMain().decryptString(gr.getPhone());
+				String name = null;
+				for (int j=0; j<10; j++)
+					try {
+						name = getHelper().getMain().decryptString(gr.getPhone());
+						break;
+					}catch (MyException e){
+						name = ErrorDisplayer.getErrStr(this, e.getId().getValue());
+					}
+				
 				IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(name);
 				if (cont != null)
 					name = cont.getName();

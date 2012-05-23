@@ -218,7 +218,12 @@ public class CMRsa implements IMRsa {
 			while (offset<len_data) {			
 				int len = _data[offset++] << 8;
 				len |= _data[offset++];
+				
+				Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec len: "+len);
+				
 				byte[] cipherData = cipher.doFinal(_data, offset, len);
+				
+				Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec data: "+new String(cipherData));
 				
 				baos.write(cipherData);
 				

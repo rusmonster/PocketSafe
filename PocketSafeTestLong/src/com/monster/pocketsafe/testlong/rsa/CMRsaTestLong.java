@@ -235,8 +235,10 @@ public class CMRsaTestLong extends TestCase {
 						throw new RuntimeException("threadId: "+mId+": Assert data failed i="+i);
 				
 				res = Boolean.TRUE;
+			} catch (MyException e) {
+				Log.e("!!!", "Thread: "+mId+"; MyException: "+e.getId());
 			} catch (Exception e) {
-				Log.e("!!!", "Thread: "+mId+"; Exception: "+e);
+				Log.e("!!!", "Thread: "+mId+"; Exception: "+e.getMessage());
 			}
 			return res;
 		}
@@ -259,7 +261,7 @@ public class CMRsaTestLong extends TestCase {
 		testGenerateKeyPair();
 		Log.i("!!!", "generate finish");
 		
-		int cnt=100;
+		int cnt=20;
 		
 		mThreadFinished = 0;
 		mThreadOk = 0;
@@ -280,7 +282,12 @@ public class CMRsaTestLong extends TestCase {
 
 		int n=0;
 		while (mThreadFinished<cnt && n++ <60)
+		{
 			Thread.sleep(1000);
+			Log.d("!!!", "n="+n);
+		}
+		
+		Log.d("!!!", "after while: "+n);
 		
 		assertEquals(cnt, mThreadFinished);
 		assertEquals(cnt, mThreadOk);

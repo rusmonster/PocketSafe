@@ -141,10 +141,18 @@ public class CMDbTableSms implements IMDbTableSms {
 		
 		dest.clear();
 		
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_FOLDER+"="+folder, null, CMSQLiteOnlineHelper.SMS_DATE+" DESC"); 
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_FOLDER+"="+folder, null, CMSQLiteOnlineHelper.SMS_DATE+" DESC " + " LIMIT "+start+","+count); 
 		
 		try {
 			if (!c.moveToFirst()) return;
+			
+			do {
+				IMSms sms = mLocator.createSms();
+				Load(sms, c);
+				dest.add(sms);
+			} while(c.moveToNext());
+			
+			/*
 			if ( !c.move(start) ) return;
 			
 			int end = start+count;
@@ -154,6 +162,7 @@ public class CMDbTableSms implements IMDbTableSms {
 				dest.add(sms);
 				if (!c.moveToNext()) return;
 			}
+			*/
 		} finally {
 			c.close();
 		}
@@ -204,10 +213,18 @@ public class CMDbTableSms implements IMDbTableSms {
 		dest.clear();
 		
 		String[] args = new String[] { hash };
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_HASH+"=?", args , CMSQLiteOnlineHelper.SMS_DATE); 
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_HASH+"=?", args , CMSQLiteOnlineHelper.SMS_DATE + " LIMIT "+start+","+count); 
 		
 		try {
 			if (!c.moveToFirst()) return;
+			
+			do {
+				IMSms sms = mLocator.createSms();
+				Load(sms, c);
+				dest.add(sms);	
+			} while(c.moveToNext());
+			
+			/*
 			if ( !c.move(start) ) return;
 			
 			int end = start+count;
@@ -217,6 +234,7 @@ public class CMDbTableSms implements IMDbTableSms {
 				dest.add(sms);
 				if (!c.moveToNext()) return;
 			}
+			*/
 		} finally {
 			c.close();
 		}

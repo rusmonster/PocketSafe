@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/white"
     >
 
    	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -10,7 +11,7 @@
 		        android:layout_height="fill_parent"
 		        android:orientation="vertical"
 		        android:layout_alignParentTop="true" 
-		        android:visibility="invisible"
+		        android:visibility="visible"
 		        >
 		         		
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
@@ -31,6 +32,7 @@
 				    android:id="@+id/smsCap"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
+				    android:layout_weight="1"
 				    android:textStyle="bold"
 				    android:layout_marginLeft="8dip"
 				    android:text="cap"
@@ -50,6 +52,7 @@
 			    android:id="@+id/smsText"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
+			    android:textColor="@color/black"
 			    android:text="text" 
 			    />
 	</LinearLayout>
@@ -61,5 +64,6 @@
 	    android:gravity="center"
 	    android:layout_alignTop="@+id/smsItem"
 	    android:layout_alignBottom="@+id/smsItem"
-	    android:text="@string/smsLoading" />	
+	    android:text="@string/smsLoading" 
+	    />	
 </RelativeLayout>
