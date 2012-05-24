@@ -138,16 +138,6 @@ public class SmsAdapter extends BaseAdapter {
 				
 				mSms = dest.get(0);
 				
-				if (mSms.getIsNew() >= TTypIsNew.ENew) {
-					mSms.setIsNew(TTypIsNew.EOld);
-					try {
-						mMain.DbWriter().SmsUpdate(mSms);
-					} catch (MyException e) {
-						e.printStackTrace();
-						ErrorDisplayer.displayError(mActivity, e);
-					}
-				}
-				
 				if (mSms.getDirection() == TTypDirection.EIncoming) { 
 			    	mCap = new String(mName);
 			    }
@@ -231,6 +221,16 @@ public class SmsAdapter extends BaseAdapter {
 			    
 			    mSav.mItem.setVisibility(View.VISIBLE);
 			    mSav.mSmsLoading.setVisibility(View.INVISIBLE);	
+			    
+				if (mSms.getIsNew() >= TTypIsNew.ENew) {
+					mSms.setIsNew(TTypIsNew.EOld);
+					try {
+						mMain.DbWriter().SmsUpdate(mSms);
+					} catch (MyException e) {
+						e.printStackTrace();
+						ErrorDisplayer.displayError(mActivity, e);
+					}
+				}
 			}
 		}
 	}
