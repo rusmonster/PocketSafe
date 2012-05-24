@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SmsSafe-MO</string>
+    <string name="app_name">SmsSafeMO</string>
     <string name="sms_new">Новое смс</string>
     <string name="sms_new_cnt">новые смс: </string>
     <string name="sms_sending">Отправка...</string>
