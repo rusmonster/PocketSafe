@@ -41,6 +41,7 @@ public class SmsAdapter extends BaseAdapter {
 	
 	private String mMe;
 	private String mNotFound;
+	private String mLoading;
 	private int mColorRed;
 	private int mColorBlue;
 	
@@ -70,6 +71,7 @@ public class SmsAdapter extends BaseAdapter {
 		
 		mMe = mActivity.getResources().getString(R.string.Me);
 		mNotFound = mActivity.getResources().getString(R.string.EDbIdNotFoundSms);
+		mLoading = mActivity.getResources().getString(R.string.smsLoading);
 		mColorRed = mActivity.getResources().getColor(R.color.red);
 		mColorBlue = mActivity.getResources().getColor(R.color.blue);
 	}
@@ -116,11 +118,11 @@ public class SmsAdapter extends BaseAdapter {
 		private int mPosition;
 		private SmsAdapterView mSav;
 		private IMSms mSms;
+		private String mCap;
 		
-		public SmsLoader(int position, SmsAdapterView sav, IMSms sms) {
+		public SmsLoader(int position, SmsAdapterView sav) {
 			mPosition = position;
 			mSav = sav;
-			mSms = sms;
 		}
 
 		@Override
@@ -129,7 +131,50 @@ public class SmsAdapter extends BaseAdapter {
 			String text = null;
 			
 			try {
+				ArrayList<IMSms> dest = new ArrayList<IMSms>(1);
+				mDbReader.QuerySms().QueryByHashOrderByDat(dest, mHash, mPosition, 1);
+				if (dest.size()==0)
+					throw new MyException(TTypMyException.EDbIdNotFoundSms);
+				
+				mSms = dest.get(0);
+				
+				if (mSms.getIsNew() >= TTypIsNew.ENew) {
+					mSms.setIsNew(TTypIsNew.EOld);
+					try {
+						mMain.DbWriter().SmsUpdate(mSms);
+					} catch (MyException e) {
+						e.printStackTrace();
+						ErrorDisplayer.displayError(mActivity, e);
+					}
+				}
+				
+				if (mSms.getDirection() == TTypDirection.EIncoming) { 
+			    	mCap = new String(mName);
+			    }
+			    else {
+			    	mCap = new String(mMe);
+			    }
+			    
+			    String strDat = mDateFormatDate.format(mSms.getDate());
+			    String strNow = mDateFormatDate.format(new Date());
+			    
+			    if (strDat.equals(strNow))
+			    	strDat = mDateFormatSmall.format(mSms.getDate());
+			    else
+			    	strDat = mDateFormatFull.format(mSms.getDate());
+			    
+			    mCap += " ("+strDat+")";
+			    
+				text = mMap.get(mSms.getId());
+				
+				if (text!=null)
+					return text;
+				
+				publishProgress();
+				
 				text = mMain.decryptString(mSms.getText());
+				
+				
 			} catch (MyException e1) {
 				e1.printStackTrace();
 				text = ErrorDisplayer.getErrStr(mActivity, e1.getId().getValue());
@@ -138,65 +183,56 @@ public class SmsAdapter extends BaseAdapter {
 			return text;
 		}
 		
+		
+		
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			
+			if (mSav.mPos != mPosition) {
+				Log.d("!!!", "onProgressUpdate: position changed");
+				return;
+			}
+			
+			mSav.mSmsLoading.setText(mLoading);
+		    mSav.mItem.setVisibility(View.INVISIBLE);
+		    mSav.mSmsLoading.setVisibility(View.VISIBLE);	
+		}
+
 		@Override
 		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
 			
-			if (result == null) return;
+			if (result == null) result = new String();
 			
 			if (mSav.mPos != mPosition) {
 				Log.d("!!!", "onPostExecute: position changed");
 				return;
 			}
-			
-			mMap.put(mSms.getId(), result);
-			FillView(mSav, mSms, result);
 
-		}
-	}
-	
-	private void FillView(SmsAdapterView sav, IMSms sms, String text) {
-		if (sms.getIsNew() >= TTypIsNew.ENew) {
-			sms.setIsNew(TTypIsNew.EOld);
-			try {
-				mMain.DbWriter().SmsUpdate(sms);
-			} catch (MyException e) {
-				e.printStackTrace();
-				ErrorDisplayer.displayError(mActivity, e);
+			mMap.put(mSms.getId(), result);
+			
+			if (mSms == null) { //sms not found in db
+				mSav.mSmsLoading.setText(result); //errDescription in result
+				mSav.mItem.setVisibility(View.INVISIBLE);
+				mSav.mSmsLoading.setVisibility(View.VISIBLE);	
+			} else {
+				
+				if (mSms.getDirection() == TTypDirection.EIncoming)	
+					mSav.mCap.setTextColor(mColorRed); 
+				else 
+					mSav.mCap.setTextColor(mColorBlue);
+				
+				mSav.mCap.setText(mCap);
+				mSav.mText.setText(result);
+			    
+			    if (mSms.getStatus() == TTypStatus.ESendError) 
+			    	mSav.mImgStatus.setVisibility(View.VISIBLE);
+			    else
+			    	mSav.mImgStatus.setVisibility(View.INVISIBLE);
+			    
+			    mSav.mItem.setVisibility(View.VISIBLE);
+			    mSav.mSmsLoading.setVisibility(View.INVISIBLE);	
 			}
 		}
-		
-		
-		String cap;
-		if (sms.getDirection() == TTypDirection.EIncoming) { 
-	    	cap = new String(mName);
-	    	sav.mCap.setTextColor(mColorRed);
-	    }
-	    else {
-	    	cap = new String(mMe);
-	    	sav.mCap.setTextColor(mColorBlue);
-	    }
-	    
-	    String strDat = mDateFormatDate.format(sms.getDate());
-	    String strNow = mDateFormatDate.format(new Date());
-	    
-	    if (strDat.equals(strNow))
-	    	strDat = mDateFormatSmall.format(sms.getDate());
-	    else
-	    	strDat = mDateFormatFull.format(sms.getDate());
-	    
-	    cap += " ("+strDat+")";
-	    
-		sav.mCap.setText(cap);
-		sav.mText.setText(text);
-	    
-	    if (sms.getStatus() == TTypStatus.ESendError) 
-	    	sav.mImgStatus.setVisibility(View.VISIBLE);
-	    else
-	    	sav.mImgStatus.setVisibility(View.INVISIBLE);
-	    
-	    sav.mItem.setVisibility(View.VISIBLE);
-	    sav.mSmsLoading.setVisibility(View.INVISIBLE);		
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -225,31 +261,7 @@ public class SmsAdapter extends BaseAdapter {
 		
 		sav.mPos = position;
 		
-		String err = mNotFound;
-		ArrayList<IMSms> dest = new ArrayList<IMSms>(1);
-		try {
-			mDbReader.QuerySms().QueryByHashOrderByDat(dest, mHash, position, 1);
-		} catch (MyException e) {
-			err = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
-		}
-		
-		if (dest.size()==0) {
-			sav.mSmsLoading.setText(err);
-			sav.mItem.setVisibility(View.INVISIBLE);
-			sav.mSmsLoading.setVisibility(View.VISIBLE);
-			return null;
-		}
-		
-		IMSms sms = dest.get(0);
-		String text = mMap.get(sms.getId());
-		
-		if (text != null) {
-			FillView(sav, sms, text);
-		} else {
-			sav.mItem.setVisibility(View.INVISIBLE);
-			sav.mSmsLoading.setVisibility(View.VISIBLE);
-			(new SmsLoader(position, sav, sms)).execute();
-		}
+		(new SmsLoader(position, sav)).execute();
 		
 		return v;		
 	}
