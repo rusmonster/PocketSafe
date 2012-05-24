@@ -21,7 +21,7 @@ import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
 public class CMRsa implements IMRsa {
 	
-	private static int LEN_MAX_BLOCK = 245;
+	private static int LEN_MAX_BLOCK = 245; //245;
 	
 	private IMLocator mLocator;
 	private IMRsaObserver mObserver;
@@ -172,8 +172,13 @@ public class CMRsa implements IMRsa {
 			int offset=0;
 			int len = (len_data>LEN_MAX_BLOCK)?LEN_MAX_BLOCK:len_data;
 			
+			byte[] cipherData;
 			do {
-				byte[] cipherData = cipher.doFinal(_data,offset,len);
+				
+				synchronized (this) {
+					cipherData = cipher.doFinal(_data,offset,len);	
+				}
+				
 			    int len_ci = cipherData.length;
 			    
 			    baos.write((len_ci >> 8)&0xFF);
@@ -215,15 +220,19 @@ public class CMRsa implements IMRsa {
 			int len_data = _data.length;
 			int offset = 0;
 			
+			//Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; len_data: "+len_data);
+			byte[] cipherData;
+			
 			while (offset<len_data) {			
 				int len = _data[offset++] << 8;
 				len |= _data[offset++];
 				
-				Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec len: "+len);
+				//Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec len: "+len);
+				synchronized (this) {
+					cipherData = cipher.doFinal(_data, offset, len);	
+				}
 				
-				byte[] cipherData = cipher.doFinal(_data, offset, len);
-				
-				Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec data: "+new String(cipherData));
+				//Log.d("!!!", "tid: "+Thread.currentThread().getId()+"; dec data: "+new String(cipherData));
 				
 				baos.write(cipherData);
 				

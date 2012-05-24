@@ -128,15 +128,12 @@ public class SmsAdapter extends BaseAdapter {
 			
 			String text = null;
 			
-			for (int i=0; i<10; i++)
-				try {
-					Log.d("!!!", "dec i="+i);
-					text = mMain.decryptString(mSms.getText());
-					break;
-				} catch (MyException e1) {
-					e1.printStackTrace();
-					text = ErrorDisplayer.getErrStr(mActivity, e1.getId().getValue());
-				}
+			try {
+				text = mMain.decryptString(mSms.getText());
+			} catch (MyException e1) {
+				e1.printStackTrace();
+				text = ErrorDisplayer.getErrStr(mActivity, e1.getId().getValue());
+			}
 			
 			return text;
 		}

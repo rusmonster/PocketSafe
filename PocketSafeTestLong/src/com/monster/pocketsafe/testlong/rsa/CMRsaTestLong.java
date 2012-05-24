@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.Random;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
+import com.monster.pocketsafe.ErrorDisplayer;
+import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.sec.CMRsa;
 import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sec.IMRsaObserver;
@@ -95,6 +98,10 @@ public class CMRsaTestLong extends TestCase {
 		int len = 100*1024;
 		byte[] data = new byte[len];
 		
+		Random random = new Random();
+		for (int j=0; j<len; j++)
+			data[j] = (byte) (random.nextInt() & 0xFF);
+		
 		Log.i("!!!", "generate start");
 		testGenerateKeyPair();
 		Log.i("!!!", "generate finish");
@@ -113,7 +120,7 @@ public class CMRsaTestLong extends TestCase {
 			assertEquals(data[i], dec[i]);
 	}
 	
-	/*
+	
 	public void testEncDecFindLimit() throws Exception {
 		
 		Log.i("!!!", "generate start");
@@ -142,7 +149,7 @@ public class CMRsaTestLong extends TestCase {
 			Log.i("!!!", "Fail limit: "+len+"; with: "+e.getId()); //returns 246 => 245 id last succes value
 		}
 	}
-	*/
+	
 	
 	public void testEncDecSuccess100() throws Exception {
 		String text = "Привет мир";
@@ -203,7 +210,7 @@ public class CMRsaTestLong extends TestCase {
 
 
 	private int mThreadOk;
-	private int mThreadFinished;
+	private int mThreadRunning;
 	
 	private class EncDecThread extends AsyncTask<Void, Void, Boolean> {
 
@@ -218,6 +225,8 @@ public class CMRsaTestLong extends TestCase {
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
 			Boolean res = Boolean.FALSE;
+			Log.d("!!!", "Thread: "+mId+"; mId: "+mId);
+			
 			try {
 				Log.i("!!!", "encript start" + mId);
 				byte[] enc = mRsa.EncryptBuffer(mData);
@@ -235,61 +244,65 @@ public class CMRsaTestLong extends TestCase {
 						throw new RuntimeException("threadId: "+mId+": Assert data failed i="+i);
 				
 				res = Boolean.TRUE;
+				Log.i("!!!", "task finish" + mId);
 			} catch (MyException e) {
 				Log.e("!!!", "Thread: "+mId+"; MyException: "+e.getId());
 			} catch (Exception e) {
 				Log.e("!!!", "Thread: "+mId+"; Exception: "+e.getMessage());
 			}
+			
+			Log.i("!!!", "task return" + mId);
 			return res;
 		}
-
+	
+	
 		@Override
 		protected void onPostExecute(Boolean result) {
-			mThreadFinished++;
+			super.onPostExecute(result);
 			
 			if (result)
 				mThreadOk++;
 			
-			super.onPostExecute(result);
+			mThreadRunning--;
+			if (mThreadRunning==0)
+				Looper.myLooper().quit();
+			
+			Log.i("!!!", "task onPostExecute: " + mId+"; mThreadRunning: "+mThreadRunning);
 		}
 		
-		
-		
 	}
+
+
+	
 	public void testEncDec100Thread() throws Exception {
 		Log.i("!!!", "generate start");
 		testGenerateKeyPair();
 		Log.i("!!!", "generate finish");
 		
-		int cnt=20;
+		int cnt=100;
 		
-		mThreadFinished = 0;
+		mThreadRunning = cnt;
 		mThreadOk = 0;
 		
 		Date dat = new Date();
 		Random random = new Random( dat.getTime() );
 		
 		for (int i=0; i<cnt; i++) {
-			int rnd = Math.abs(random.nextInt())%500;
+			int rnd = Math.abs(random.nextInt())%1000;
 			Log.i("!!!", "rnd="+rnd);
 			
 			byte[] data = new byte[rnd];
 			for (int j=0; j<rnd; j++)
-				data[j] = (byte) (random.nextInt()&0xFF);
+				data[j] = (byte) (random.nextInt() & 0xFF);
 			
 			(new EncDecThread(data, i)).execute();
 		}
 
-		int n=0;
-		while (mThreadFinished<cnt && n++ <60)
-		{
-			Thread.sleep(1000);
-			Log.d("!!!", "n="+n);
-		}
+		Looper.loop();
 		
-		Log.d("!!!", "after while: "+n);
+		Log.d("!!!", "after loop: ");
 		
-		assertEquals(cnt, mThreadFinished);
+		assertEquals(0, mThreadRunning);
 		assertEquals(cnt, mThreadOk);
 	}
 
