@@ -47,6 +47,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		
 		
 		mPass = pass;
+		mTimExpire = null; //for pass check in getKey();
 		try {
 			if (mKey!=null)
 				getKey();
