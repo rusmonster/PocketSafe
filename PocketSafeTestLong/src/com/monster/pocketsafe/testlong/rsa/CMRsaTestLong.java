@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Looper;
 import android.util.Log;
 
-import com.monster.pocketsafe.ErrorDisplayer;
-import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.sec.CMRsa;
 import com.monster.pocketsafe.sec.IMRsa;
 import com.monster.pocketsafe.sec.IMRsaObserver;

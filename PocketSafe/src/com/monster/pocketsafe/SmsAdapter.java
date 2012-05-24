@@ -13,8 +13,6 @@ import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.dbengine.TTypStatus;
 import com.monster.pocketsafe.main.IMMain;
 import com.monster.pocketsafe.utils.MyException;
-import com.monster.pocketsafe.utils.MyException.TTypMyException;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
