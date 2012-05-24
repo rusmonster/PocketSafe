@@ -64,22 +64,11 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		
 		Log.v("!!!", "createListAdapter()");
 		
-		getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, TStruct.PAGE_SIZE);
+		getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, Integer.MAX_VALUE);
 		
-		if (mGroups.size()==TStruct.PAGE_SIZE) {
-			ArrayList<IMSmsGroup> gr_list = new ArrayList<IMSmsGroup>();
-			int k = TStruct.PAGE_SIZE;
-
-			do {
-				getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(gr_list, k, TStruct.PAGE_SIZE);
-				k+=TStruct.PAGE_SIZE;
-				for (int i=0; i<gr_list.size(); i++)
-					mGroups.add(gr_list.get(i));
-			} while (gr_list.size()==TStruct.PAGE_SIZE);
-		}
-		
-		ArrayList<String> list = new ArrayList<String>();
 		int cnt = mGroups.size();
+		ArrayList<String> list = new ArrayList<String>( cnt );
+		
 		for (int i=0; i<cnt; i++) {
 			try {
 				IMSmsGroup gr = mGroups.get(i);
@@ -103,7 +92,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				ErrorDisplayer.displayError(this, e);
 			}
 		}
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.mainitem, list);
         
         setListAdapter(adapter);
 	}
