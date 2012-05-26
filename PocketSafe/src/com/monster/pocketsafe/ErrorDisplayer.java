@@ -63,6 +63,8 @@ public class ErrorDisplayer {
 		case EErrUnknown: return R.string.ErrUnknown;
 		case ESmsErrResend: return R.string.ESmsErrResend;
 		case EDbErrGetCountSmsByHash: return R.string.EDbErrGetCountSmsByHash;
+		case EDbIdNotFoundGroup: return R.string.EDbIdNotFoundGroup;
+		case EDbErrInsertGroup: return R.string.EDbErrInsertGroup;
 		default:
 			return R.string.ErrUnknown;
 		}

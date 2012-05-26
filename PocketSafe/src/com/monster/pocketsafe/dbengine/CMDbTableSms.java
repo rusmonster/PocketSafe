@@ -32,6 +32,7 @@ public class CMDbTableSms implements IMDbTableSms {
     };
     
     private static final String[] mContentGroup = new String[] {
+    	CMSQLiteOnlineHelper._ID, 
     	CMSQLiteOnlineHelper.SMSGROUP_HASH,
     	CMSQLiteOnlineHelper.SMSGROUP_PHONE,
     	CMSQLiteOnlineHelper.SMSGROUP_COUNT,
@@ -62,14 +63,57 @@ public class CMDbTableSms implements IMDbTableSms {
 		dest.setStatus(c.getInt(8));
 	}
 	
+	protected void LoadGroup(IMSmsGroup dest, Cursor c) throws MyException {
+		dest.setId(c.getInt(0));
+		dest.setHash(c.getString(1));
+		dest.setPhone(c.getString(2));
+		dest.setCount(c.getInt(3));
+		dest.setCountNew(c.getInt(4));
+		dest.setDate( new Date(c.getLong(5)));
+	}
+	
 	public void Delete(int id) throws MyException {
+		IMSms sms = mLocator.createSms();
+		getById(sms, id);
+		
+		IMSmsGroup gr = mLocator.createSmsGroup();
+		GetGroupByHash(gr, sms.getHash());
+		
+		gr.setCount( gr.getCount()-1 );
+		if (sms.getIsNew()==TTypIsNew.EJustRecv || sms.getIsNew()==TTypIsNew.ENew)
+			gr.setCountNew( gr.getCountNew()-1 );
+		
+		if (gr.getCount()<=0)
+			mCr.delete(CMDbProvider.CONTENT_URI_SMSGROUP, CMSQLiteOnlineHelper._ID+"="+gr.getId(), null);
+		else
+			UpdateGroup(gr);
+		
 		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnlineHelper._ID+"="+id, null);
 	}
 	
 	public void DeleteByHash(String hash) throws MyException {
+		mCr.delete(CMDbProvider.CONTENT_URI_SMSGROUP, CMSQLiteOnlineHelper.SMSGROUP_HASH+"=?", new String[] {hash});
 		mCr.delete(CMDbProvider.CONTENT_URI_SMS, CMSQLiteOnlineHelper.SMS_HASH+"=?", new String[] {hash});
 	}
 
+	protected int InsertGroup(IMSmsGroup item) throws MyException {
+        ContentValues values = new ContentValues();
+        
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_HASH, item.getHash());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_PHONE, item.getPhone());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_COUNT, item.getCount());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW, item.getCountNew());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_MAXDATE, item.getDate().getTime());
+        
+        Uri uriId = mCr.insert(CMDbProvider.CONTENT_URI_SMSGROUP, values);
+        if (uriId == null) throw new MyException(TTypMyException.EDbErrInsertGroup);
+        
+        int id = (int) ContentUris.parseId(uriId);
+        if (id<0) throw new MyException(TTypMyException.EDbErrInsertGroup);
+        
+		return id;	
+	}
+	
 	public int Insert(IMSms item) throws MyException {
         ContentValues values = new ContentValues();
         
@@ -87,6 +131,30 @@ public class CMDbTableSms implements IMDbTableSms {
         
         int id = (int) ContentUris.parseId(uriId);
         if (id<0) throw new MyException(TTypMyException.EDbErrInsertSms);
+        
+        IMSmsGroup gr = mLocator.createSmsGroup();
+        try {
+        	GetGroupByHash(gr, item.getHash());
+        	gr.setCount( gr.getCount()+1 );
+        	if (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew)
+        		gr.setCountNew( gr.getCountNew()+1 );
+        	gr.setDate(item.getDate());
+        	
+        	UpdateGroup(gr);
+        } catch (MyException e) {
+        	if (e.getId()==TTypMyException.EDbIdNotFoundGroup) {
+        		gr.setHash(item.getHash());
+        		gr.setPhone(item.getPhone());
+        		gr.setCount(1);
+        		if (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew)
+            		gr.setCountNew(1);
+        		else
+        			gr.setCountNew(0);
+        		gr.setDate(item.getDate());
+        		InsertGroup(gr);
+        	} else
+        		throw e;
+        }
         
 		return id;
 	}
@@ -119,6 +187,7 @@ public class CMDbTableSms implements IMDbTableSms {
 
 	public void Clear() throws MyException {
 		mCr.delete(CMDbProvider.CONTENT_URI_SMS, null, null);
+		mCr.delete(CMDbProvider.CONTENT_URI_SMSGROUP, null, null);
 	}
 
 	public int getCount() throws MyException { 
@@ -151,61 +220,46 @@ public class CMDbTableSms implements IMDbTableSms {
 				Load(sms, c);
 				dest.add(sms);
 			} while(c.moveToNext());
-			
-			/*
-			if ( !c.move(start) ) return;
-			
-			int end = start+count;
-			for (int i=start; i<end; i++) {
-				IMSms sms = mLocator.createSms();
-				Load(sms, c);
-				dest.add(sms);
-				if (!c.moveToNext()) return;
-			}
-			*/
+
 		} finally {
 			c.close();
 		}
 	}
 
-	public void QueryGroupByHashOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) {
+	public void QueryGroupByHashOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) throws MyException {
 		dest.clear();
 		
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, null, null, CMSQLiteOnlineHelper.SMSGROUP_MAXDATE+" DESC"); 
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, null, null, CMSQLiteOnlineHelper.SMSGROUP_MAXDATE+" DESC LIMIT "+start+","+count); 
 		
 		try {
 			if (!c.moveToFirst()) return;
-			if ( !c.move(start) ) return;
 			
-			int end = start+count;
-			for (int i=start; i<end; i++) {
+			do {
 				IMSmsGroup gr = mLocator.createSmsGroup();
-				gr.setHash(c.getString(0));
-				gr.setPhone(c.getString(1));
-				gr.setCount(c.getInt(2));
-				gr.setCountNew(c.getInt(3));
-				gr.setDate( new Date(c.getLong(4)));
+				LoadGroup(gr, c);
 				dest.add(gr);
-				if (!c.moveToNext()) return;
-			}
+			} while(c.moveToNext());
+			
 		} finally {
 			c.close();
 		}	
 	}
-
-	public void Update(IMSms item) throws MyException {
-        ContentValues values = new ContentValues();
-        
-        values.put(CMSQLiteOnlineHelper.SMS_DIRECTION, item.getDirection());
-        values.put(CMSQLiteOnlineHelper.SMS_FOLDER, item.getFolder());
-        values.put(CMSQLiteOnlineHelper.SMS_ISNEW, item.getIsNew());
-        values.put(CMSQLiteOnlineHelper.SMS_HASH, item.getHash());
-        values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
-        values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
-        values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
-        values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
-        
-        mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
+	
+	private void GetGroupByHash(IMSmsGroup dest, String hash) throws MyException {
+		
+		String[] args = new String[] { hash };		
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, CMSQLiteOnlineHelper.SMSGROUP_HASH+"=?", args, null); 
+		
+		try {
+			if ( c.moveToFirst() ) {
+				LoadGroup(dest, c);
+				return;
+			}
+			
+			throw  new MyException(TTypMyException.EDbIdNotFoundGroup);
+		} finally {
+			c.close();
+		}	
 	}
 
 	public void QueryByHashOrderByDat(ArrayList<IMSms> dest, String hash,	int start, int count) throws MyException {
@@ -223,18 +277,7 @@ public class CMDbTableSms implements IMDbTableSms {
 				Load(sms, c);
 				dest.add(sms);	
 			} while(c.moveToNext());
-			
-			/*
-			if ( !c.move(start) ) return;
-			
-			int end = start+count;
-			for (int i=start; i<end; i++) {
-				IMSms sms = mLocator.createSms();
-				Load(sms, c);
-				dest.add(sms);
-				if (!c.moveToNext()) return;
-			}
-			*/
+
 		} finally {
 			c.close();
 		}
@@ -257,21 +300,46 @@ public class CMDbTableSms implements IMDbTableSms {
 	}
 	
 	public int getCountByHash(String hash) throws MyException {
-		
-		String[] args = new String[] { hash };
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mCount, 
-				CMSQLiteOnlineHelper.SMS_HASH+"=?", args, null);
-		
-		try {
-			if ( c.moveToFirst() ) {
-				int cnt = c.getInt(0);
-				return cnt;
-			}
-			
-			throw  new MyException(TTypMyException.EDbErrGetCountSmsByHash);
-		} finally {
-			c.close();
-		}
+		IMSmsGroup gr = mLocator.createSmsGroup();
+		GetGroupByHash(gr, hash);
+		return gr.getCount();
 	}
+	
 
+	public void Update(IMSms item) throws MyException {
+		IMSms sms = mLocator.createSms();
+		getById(sms, item.getId());
+		
+        ContentValues values = new ContentValues();
+        
+        values.put(CMSQLiteOnlineHelper.SMS_DIRECTION, item.getDirection());
+        values.put(CMSQLiteOnlineHelper.SMS_FOLDER, item.getFolder());
+        values.put(CMSQLiteOnlineHelper.SMS_ISNEW, item.getIsNew());
+        values.put(CMSQLiteOnlineHelper.SMS_HASH, item.getHash());
+        values.put(CMSQLiteOnlineHelper.SMS_PHONE, item.getPhone());
+        values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
+        values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
+        values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
+        
+        mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
+        
+		if (sms.getIsNew()>=TTypIsNew.ENew && item.getIsNew()<TTypIsNew.ENew) {
+			IMSmsGroup gr = mLocator.createSmsGroup();
+			GetGroupByHash(gr, item.getHash());
+			gr.setCountNew(gr.getCountNew()-1);
+			UpdateGroup(gr);
+		} 
+	}
+	
+	protected void UpdateGroup(IMSmsGroup item) throws MyException {
+        ContentValues values = new ContentValues();
+        
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_HASH, item.getHash());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_PHONE, item.getPhone());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_COUNT, item.getCount());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW, item.getCountNew());
+        values.put(CMSQLiteOnlineHelper.SMSGROUP_MAXDATE, item.getDate().getTime());
+        
+        mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);
+	}
 }

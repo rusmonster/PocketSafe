@@ -102,4 +102,6 @@
 	<string name="EErrBase64Decode">Ошибка декодирования Base64</string>
 	<string name="ESmsErrResend">Не могу отправить заново</string>	 
 	<string name="EDbErrGetCountSmsByHash">Ошибка получения количества смс</string>   
+	<string name="EDbIdNotFoundGroup">Группа не найдена</string>
+	<string name="EDbErrInsertGroup">Ошибка добавления группы</string>
 </resources>

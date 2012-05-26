@@ -32,7 +32,7 @@ public class CMDbProvider extends ContentProvider {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnlineHelper.TABLE_SETTING, 		CODE_SETTING);
 		uriMatcher.addURI(PROVIDER_NAME, CMSQLiteOnlineHelper.TABLE_SMS, 			CODE_SMS);
-		uriMatcher.addURI(PROVIDER_NAME, SMSGROUP_PATH,							CODE_SMSGROUP);
+		uriMatcher.addURI(PROVIDER_NAME, SMSGROUP_PATH,								CODE_SMSGROUP);
 	}
 	
 	@Override
@@ -54,6 +54,10 @@ public class CMDbProvider extends ContentProvider {
 	    	 retVal = mDb.delete(CMSQLiteOnlineHelper.TABLE_SMS, where, whereArgs);
 	         getContext().getContentResolver().notifyChange(uri, null);
 	        break;
+	    case CODE_SMSGROUP:
+	    	retVal = mDb.delete(CMSQLiteOnlineHelper.TABLE_SMSGROUP, where, whereArgs);
+	         getContext().getContentResolver().notifyChange(uri, null);
+	    	break;
 	    default: throw new SQLException("Failed to delete from " + uri);
 	    }
 	    
@@ -78,6 +82,13 @@ public class CMDbProvider extends ContentProvider {
 	        if (id>0){
 	            _uri = ContentUris.withAppendedId(CONTENT_URI_SMS, id);
 	            getContext().getContentResolver().notifyChange(_uri, null);    
+	        }
+	        break;
+	    case CODE_SMSGROUP:
+	        id = mDb.insert(CMSQLiteOnlineHelper.TABLE_SMSGROUP, CMSQLiteOnlineHelper.SMSGROUP_PHONE, values);
+	        if (id>0){
+	            _uri = ContentUris.withAppendedId(CONTENT_URI_SMSGROUP, id);
+	            getContext().getContentResolver().notifyChange(_uri, null); 
 	        }
 	        break;
 	    default: throw new SQLException("Failed to insert row into " + uri);
@@ -107,7 +118,7 @@ public class CMDbProvider extends ContentProvider {
 	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
 	        break;
 	    case CODE_SMSGROUP:
-	    	c = mDb.query(CMSQLiteOnlineHelper.QUERY_SMSGROUP, projection, selection, selectionArgs, null, null, orderBy);
+	    	c = mDb.query(CMSQLiteOnlineHelper.TABLE_SMSGROUP, projection, selection, selectionArgs, null, null, orderBy);
 	        c.setNotificationUri(getContext().getContentResolver(), uri);	       
 	        break;
 	    default: throw new SQLException("Failed to query from "+uri);

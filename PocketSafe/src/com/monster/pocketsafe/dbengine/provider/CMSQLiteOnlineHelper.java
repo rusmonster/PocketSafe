@@ -14,13 +14,13 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 2;
+	public static final int DB_VERSION = 3;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
 	
 	public static final String TABLE_SMS = "M__SMS";
-	public static final String SMS_INDEX_HASH = "idxHASH";
+	public static final String SMS_INDEX_HASHDATE = "idxHASH";
 	
 	public static final String SMS_DIRECTION = "DIRECTION";
 	public static final String SMS_FOLDER = "FOLDER";
@@ -31,6 +31,9 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	public static final String SMS_DATE = "DAT";
 	public static final String SMS_STATUS = "STATUS";
 	
+	public static final String TABLE_SMSGROUP = "M__SMSGROUP";
+	public static final String SMSGROUP_INDEX_HASH = "idxGrHASH";
+	public static final String SMSGROUP_INDEX_MAXDATE = "idxGrDATE";
 	
 	public static final String SMSGROUP_HASH = "HASH";
 	public static final String SMSGROUP_PHONE = "PHONE";
@@ -103,8 +106,24 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_DATE + " DATETIME,"+
 				SMS_STATUS+ " INTEGER)");
 		
-		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASH);
-		db.execSQL("CREATE INDEX "+SMS_INDEX_HASH+" ON "+TABLE_SMS+"("+SMS_HASH+")");
+		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASHDATE);
+		db.execSQL("CREATE INDEX "+SMS_INDEX_HASHDATE+" ON "+TABLE_SMS+"("+SMS_HASH+","+SMS_DATE+")");
+		
+		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMSGROUP);
+		db.execSQL("CREATE TABLE "+TABLE_SMSGROUP+"("+
+				_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				SMSGROUP_HASH + " varchar(100)," +
+				SMSGROUP_PHONE + " TEXT," +
+				SMSGROUP_COUNT + " INTEGER," +
+				SMSGROUP_COUNTNEW+ " INTEGER,"+
+				SMSGROUP_MAXDATE + " DATETIME)"
+				);
+		
+		db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_HASH);
+		db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_HASH+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_HASH+")");
+		
+		db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_MAXDATE);
+		db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_MAXDATE+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_MAXDATE+")");
 	}
 
 	@Override
@@ -113,6 +132,38 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 			db.execSQL("ALTER TABLE "+TABLE_SMS+" ADD "+SMS_STATUS+" INTEGER");
 			db.execSQL("UPDATE "+TABLE_SMS+" SET "+SMS_STATUS+"="+TTypStatus.ESent);
 			oldVersion = 2;
+		}
+		
+		if (oldVersion<3) {
+			db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASHDATE);
+			db.execSQL("CREATE INDEX "+SMS_INDEX_HASHDATE+" ON "+TABLE_SMS+"("+SMS_HASH+","+SMS_DATE+")");
+			
+			db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMSGROUP);
+			db.execSQL("CREATE TABLE "+TABLE_SMSGROUP+"("+
+					_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+					SMSGROUP_HASH + " varchar(100)," +
+					SMSGROUP_PHONE + " TEXT," +
+					SMSGROUP_COUNT + " INTEGER," +
+					SMSGROUP_COUNTNEW+ " INTEGER,"+
+					SMSGROUP_MAXDATE + " DATETIME)"
+					);
+			
+			db.execSQL("INSERT INTO "+TABLE_SMSGROUP+"("+
+					SMSGROUP_HASH + "," +
+					SMSGROUP_PHONE + "," +
+					SMSGROUP_COUNT + "," +
+					SMSGROUP_COUNTNEW+ ","+
+					SMSGROUP_MAXDATE + ") "+
+					QUERY_SMSGROUP.substring(1, QUERY_SMSGROUP.length()-1)
+					);
+			
+			db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_HASH);
+			db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_HASH+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_HASH+")");
+			
+			db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_MAXDATE);
+			db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_MAXDATE+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_MAXDATE+")");
+			
+			oldVersion = 3;
 		}
 
 	}

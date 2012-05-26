@@ -2,7 +2,7 @@ package com.monster.pocketsafe.dbengine;
 
 import java.util.Date;
 
-public interface IMSmsGroup {
+public interface IMSmsGroup extends IMDbItem {
 	
 	String getHash();
 	void setHash(String hash);

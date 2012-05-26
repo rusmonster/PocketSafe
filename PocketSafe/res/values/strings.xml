@@ -102,4 +102,6 @@
 	<string name="EErrBase64Decode">Base64 decoding error</string>
 	<string name="ESmsErrResend">Cannot resend</string>
 	<string name="EDbErrGetCountSmsByHash">Error getting sms count</string>
+	<string name="EDbIdNotFoundGroup">Group not found</string>
+	<string name="EDbErrInsertGroup">Error inserting group</string>
 </resources>
