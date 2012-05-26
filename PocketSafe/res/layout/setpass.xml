@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:password="true"
+        android:inputType="phone"
         android:textColor="@color/black"
         />
     
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:password="true"
+        android:inputType="phone"
         android:textColor="@color/black"
         />
     

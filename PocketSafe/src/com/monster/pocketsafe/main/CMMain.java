@@ -453,4 +453,16 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mPassHolder.clearPass();
 		//passExpired(null);
 	}
+
+	public void guiPause() {
+		try {
+			mPassHolder.restartTimer();
+		} catch (MyException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void guiResume() {
+		mPassHolder.cancelTimer();
+	}
 }

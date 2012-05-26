@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.monster.pocketsafe.dbengine.IMDbReader;
@@ -121,6 +122,14 @@ public class SmsAdapter extends BaseAdapter {
 			mSms = sms;
 		}
 
+		public int getPosition() {
+			return mPosition;
+		}
+		
+		public SmsAdapterView getSav() {
+			return mSav;
+		}
+		
 		@Override
 		protected String doInBackground(Void... params) {
 			
@@ -140,6 +149,9 @@ public class SmsAdapter extends BaseAdapter {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			
+			mLoadersCount--;
+			doLoadQuery();
+			
 			if (result == null) return;
 			
 			if (mSav.mPos != mPosition) {
@@ -151,6 +163,31 @@ public class SmsAdapter extends BaseAdapter {
 			FillView(mSav, mSms, result);
 
 		}
+	}
+	
+	private LinkedList<SmsLoader> mLoadQuery = new LinkedList<SmsLoader>();
+	private static final int MAX_LOADERS = 5;
+	private int mLoadersCount = 0;
+	
+	void doLoadQuery() {
+		try {
+			while (mLoadersCount < MAX_LOADERS) {
+				SmsLoader loader = mLoadQuery.poll();
+				if (loader==null) break;
+				
+				if (loader.getPosition() == loader.getSav().mPos) {
+					loader.execute();
+					mLoadersCount++;
+					Log.d("!!!", "doLoadQuery: mLoadersCount="+mLoadersCount);
+				} else {
+					Log.i("!!!", "doLoadQuery: skip loader");
+				}
+			}
+		} catch(Exception e) {
+			Log.e("!!!", "Error in (new SmsLoader(position, sav, sms)).execute(): "+e.getMessage());
+			e.printStackTrace();
+		}
+	
 	}
 	
 	private void FillView(SmsAdapterView sav, IMSms sms, String text) {
@@ -246,7 +283,8 @@ public class SmsAdapter extends BaseAdapter {
 		} else {
 			sav.mItem.setVisibility(View.INVISIBLE);
 			sav.mSmsLoading.setVisibility(View.VISIBLE);
-			(new SmsLoader(position, sav, sms)).execute();
+			mLoadQuery.add( new SmsLoader(position, sav, sms) );
+			doLoadQuery();
 		}
 		
 		return v;		

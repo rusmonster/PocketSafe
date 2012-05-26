@@ -142,6 +142,10 @@ public class CMDbProvider extends ContentProvider {
 			mDb.update(CMSQLiteOnlineHelper.TABLE_SMS, values, where, whereArgs); 
 	        getContext().getContentResolver().notifyChange(uri, null);
 	        break;
+	    case CODE_SMSGROUP:
+	        mDb.update(CMSQLiteOnlineHelper.TABLE_SMSGROUP, values, where, whereArgs); 
+	        getContext().getContentResolver().notifyChange(uri, null);
+	        break;
 	    default: throw new SQLException("Failed to query from "+uri);
 	    }
         

@@ -18,9 +18,11 @@ public class CMTimer implements IMTimer {
 	private final Runnable mRunner = new Runnable() {
 		
 		public void run() {
-			mState = TTimerState.EWait;
 			try {
-				mObserver.timerEvent(CMTimer.this);
+				if (mState == TTimerState.EBusy) {
+					mState = TTimerState.EWait;
+					mObserver.timerEvent(CMTimer.this);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -32,6 +34,7 @@ public class CMTimer implements IMTimer {
 			throw new MyException(TTypMyException.ETimerNotReady);
 		
 		mHandler.postDelayed(mRunner, ms);
+		mState = TTimerState.EBusy;
 		Log.d("!!!", "Timer setted: "+ms);
 		
 	}
@@ -40,6 +43,7 @@ public class CMTimer implements IMTimer {
 		if (mState == TTimerState.EBusy) {
 			mHandler.removeCallbacks(mRunner);
 			mState = TTimerState.EWait;
+			Log.d("!!!", "Timer canceled");
 		}
 
 	}

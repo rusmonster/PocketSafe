@@ -104,4 +104,5 @@
 	<string name="EDbErrGetCountSmsByHash">Error getting sms count</string>
 	<string name="EDbIdNotFoundGroup">Group not found</string>
 	<string name="EDbErrInsertGroup">Error inserting group</string>
+	<string name="EPassNotDigital">Password should contain digits only</string>
 </resources>

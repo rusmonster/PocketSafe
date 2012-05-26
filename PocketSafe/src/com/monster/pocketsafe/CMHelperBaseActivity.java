@@ -159,6 +159,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		if (!checkPassActual())
 			return false;
 		
+		getMain().guiResume();
 		return true;
 	}
 	
@@ -214,6 +215,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		if (mDlg != null) mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
 		
 		try {
+			getMain().guiPause();
 			getMain().Dispatcher().delListener(this);
 		} catch (MyException e) {
 			e.printStackTrace();

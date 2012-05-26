@@ -33,12 +33,17 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		mTimer.SetObserver(this);
 	}
 
-	private void restartTimer() throws MyException {
+	public void restartTimer() throws MyException {
 		Date dat = new Date();
 		mTimExpire = new Date(dat.getTime()+mInterval);
 		
 		mTimer.cancelTimer();
 		mTimer.startTimer(mInterval);
+	}
+	
+	public void cancelTimer() {
+		mTimExpire = null;
+		mTimer.cancelTimer();
 	}
 	
 	public void setPass(String pass) throws MyException {
@@ -56,8 +61,6 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 			mPass=null;
 			throw e;
 		}
-		
-		restartTimer();
 	}
 
 	public String getPass() throws MyException {
@@ -90,10 +93,6 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 
 	public void setInterval(long _ms) throws MyException {
 		mInterval = _ms;
-		
-		if ( isPassValid() ) {
-			restartTimer();
-		}
 	}
 
 	public void timerEvent(IMTimer sender) throws Exception {

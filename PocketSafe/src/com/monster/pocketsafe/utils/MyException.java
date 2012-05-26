@@ -61,7 +61,8 @@ public class MyException extends Exception {
 		ESmsErrResend(50),
 		EDbErrGetCountSmsByHash(51),
 		EDbIdNotFoundGroup(52),
-		EDbErrInsertGroup(53)
+		EDbErrInsertGroup(53),
+		EPassNotDigital(54)
 		;
 		
 	    private final int mValue;

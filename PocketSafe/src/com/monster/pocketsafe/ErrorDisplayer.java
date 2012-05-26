@@ -65,6 +65,7 @@ public class ErrorDisplayer {
 		case EDbErrGetCountSmsByHash: return R.string.EDbErrGetCountSmsByHash;
 		case EDbIdNotFoundGroup: return R.string.EDbIdNotFoundGroup;
 		case EDbErrInsertGroup: return R.string.EDbErrInsertGroup;
+		case EPassNotDigital: return R.string.EPassNotDigital;
 		default:
 			return R.string.ErrUnknown;
 		}

@@ -1,5 +1,7 @@
 package com.monster.pocketsafe;
 
+import java.util.HashSet;
+
 import com.monster.pocketsafe.utils.MyException;
 import com.monster.pocketsafe.utils.MyException.TTypMyException;
 
@@ -23,6 +25,12 @@ public class SetPassActivity extends Activity {
 	private EditText mPass1;
 	private EditText mPass2;
 	
+	private static HashSet<String> mNumbers = new HashSet<String>();
+	static {
+		for (int i=0; i<10; i++)
+			mNumbers.add(String.valueOf(i));
+	}
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,13 @@ public class SetPassActivity extends Activity {
 			
 			if (pass1.length()==0)
 				throw new MyException(TTypMyException.EPassEmpty);
+			
+			for (int i=0; i<pass1.length(); i++) {
+				String ch = pass1.substring(i,i+1);
+				if (!mNumbers.contains(ch))
+					throw new MyException(TTypMyException.EPassNotDigital);
+			}
+
 				
 			Intent intent = new Intent();
 	        intent.putExtra(PASS, pass1); 

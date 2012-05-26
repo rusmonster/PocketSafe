@@ -340,6 +340,6 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW, item.getCountNew());
         values.put(CMSQLiteOnlineHelper.SMSGROUP_MAXDATE, item.getDate().getTime());
         
-        mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);
+        mCr.update(CMDbProvider.CONTENT_URI_SMSGROUP, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);
 	}
 }

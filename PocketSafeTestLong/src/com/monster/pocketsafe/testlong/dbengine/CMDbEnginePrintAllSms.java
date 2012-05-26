@@ -1,11 +1,20 @@
 package com.monster.pocketsafe.testlong.dbengine;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.monster.pocketsafe.dbengine.CMDbEngine;
+import com.monster.pocketsafe.dbengine.IMDbEngine;
+import com.monster.pocketsafe.dbengine.IMSetting;
 import com.monster.pocketsafe.dbengine.IMSms;
+import com.monster.pocketsafe.dbengine.TTypDirection;
 import com.monster.pocketsafe.dbengine.TTypFolder;
+import com.monster.pocketsafe.dbengine.TTypIsNew;
 import com.monster.pocketsafe.dbengine.TTypStatus;
+import com.monster.pocketsafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.monster.pocketsafe.sec.IMRsa;
+import com.monster.pocketsafe.sec.IMSha256;
 import com.monster.pocketsafe.utils.CMLocator;
 import com.monster.pocketsafe.utils.IMLocator;
 import com.monster.pocketsafe.utils.MyException;
@@ -59,5 +68,53 @@ public class CMDbEnginePrintAllSms extends AndroidTestCase {
 			}
 		}
 		
+	}
+	
+	public void testAdd1000Sms() throws MyException, UnsupportedEncodingException {
+		int cnt=1000;
+
+	
+		IMSetting set = mLocator.createSetting();
+		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
+		String pub = set.getStrVal();
+		if (pub.length()==0)
+			fail("no rsa pub");
+
+		IMRsa rsa = mLocator.createRsa();
+		rsa.setPublicKey(pub);
+		
+		String phone = "testPhone";
+		
+		IMSha256 sha = mLocator.createSha256();
+		String hash = sha.getHash(phone);
+		
+		byte[] cPhone = rsa.EncryptBuffer(phone.getBytes());
+		phone = new String(cPhone, IMDbEngine.ENCODING);
+		
+		
+		
+		for (int i=0; i<cnt; i++) {
+			String text = "testText"+i;
+			Log.i("!!!", text);
+			
+			byte[] cText = rsa.EncryptBuffer(text.getBytes());
+			
+			IMSms sms = mLocator.createSms();
+			sms.setDirection(TTypDirection.EIncoming);
+			sms.setFolder(TTypFolder.EInbox);
+			sms.setIsNew(TTypIsNew.EJustRecv);
+			sms.setPhone(phone);
+			sms.setHash(hash);
+			sms.setText(new String(cText, IMDbEngine.ENCODING));
+			sms.setDate( new Date() );
+			sms.setStatus(TTypStatus.ERecv);
+			
+			try {
+				mDbEngine.TableSms().Insert(sms);
+			}catch(MyException e) {
+				Log.e("!!!", "Error inserting: "+e.getId());
+			}
+		}
+			
 	}
 }

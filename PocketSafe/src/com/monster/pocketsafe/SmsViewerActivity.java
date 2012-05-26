@@ -128,7 +128,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	public void listenerEvent(IMEvent event) throws MyException {
 		switch (event.getTyp()) {
 		case ESmsRecieved:
-		case ESmsUpdated:
+		//case ESmsUpdated:
 		case ESmsOutboxAdded:
 		case ESmsDelMany:
 		case ESmsDeleted:
@@ -145,12 +145,16 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(mEdText.getWindowToken(), 0);
 			
-			Log.v("!!!", "Text cleared");
+			mHandler.removeCallbacks(mRunReload);
+			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
 		case ESmsSendError:
 			dismissDialog(IDD_SMS_SENDING); mDlg = null;
 			assert(event instanceof IMEventErr);
 			handleSmsSendError((IMEventErr) event);
+			
+			mHandler.removeCallbacks(mRunReload);
+			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
 		case ESmsDelivered:
 		case ESmsDeliverError:

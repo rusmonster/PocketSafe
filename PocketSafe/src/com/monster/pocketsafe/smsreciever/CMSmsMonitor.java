@@ -1,7 +1,5 @@
 package com.monster.pocketsafe.smsreciever;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Date;
 
 import com.monster.pocketsafe.dbengine.IMDbEngine;
@@ -86,23 +84,22 @@ public class CMSmsMonitor extends BroadcastReceiver {
 					smsfrom = messages[0].getOriginatingAddress();
 				
 				
-				Log.d("!!!","SMS Message from: "+smsfrom+"; text: "+smstext);
-				
 				mDbEngine.Open( context.getContentResolver() );
 
 				if (ProcessMessage(context, smsfrom, smstext)) {
 					Log.d("!!!", "SMS stored");
-					writeFile(context, smsfrom+": "+smstext);
+					//writeFile(context, smsfrom+": "+smstext);
 					abortBroadcast();
 				}
 	
 			}
 		} catch (Exception e) {
-			Log.e("!!!", "Error in CMSmsMonitor.onReceive");
+			Log.e("!!!", "Error in CMSmsMonitor.onReceive: ");
 			e.printStackTrace();
 		}
 	}
 
+	/*
 	private static void writeFile(Context context, String text) {
 		try {
 			File fileName = null;
@@ -126,5 +123,6 @@ public class CMSmsMonitor extends BroadcastReceiver {
 			Log.e("!!!", "Error in writeFile: "+e.getMessage());
 		}
 	}
+	*/
 };
 

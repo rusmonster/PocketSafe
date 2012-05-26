@@ -49,7 +49,7 @@
 
 	<string name="Me">Я</string>
 	<string name="smsLoading">Загрузка...</string>
-	    
+	
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
 	<string name="EInvalidDbId">Неверный ID базы данных</string>
@@ -104,4 +104,5 @@
 	<string name="EDbErrGetCountSmsByHash">Ошибка получения количества смс</string>   
 	<string name="EDbIdNotFoundGroup">Группа не найдена</string>
 	<string name="EDbErrInsertGroup">Ошибка добавления группы</string>
+	<string name="EPassNotDigital">Пароль должен состоять из цифр</string>
 </resources>

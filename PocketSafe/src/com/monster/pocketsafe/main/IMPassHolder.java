@@ -13,4 +13,6 @@ public interface IMPassHolder {
 	public boolean isPassValid();
 	public void setInterval(long _ms) throws MyException;
 	public void clearPass();
+	public void restartTimer() throws MyException;
+	public void cancelTimer();
 }

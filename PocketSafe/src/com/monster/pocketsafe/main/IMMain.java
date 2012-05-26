@@ -22,5 +22,7 @@ public interface IMMain {
 	boolean isPassValid();
 	void lockNow();
 	void ResendSms(int id) throws MyException;
+	void guiPause();
+	void guiResume();
 
 }
