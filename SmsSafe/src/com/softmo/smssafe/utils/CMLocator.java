@@ -40,8 +40,8 @@ import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
 import com.softmo.smssafe.sec.IMRsa;
 import com.softmo.smssafe.sec.IMSha256;
-import com.softmo.smssafe.sms.sender.CMSmsSender;
-import com.softmo.smssafe.sms.sender.IMSmsSender;
+import com.softmo.smssafe.smssender.CMSmsSender;
+import com.softmo.smssafe.smssender.IMSmsSender;
 
 public class CMLocator implements IMLocator {
 

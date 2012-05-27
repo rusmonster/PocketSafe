@@ -1,4 +1,4 @@
-package com.softmo.smssafe.smsreciever;
+package com.softmo.smssafe.smsreceiver;
 
 import java.util.Date;
 

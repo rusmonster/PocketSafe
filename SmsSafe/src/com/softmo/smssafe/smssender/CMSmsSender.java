@@ -1,4 +1,4 @@
-package com.softmo.smssafe.sms.sender;
+package com.softmo.smssafe.smssender;
 
 import java.util.ArrayList;
 
