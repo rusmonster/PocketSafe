@@ -74,4 +74,20 @@ public class SetPassActivity extends Activity {
         setResult(RESULT_CANCELED);
         finish();
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putString("pass1", mPass1.getText().toString());
+		outState.putString("pass2", mPass2.getText().toString());
+		
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle outState) {
+		mPass1.setText(outState.getString("pass1"));
+		mPass2.setText(outState.getString("pass2"));
+
+		super.onRestoreInstanceState(outState);
+	}	
 }

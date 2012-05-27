@@ -73,6 +73,15 @@ public class SmsAdapter extends BaseAdapter {
 		mColorBlue = mActivity.getResources().getColor(R.color.blue);
 	}
 	
+	public Map<Integer, String> getMap() {
+		return mMap;
+	}
+	
+	public void setMap(Map<Integer,String> map) {
+		if (map!=null)
+			mMap=map;
+	}
+	
 	public int getCount() {
 		//Log.d("!!!", "SmsAdapter::getCount");
 		if (mCount == -1) {

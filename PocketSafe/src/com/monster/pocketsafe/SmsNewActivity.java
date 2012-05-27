@@ -1,5 +1,10 @@
 package com.monster.pocketsafe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.main.IMEvent;
 import com.monster.pocketsafe.main.IMEventSimpleID;
@@ -37,6 +42,7 @@ public class SmsNewActivity extends CMBaseActivity {
 	private Button mBtSend;
 	private ProgressDialog mDlg;
 	private String mPhone;
+	private String mSavedPhone;
 	private String mLastEdPhoneVal;
 	private TextView mTxtCounter;
     
@@ -52,7 +58,7 @@ public class SmsNewActivity extends CMBaseActivity {
 		try {
 			c = getHelper().getMain().DbReader().QueryContact().getByPhone(phone);
 		} catch (MyException e) {
-			ErrorDisplayer.displayError(this, e.getId().getValue());
+			//ErrorDisplayer.displayError(this, e.getId().getValue());
 			return;
 		}
 		
@@ -306,6 +312,8 @@ public class SmsNewActivity extends CMBaseActivity {
 
 	public void onMainBind() throws MyException {
 		Phone2Name();
+		if (mPhone==null && mSavedPhone!=null) mPhone = mSavedPhone;
+		Log.i("!!!","onMainBind: "+mPhone);
     	mEdText.requestFocus();
 	}
 
@@ -333,6 +341,18 @@ public class SmsNewActivity extends CMBaseActivity {
 		super.onPause();
 	}
 	
-	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		Log.i("!!!","onSaveInstanceState: "+mPhone);
+		outState.putString("phone", mPhone);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle outState) {
+		mSavedPhone = outState.getString("phone");
+		Log.i("!!!","onSaveInstanceState: "+mSavedPhone);
+		super.onRestoreInstanceState(outState);
+	}	
 	
 }

@@ -115,5 +115,20 @@ public final static String PASS = "com.monster.pocketsafe.EnterPassActivity.PASS
 		}
 	}
 	
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putString("pass",mRes);
+		
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle outState) {
+		mRes = outState.getString("pass");
+		updateEditor();
+		
+		super.onRestoreInstanceState(outState);
+	}	
 }
 

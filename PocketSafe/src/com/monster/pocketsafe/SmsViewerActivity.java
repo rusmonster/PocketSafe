@@ -1,6 +1,10 @@
 package com.monster.pocketsafe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.monster.pocketsafe.dbengine.IMContact;
 import com.monster.pocketsafe.dbengine.IMSms;
 import com.monster.pocketsafe.dbengine.TTypStatus;
@@ -49,6 +53,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	private EditText mEdText;
 	private TextView mTvCounter;
 	private Button mBtSend;
+	private Map<Integer, String> mSavedMap;
 	
 	private CSmsCounter mSmsCou = new CSmsCounter();
 	
@@ -412,6 +417,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		}
 
         mAdapter = new SmsAdapter(this, getHelper().getMain(), mName, mHash);
+       	mAdapter.setMap(mSavedMap);
         setListAdapter(mAdapter);	
 
         try {
@@ -429,4 +435,42 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
         
 	}
 
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putString("text", mEdText.getText().toString());
+		if (mAdapter!=null) {
+			Map<Integer, String> map = mAdapter.getMap(); 
+			Iterator<Integer> i = map.keySet().iterator();
+			
+			int siz = map.size();
+			ArrayList<Integer> keys = new ArrayList<Integer>(siz);
+			ArrayList<String> vals = new ArrayList<String>(siz);
+			while (i.hasNext()) {
+				int key = i.next();
+				keys.add(key);
+				vals.add(map.get(key));
+			}
+			outState.putIntegerArrayList("keys", keys);
+			outState.putStringArrayList("vals", vals);
+		}
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle outState) {
+		mEdText.setText(outState.getString("text"));
+		
+		ArrayList<Integer> keys = outState.getIntegerArrayList("keys");
+		ArrayList<String> vals = outState.getStringArrayList("vals");
+		if (keys!=null && vals!=null) {
+			mSavedMap = new HashMap<Integer, String>();
+			for (int i=0; i<keys.size(); i++)
+				mSavedMap.put(keys.get(i), vals.get(i));
+		}
+		super.onRestoreInstanceState(outState);
+	}
+
+	 
 }
