@@ -8,7 +8,7 @@
     <string name="sms_newsms">New</string>
     <string name="sms_delall">Delete all</string>
     <string name="about">About</string>
-    <string name="siteurl">http://www.soft-mo.com</string>
+    <string name="siteurl">soft-mo.com</string>
     <string name="title_about">About</string>
     <string name="sms_view_thread">View</string>
     <string name="sms_del_thread">Delete</string>
@@ -49,6 +49,15 @@
 	
 	<string name="Me">Me</string>
 	<string name="smsLoading">Loading...</string>
+	
+	<string name="program">Program:</string>
+	<string name="site">WEB:</string>
+	<string name="version">Version:</string>
+	<string name="versionVal">1.0</string>
+	<string name="author">Author:</string>
+	<string name="authorVal">Dmitry Kalita</string>
+	<string name="mail">Mail:</string>
+	<string name="mailVal">rusmonster@gmail.com</string>
 	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>

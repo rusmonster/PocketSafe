@@ -8,7 +8,7 @@
     <string name="sms_newsms">Новое смс</string>
     <string name="sms_delall">Удалить все</string>
     <string name="about">О программе</string>
-    <string name="siteurl">http://www.soft-mo.com</string>
+    <string name="siteurl">soft-mo.com</string>
     <string name="title_about">О программе</string>
     <string name="sms_view_thread">Смотреть</string>
     <string name="sms_del_thread">Удалить</string>
@@ -49,6 +49,15 @@
 
 	<string name="Me">Я</string>
 	<string name="smsLoading">Загрузка...</string>
+	
+	<string name="program">Приложение:</string>
+	<string name="site">Сайт:</string>
+	<string name="version">Версия:</string>
+	<string name="versionVal">1.0</string>
+	<string name="author">Автор:</string>
+	<string name="authorVal">Дмитрий Калита</string>
+	<string name="mail">Mail:</string>
+	<string name="mailVal">rusmonster@gmail.com</string>	
 	
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>

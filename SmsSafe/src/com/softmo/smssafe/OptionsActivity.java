@@ -17,6 +17,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,7 +31,7 @@ public class OptionsActivity extends CMBaseListActivity {
 	private static final int ENTER_PASS_RESULT = 1011;	
 
 	private final static String TITLE_KEY = "title";
-    private final static String DESCRIPTION_LEY = "description";	
+    private final static String DESCRIPTION_KEY = "description";	
 	
     private String[] mTimout_labels;
     private String[] mTimout_vals;
@@ -41,6 +42,13 @@ public class OptionsActivity extends CMBaseListActivity {
 	private Dialog mDlg;
 	
 	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.listbase);
+	}
+
 	@Override
 	protected void onStart() {
 		mTimout_labels = getResources().getStringArray(R.array.text_passtimout);
@@ -69,24 +77,24 @@ public class OptionsActivity extends CMBaseListActivity {
 		
         HashMap<String, String> item = new HashMap<String, String>();
         item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_LEY, "");
+        item.put(DESCRIPTION_KEY, "");
         data.add(item);
         
         str = getResources().getString(R.string.opt_passtimeout);
         item = new HashMap<String, String>();
         item.put(TITLE_KEY, str);
         
-        item.put(DESCRIPTION_LEY, val);
+        item.put(DESCRIPTION_KEY, val);
         data.add(item);       
         
         str = getResources().getString(R.string.opt_locknow);
         item = new HashMap<String, String>();
         item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_LEY, "");
+        item.put(DESCRIPTION_KEY, "");
         data.add(item);            
 
-        setListAdapter(new SimpleAdapter(this, data, android.R.layout.simple_list_item_2, new String[] { TITLE_KEY,
-                        DESCRIPTION_LEY }, new int[] { android.R.id.text1, android.R.id.text2 }));    
+        setListAdapter(new SimpleAdapter(this, data, R.layout.listbaseitem, 
+        		new String[] { TITLE_KEY, DESCRIPTION_KEY }, new int[] { R.id.text1, R.id.text2 }));    
 	}
 		
 	public void onMainBind() throws MyException {
