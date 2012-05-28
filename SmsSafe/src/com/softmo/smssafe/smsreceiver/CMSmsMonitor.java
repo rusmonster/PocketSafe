@@ -2,21 +2,21 @@ package com.softmo.smssafe.smsreceiver;
 
 import java.util.Date;
 
-import com.softmo.smssafe.dbengine.IMDbEngine;
-import com.softmo.smssafe.dbengine.IMSetting;
-import com.softmo.smssafe.dbengine.IMSms;
-import com.softmo.smssafe.dbengine.TTypDirection;
-import com.softmo.smssafe.dbengine.TTypFolder;
-import com.softmo.smssafe.dbengine.TTypIsNew;
-import com.softmo.smssafe.dbengine.TTypStatus;
-import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.main.TTypEvent;
-import com.softmo.smssafe.main.TTypEventStrings;
-import com.softmo.smssafe.safeservice.CMSafeService;
-import com.softmo.smssafe.sec.IMRsa;
-import com.softmo.smssafe.sec.IMSha256;
-import com.softmo.smssafe.utils.CMLocator;
-import com.softmo.smssafe.utils.IMLocator;
+import com.softmo.libsafe.dbengine.IMDbEngine;
+import com.softmo.libsafe.dbengine.IMSetting;
+import com.softmo.libsafe.dbengine.IMSms;
+import com.softmo.libsafe.dbengine.TTypDirection;
+import com.softmo.libsafe.dbengine.TTypFolder;
+import com.softmo.libsafe.dbengine.TTypIsNew;
+import com.softmo.libsafe.dbengine.TTypStatus;
+import com.softmo.libsafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.libsafe.main.TTypEvent;
+import com.softmo.libsafe.main.TTypEventStrings;
+import com.softmo.libsafe.safeservice.CMSafeService;
+import com.softmo.libsafe.sec.IMRsa;
+import com.softmo.libsafe.sec.IMSha256;
+import com.softmo.libsafe.utils.CMLocator;
+import com.softmo.libsafe.utils.IMLocator;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

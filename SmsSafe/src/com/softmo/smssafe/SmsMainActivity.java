@@ -1,12 +1,16 @@
 package com.softmo.smssafe;
 
+import CMBaseListActivity;
+
 import java.util.ArrayList;
+
+import com.softmo.libsafe.dbengine.IMContact;
+import com.softmo.libsafe.dbengine.IMSmsGroup;
+import com.softmo.libsafe.main.IMEvent;
+import com.softmo.libsafe.utils.MyException;
+import com.softmo.libsafe.utils.MyException.TTypMyException;
+import com.softmo.libsafe.view.ErrorDisplayer;
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.dbengine.IMContact;
-import com.softmo.smssafe.dbengine.IMSmsGroup;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -16,7 +16,7 @@
         android:icon="@drawable/appicon"
         android:label="@string/app_name" >
         <provider
-            android:name=".dbengine.provider.CMDbProvider"
+            android:name="com.softmo.libsafe.dbengine.provider.CMDbProvidervider.CMDbProvider"
             android:authorities="com.softmo.smssafe.dbengine.provider.cmdbprovider" />
        <activity
             android:label="@string/app_name"
@@ -31,18 +31,18 @@
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>
 		</receiver>
-		<receiver android:name=".bootreceiver.CMBootReceiver">
+		<recei.bootreceiver.CMBootReceiverver.CMBootReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
-		<service android:name=".safeservice.CMSafeService" />
+		<servcom.softmo.libsafe.safeservice.CMSafeServicevice.CMSafeService" />
 		<activity android:name=".SmsViewerActivity"></activity>
 		<activity android:name=".SmsNewActivity" 	android:label="@string/sms_new"></activity>
 		<activity android:name=".AboutActivity"></activity>
 		<activity android:name=".OptionsActivity"></activity>
 		<activity android:name=".SetPassActivity"	android:label="@string/set_pass" ></activity>
-		<activity android:name=".EnterPassActivity"></activity>
+		<activ.EnterPassActivity.EnterPassActivity"></activity>
     </application>
 
 </manifest>

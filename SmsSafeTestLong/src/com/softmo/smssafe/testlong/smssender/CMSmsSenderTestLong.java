@@ -3,11 +3,11 @@ package com.softmo.smssafe.testlong.smssender;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.softmo.smssafe.smssender.CMSmsSender;
-import com.softmo.smssafe.smssender.IMSmsSender;
-import com.softmo.smssafe.smssender.IMSmsSenderObserver;
+import com.softmo.libsafe.smssender.CMSmsSender;
+import com.softmo.libsafe.smssender.IMSmsSender;
+import com.softmo.libsafe.smssender.IMSmsSenderObserver;
+import com.softmo.libsafe.utils.MyException;
 import com.softmo.smssafe.testlong.utils.CMTestThread;
-import com.softmo.smssafe.utils.MyException;
 
 
 public class CMSmsSenderTestLong extends AndroidTestCase implements IMSmsSenderObserver {

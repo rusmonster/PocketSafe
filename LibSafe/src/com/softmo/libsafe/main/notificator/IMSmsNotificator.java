@@ -1,0 +1,10 @@
+package com.softmo.libsafe.main.notificator;
+
+import android.content.Context;
+
+public interface IMSmsNotificator {
+	void Init(Context context);
+	void Popup(int cnt_newsms);
+	void Update(int cnt_newsms);
+
+}

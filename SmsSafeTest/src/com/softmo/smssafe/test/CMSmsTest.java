@@ -1,7 +1,8 @@
 package com.softmo.smssafe.test;
 
-import com.softmo.smssafe.dbengine.CMSms;
-import com.softmo.smssafe.utils.MyException;
+import com.softmo.libsafe.dbengine.CMSms;
+import com.softmo.libsafe.utils.MyException;
+
 import junit.framework.TestCase;
 
 public class CMSmsTest extends TestCase {

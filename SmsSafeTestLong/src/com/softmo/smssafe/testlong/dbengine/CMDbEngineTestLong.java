@@ -8,20 +8,20 @@ import java.util.Date;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.softmo.smssafe.dbengine.CMDbEngine;
-import com.softmo.smssafe.dbengine.IMContact;
-import com.softmo.smssafe.dbengine.IMSetting;
-import com.softmo.smssafe.dbengine.IMSms;
-import com.softmo.smssafe.dbengine.IMSmsGroup;
-import com.softmo.smssafe.dbengine.TTypDirection;
-import com.softmo.smssafe.dbengine.TTypFolder;
-import com.softmo.smssafe.dbengine.TTypIsNew;
-import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.sec.IMSha256;
-import com.softmo.smssafe.utils.CMLocator;
-import com.softmo.smssafe.utils.IMLocator;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.libsafe.dbengine.CMDbEngine;
+import com.softmo.libsafe.dbengine.IMContact;
+import com.softmo.libsafe.dbengine.IMSetting;
+import com.softmo.libsafe.dbengine.IMSms;
+import com.softmo.libsafe.dbengine.IMSmsGroup;
+import com.softmo.libsafe.dbengine.TTypDirection;
+import com.softmo.libsafe.dbengine.TTypFolder;
+import com.softmo.libsafe.dbengine.TTypIsNew;
+import com.softmo.libsafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.libsafe.sec.IMSha256;
+import com.softmo.libsafe.utils.CMLocator;
+import com.softmo.libsafe.utils.IMLocator;
+import com.softmo.libsafe.utils.MyException;
+import com.softmo.libsafe.utils.MyException.TTypMyException;
 
 
 public class CMDbEngineTestLong extends AndroidTestCase {

@@ -1,11 +1,14 @@
 package com.softmo.smssafe;
 
+import CMBaseActivity;
+
+import com.softmo.libsafe.dbengine.IMContact;
+import com.softmo.libsafe.main.IMEvent;
+import com.softmo.libsafe.main.IMEventSimpleID;
+import com.softmo.libsafe.utils.MyException;
+import com.softmo.libsafe.utils.MyException.TTypMyException;
+import com.softmo.libsafe.view.ErrorDisplayer;
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.dbengine.IMContact;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.main.IMEventSimpleID;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

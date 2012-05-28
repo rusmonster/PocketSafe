@@ -2,9 +2,9 @@ package com.softmo.smssafe.test;
 
 import android.util.Log;
 
-import com.softmo.smssafe.sec.CMSha256;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.libsafe.sec.CMSha256;
+import com.softmo.libsafe.utils.MyException;
+import com.softmo.libsafe.utils.MyException.TTypMyException;
 
 import junit.framework.TestCase;
 

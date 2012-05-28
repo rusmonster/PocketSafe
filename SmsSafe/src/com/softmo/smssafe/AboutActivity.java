@@ -1,8 +1,10 @@
 package com.softmo.smssafe;
 
+import CMBaseActivity;
+
+import com.softmo.libsafe.main.IMEvent;
+import com.softmo.libsafe.utils.MyException;
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.utils.MyException;
 
 import android.os.Bundle;
 

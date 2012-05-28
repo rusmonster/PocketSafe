@@ -8,13 +8,13 @@ import android.os.AsyncTask;
 import android.os.Looper;
 import android.util.Log;
 
-import com.softmo.smssafe.sec.CMRsa;
-import com.softmo.smssafe.sec.IMRsa;
-import com.softmo.smssafe.sec.IMRsaObserver;
+import com.softmo.libsafe.sec.CMRsa;
+import com.softmo.libsafe.sec.IMRsa;
+import com.softmo.libsafe.sec.IMRsaObserver;
+import com.softmo.libsafe.utils.CMLocator;
+import com.softmo.libsafe.utils.MyException;
+import com.softmo.libsafe.utils.MyException.TTypMyException;
 import com.softmo.smssafe.testlong.utils.CMTestThread;
-import com.softmo.smssafe.utils.CMLocator;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import junit.framework.TestCase;
 
