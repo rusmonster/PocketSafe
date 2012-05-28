@@ -44,5 +44,6 @@ public interface IMLocator {
 	IMAes createAes();
 	IMPassHolder createPassHolder();
 	IMTimer createTimer();
+	IMTimerWakeup createTimerWakeup();
 	IMSha256 createSha256();
 }

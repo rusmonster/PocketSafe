@@ -90,6 +90,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mDbEngine.TableSetting().getById(set, TTypSetting.EPassTimout);
 		long tim = set.getIntVal();
 		mPassHolder.setInterval(tim*1000);
+		mPassHolder.setContext(mContext);
 		
 		mDbEngine.TableSetting().getById(set, TTypSetting.ERsaPub);
 		

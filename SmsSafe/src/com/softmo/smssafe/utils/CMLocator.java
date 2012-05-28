@@ -127,6 +127,11 @@ public class CMLocator implements IMLocator {
 
 	public IMTimer createTimer() {
 		return new CMTimer();
+		//return new CMTimer2();
+	}
+	
+	public IMTimerWakeup createTimerWakeup() {
+		return new CMTimerWakeup();
 	}
 
 	public IMSha256 createSha256() {

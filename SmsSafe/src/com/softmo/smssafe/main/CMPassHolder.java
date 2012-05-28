@@ -3,6 +3,7 @@ package com.softmo.smssafe.main;
 import java.math.BigInteger;
 import java.util.Date;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.softmo.smssafe.sec.IMAes;
@@ -10,6 +11,7 @@ import com.softmo.smssafe.sec.IMBase64;
 import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.IMTimer;
 import com.softmo.smssafe.utils.IMTimerObserver;
+import com.softmo.smssafe.utils.IMTimerWakeup;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
@@ -22,28 +24,41 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	private IMAes mAes;
 	private IMBase64 mBase64;
 	private long mInterval;
-	private IMTimer mTimer;
+	private IMTimerWakeup mTimer;
 	private Date mTimExpire;
 	
 	public CMPassHolder(IMLocator locator) {
 		mLocator = locator;
 		mAes = mLocator.createAes();
 		mBase64 = mLocator.createBase64();
-		mTimer = mLocator.createTimer();
+		mTimer = mLocator.createTimerWakeup();
 		mTimer.SetObserver(this);
 	}
 
 	public void restartTimer() throws MyException {
-		Date dat = new Date();
-		mTimExpire = new Date(dat.getTime()+mInterval);
-		
+		mTimExpire = null;
 		mTimer.cancelTimer();
-		mTimer.startTimer(mInterval);
+		
+		if (mPass!=null) {
+			mTimExpire = new Date(System.currentTimeMillis()+mInterval);
+			mTimer.startTimer(mInterval);
+		}
 	}
 	
 	public void cancelTimer() {
-		mTimExpire = null;
+		
 		mTimer.cancelTimer();
+		
+		if (mTimExpire!=null) {
+			Date dat = new Date();
+			if (dat.after(mTimExpire))
+				try {
+					timerEvent(mTimer);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			mTimExpire = null;
+		}
 	}
 	
 	public void setPass(String pass) throws MyException {
@@ -116,4 +131,8 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		}
 	}
 
+	public void setContext(Context context) {
+		mTimer.setContext(context);
+	}
+	
 }

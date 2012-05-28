@@ -161,6 +161,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 			return false;
 		
 		getMain().guiResume();
+		mOwner.setVisible(true);
 		return true;
 	}
 	
@@ -214,6 +215,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
     public void onPause() {
 		Log.d("!!!", "onPause "+mOwner.toString());
 		if (mDlg != null) mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+		mOwner.setVisible(false); //for disable moment show activity before passEnter
 		
 		try {
 			getMain().guiPause();
