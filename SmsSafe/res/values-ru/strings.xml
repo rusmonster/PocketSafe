@@ -24,6 +24,9 @@
     <string name="sms_delmessage">Удалить</string>
 	<string name="sms_resend">Отправить заново</string>
     <string name="options">Настройка</string>
+    
+    <string name="enter_phone">Телефон:</string>
+    <string name="enter_text">Текст:</string>
 
     <string name="copied">Текст скопирован в буфер</string>
 

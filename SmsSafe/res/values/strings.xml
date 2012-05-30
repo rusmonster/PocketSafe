@@ -24,6 +24,9 @@
     <string name="sms_delmessage">Delete</string>
     <string name="sms_resend">Resend</string>
     <string name="options">Settings</string>
+    
+    <string name="enter_phone">Phone:</string>
+    <string name="enter_text">Text:</string>
 
     <string name="copied">Text copyed to clipboard</string>
 
