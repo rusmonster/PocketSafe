@@ -2,7 +2,6 @@ package com.softmo.smssafe.dbengine.provider;
 
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
-import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 
 import android.content.ContentValues;

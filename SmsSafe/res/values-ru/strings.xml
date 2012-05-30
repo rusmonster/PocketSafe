@@ -8,7 +8,7 @@
     <string name="sms_newsms">Новое смс</string>
     <string name="sms_delall">Удалить все</string>
     <string name="about">О программе</string>
-    <string name="siteurl">soft-mo.com</string>
+    <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">О программе</string>
     <string name="sms_view_thread">Смотреть</string>
     <string name="sms_del_thread">Удалить</string>
