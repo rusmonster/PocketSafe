@@ -147,19 +147,21 @@ public class SmsNewActivity extends CMBaseActivity {
 		} );
 	    
 	 // check if application was started with an intent
-		Intent intent = getIntent();
-		if (savedInstanceState == null && intent != null && intent.getAction()!=null) {
-
-		    if (intent.getAction().equals(Intent.ACTION_SEND)) {
-		    	String message = intent.getStringExtra(Intent.EXTRA_TEXT);
-		    	mEdText.setText(message);
-		    }
-
-		    if (intent.getAction().equals(Intent.ACTION_SENDTO)) {
-				mIntentPhone = URLDecoder.decode(intent.getDataString())
-					.replaceAll("[^0-9\\+]*", "");
-		    }
-		}
+	    try {
+			Intent intent = getIntent();
+			if (savedInstanceState == null && intent != null && intent.getAction()!=null) {
+	
+			    if (intent.getAction().equals(Intent.ACTION_SEND)) {
+			    	String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+			    	mEdText.setText(message);
+			    }
+	
+			    if (intent.getAction().equals(Intent.ACTION_SENDTO)) {
+					mIntentPhone = URLDecoder.decode(intent.getDataString())
+						.replaceAll("[^0-9\\+]*", "");
+			    }
+			}
+	    } catch(Exception e) {}
 	}
 	
 	@Override
