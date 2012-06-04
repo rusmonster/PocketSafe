@@ -16,7 +16,7 @@
     <application
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
-        android:debuggable="false"
+        android:debuggable="true"
         >
         <provider
             android:name=".dbengine.provider.CMDbProvider"
