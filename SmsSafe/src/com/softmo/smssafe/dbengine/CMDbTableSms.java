@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper;
@@ -80,7 +81,7 @@ public class CMDbTableSms implements IMDbTableSms {
 		GetGroupByHash(gr, sms.getHash());
 		
 		gr.setCount( gr.getCount()-1 );
-		if (sms.getIsNew()==TTypIsNew.EJustRecv || sms.getIsNew()==TTypIsNew.ENew)
+		if ((sms.getFolder()==TTypFolder.EInbox) && (sms.getIsNew()==TTypIsNew.EJustRecv || sms.getIsNew()==TTypIsNew.ENew))
 			gr.setCountNew( gr.getCountNew()-1 );
 		
 		if (gr.getCount()<=0)
@@ -136,7 +137,9 @@ public class CMDbTableSms implements IMDbTableSms {
         try {
         	GetGroupByHash(gr, item.getHash());
         	gr.setCount( gr.getCount()+1 );
-        	if (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew)
+        	Log.d("!!!", "Folder: "+item.getFolder()+"; IsNew: "+item.getIsNew());
+        	
+        	if ((item.getFolder()==TTypFolder.EInbox) && (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew))
         		gr.setCountNew( gr.getCountNew()+1 );
         	gr.setDate(item.getDate());
         	
@@ -146,7 +149,7 @@ public class CMDbTableSms implements IMDbTableSms {
         		gr.setHash(item.getHash());
         		gr.setPhone(item.getPhone());
         		gr.setCount(1);
-        		if (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew)
+        		if ((item.getFolder()==TTypFolder.EInbox) && (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew))
             		gr.setCountNew(1);
         		else
         			gr.setCountNew(0);
@@ -323,7 +326,7 @@ public class CMDbTableSms implements IMDbTableSms {
         
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
         
-		if (sms.getIsNew()>=TTypIsNew.ENew && item.getIsNew()<TTypIsNew.ENew) {
+		if ((sms.getFolder()==TTypFolder.EInbox) && (sms.getIsNew()>=TTypIsNew.ENew && item.getIsNew()<TTypIsNew.ENew)) {
 			IMSmsGroup gr = mLocator.createSmsGroup();
 			GetGroupByHash(gr, item.getHash());
 			gr.setCountNew(gr.getCountNew()-1);
