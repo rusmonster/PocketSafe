@@ -8,7 +8,7 @@
     <string name="sms_newsms">Новое смс</string>
     <string name="sms_delall">Удалить все</string>
     <string name="about">О программе</string>
-    <string name="siteurl">soft-mo.com</string>
+    <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">О программе</string>
     <string name="sms_view_thread">Смотреть</string>
     <string name="sms_del_thread">Удалить</string>
@@ -22,14 +22,17 @@
     <string name="sms_forward">Переслать</string>
     <string name="sms_copymessage">Копировать</string>
     <string name="sms_delmessage">Удалить</string>
-	<string name="sms_resend">Отправить заново</string>    
+	<string name="sms_resend">Отправить заново</string>
     <string name="options">Настройка</string>
     
+    <string name="enter_phone">Телефон:</string>
+    <string name="enter_text">Текст:</string>
+
     <string name="copied">Текст скопирован в буфер</string>
-    
-    <string name="enter_pass">Введите пароль:</string> 
-    <string name="enter_new_pass">Задайте новый пароль:</string> 
-    <string name="repeat_pass">Повторите пароль:</string> 
+
+    <string name="enter_pass">Введите пароль:</string>
+    <string name="enter_new_pass">Задайте новый пароль:</string>
+    <string name="repeat_pass">Повторите пароль:</string>
     <string name="old_pass">Введите Ваш пароль</string>
     <string name="set_pass">Установка пароля</string>
     <string name="rsa_generate">Генерация ключей...</string>
@@ -39,7 +42,7 @@
     <string name="locknow">Заблокировать</string>
     <string name="pass_changed">Пароль успешно изменен</string>
     <string name="pair_generated">Новые смс будут отображаться тут</string>
-    
+
     <string name="min1">1 мин</string>
 	<string name="min3">3 мин</string>
 	<string name="min5">5 мин</string>
@@ -49,7 +52,7 @@
 
 	<string name="Me">Я</string>
 	<string name="smsLoading">Загрузка...</string>
-	
+
 	<string name="program">Приложение:</string>
 	<string name="site">Сайт:</string>
 	<string name="version">Версия:</string>
@@ -57,8 +60,8 @@
 	<string name="author">Автор:</string>
 	<string name="authorVal">Дмитрий Калита</string>
 	<string name="mail">Mail:</string>
-	<string name="mailVal">rusmonster@gmail.com</string>	
-	
+	<string name="mailVal">rusmonster@gmail.com</string>
+
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
 	<string name="EInvalidDbId">Неверный ID базы данных</string>
@@ -88,10 +91,10 @@
 	<string name="ESmsErrSenderContextIsNull">Sender context is null</string>
 	<string name="ESmsErrSenderClosed">Sender closed</string>
 	<string name="ESmsErrSenderAlreadySending">Отправка уже идет</string>
-	<string name="ESmsErrSendNoPhone">Телефон не заполнен</string>
-	<string name="ESmsErrSendNoText">Текст не заполнен</string>
+	<string name="ESmsErrSendNoPhone">Введите номер телефона</string>
+	<string name="ESmsErrSendNoText">Введите текст</string>
 	<string name="EDbErrGetCountSmsNew">Ошибка получения количества смс</string>
-	<string name="EErrPhoneFormat">Неверный формат телефона</string>	         
+	<string name="EErrPhoneFormat">Неверный формат номера телефона</string>
 	<string name="ESmsErrSendGeneral">Ошибка отправки смс</string>
 	<string name="ERsaInvalidKeyFormat">Неверный формат ключа RSA</string>
 	<string name="ERsaErrGeneratingKeyPair">Ошибка генерации ключей</string>
@@ -109,8 +112,8 @@
 	<string name="EErrSha256NullArgument">SHA256 нулевой аргумент</string>
 	<string name="EErrBase64Encode">Ошибка кодирования Base64</string>
 	<string name="EErrBase64Decode">Ошибка декодирования Base64</string>
-	<string name="ESmsErrResend">Не могу отправить заново</string>	 
-	<string name="EDbErrGetCountSmsByHash">Ошибка получения количества смс</string>   
+	<string name="ESmsErrResend">Невозможно отправить заново</string>
+	<string name="EDbErrGetCountSmsByHash">Ошибка получения количества смс</string>
 	<string name="EDbIdNotFoundGroup">Группа не найдена</string>
 	<string name="EDbErrInsertGroup">Ошибка добавления группы</string>
 	<string name="EPassNotDigital">Пароль должен состоять из цифр</string>

@@ -2,7 +2,6 @@ package com.softmo.smssafe.dbengine.provider;
 
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
-import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 
 import android.content.ContentValues;
@@ -14,7 +13,7 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 3;
+	public static final int DB_VERSION = 1;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
@@ -128,43 +127,6 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (oldVersion<2) {
-			db.execSQL("ALTER TABLE "+TABLE_SMS+" ADD "+SMS_STATUS+" INTEGER");
-			db.execSQL("UPDATE "+TABLE_SMS+" SET "+SMS_STATUS+"="+TTypStatus.ESent);
-			oldVersion = 2;
-		}
-		
-		if (oldVersion<3) {
-			db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASHDATE);
-			db.execSQL("CREATE INDEX "+SMS_INDEX_HASHDATE+" ON "+TABLE_SMS+"("+SMS_HASH+","+SMS_DATE+")");
-			
-			db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMSGROUP);
-			db.execSQL("CREATE TABLE "+TABLE_SMSGROUP+"("+
-					_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-					SMSGROUP_HASH + " varchar(100)," +
-					SMSGROUP_PHONE + " TEXT," +
-					SMSGROUP_COUNT + " INTEGER," +
-					SMSGROUP_COUNTNEW+ " INTEGER,"+
-					SMSGROUP_MAXDATE + " DATETIME)"
-					);
-			
-			db.execSQL("INSERT INTO "+TABLE_SMSGROUP+"("+
-					SMSGROUP_HASH + "," +
-					SMSGROUP_PHONE + "," +
-					SMSGROUP_COUNT + "," +
-					SMSGROUP_COUNTNEW+ ","+
-					SMSGROUP_MAXDATE + ") "+
-					QUERY_SMSGROUP.substring(1, QUERY_SMSGROUP.length()-1)
-					);
-			
-			db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_HASH);
-			db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_HASH+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_HASH+")");
-			
-			db.execSQL("DROP INDEX IF EXISTS "+SMSGROUP_INDEX_MAXDATE);
-			db.execSQL("CREATE INDEX "+SMSGROUP_INDEX_MAXDATE+" ON "+TABLE_SMSGROUP+"("+SMSGROUP_MAXDATE+")");
-			
-			oldVersion = 3;
-		}
 
 	}
 

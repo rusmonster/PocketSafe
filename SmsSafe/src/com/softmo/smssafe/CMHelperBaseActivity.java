@@ -111,7 +111,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 				mOwner.startActivityForResult(i, SET_PASS_RESULT);
 				return false;
 			}
-			return false;
+			return true;
 		}
 		Intent i = new Intent(mOwner, SetPassActivity.class);
 		i.putExtra(SetPassActivity.MODE, SetPassActivity.TMode.ESetPass);

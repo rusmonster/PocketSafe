@@ -10,7 +10,7 @@
     android:id="@+id/textView1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Phone:"
+    android:text="@string/enter_phone"
     android:textAppearance="?android:attr/textAppearanceLarge" 
     android:textColor="@color/black"
     />
@@ -46,7 +46,7 @@
     android:id="@+id/tvSmsNewText"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Text:"
+    android:text="@string/enter_text"
     android:textAppearance="?android:attr/textAppearanceLarge" 
     android:textColor="@color/black"
     />

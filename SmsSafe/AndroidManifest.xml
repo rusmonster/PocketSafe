@@ -15,7 +15,9 @@
 
     <application
         android:icon="@drawable/appicon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:debuggable="false"
+        >
         <provider
             android:name=".dbengine.provider.CMDbProvider"
             android:authorities="com.softmo.smssafe.dbengine.provider.cmdbprovider" />
@@ -37,9 +39,23 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
+		
+		<activity android:name=".SmsNewActivity">
+		    <intent-filter>
+				<action android:name="android.intent.action.SENDTO" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="sms" />
+				<data android:scheme="smsto" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="text/plain" />
+			</intent-filter>
+		</activity>
+		
 		<service android:name=".safeservice.CMSafeService" />
 		<activity android:name=".SmsViewerActivity"></activity>
-		<activity android:name=".SmsNewActivity" 	android:label="@string/sms_new"></activity>
 		<activity android:name=".AboutActivity"></activity>
 		<activity android:name=".OptionsActivity"></activity>
 		<activity android:name=".SetPassActivity"	android:label="@string/set_pass" ></activity>

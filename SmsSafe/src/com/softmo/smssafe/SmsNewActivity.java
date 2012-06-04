@@ -1,5 +1,7 @@
 package com.softmo.smssafe;
 
+import java.net.URLDecoder;
+
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.dbengine.IMContact;
 import com.softmo.smssafe.main.IMEvent;
@@ -39,13 +41,16 @@ public class SmsNewActivity extends CMBaseActivity {
 	private ProgressDialog mDlg;
 	private String mPhone;
 	private String mSavedPhone;
+	private String mIntentPhone;
 	private String mLastEdPhoneVal;
 	private TextView mTxtCounter;
     
     private void Phone2Name() {
-    	String phone = mEdPhone.getText().toString().trim();
+    	String phone = mEdPhone.getText().toString();
     	
     	if (phone.equalsIgnoreCase(mLastEdPhoneVal)) return;
+    	
+    	phone = phone.replaceAll("[^0-9\\+]*", "").trim();
     	
     	Log.d("!!!", "phone="+phone);
     	Log.d("!!!", "mLastEdPhoneVal="+mLastEdPhoneVal);
@@ -60,7 +65,7 @@ public class SmsNewActivity extends CMBaseActivity {
 		
 		mPhone=null;
 		if (c!=null) {
-			mPhone = c.getPhone();
+			mPhone = c.getPhone().replaceAll("[^0-9\\+]*", "").trim();
 			mEdPhone.setText(c.getName());
 		}
 
@@ -82,6 +87,7 @@ public class SmsNewActivity extends CMBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.smsnew);
+	    setTitle(R.string.sms_new);
 
 	    mEdPhone = (EditText)findViewById(R.id.edSmsNewPhone);
 	    mEdPhone.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -128,6 +134,7 @@ public class SmsNewActivity extends CMBaseActivity {
 			
 			public void onClick(View v) {
 				try {
+					Phone2Name();
 					SendSms();
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsNewActivity.this, e.getId().getValue());
@@ -138,6 +145,23 @@ public class SmsNewActivity extends CMBaseActivity {
 				
 			}
 		} );
+	    
+	 // check if application was started with an intent
+	    try {
+			Intent intent = getIntent();
+			if (savedInstanceState == null && intent != null && intent.getAction()!=null) {
+	
+			    if (intent.getAction().equals(Intent.ACTION_SEND)) {
+			    	String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+			    	mEdText.setText(message);
+			    }
+	
+			    if (intent.getAction().equals(Intent.ACTION_SENDTO)) {
+					mIntentPhone = URLDecoder.decode(intent.getDataString())
+						.replaceAll("[^0-9\\+]*", "");
+			    }
+			}
+	    } catch(Exception e) {}
 	}
 	
 	@Override
@@ -307,7 +331,11 @@ public class SmsNewActivity extends CMBaseActivity {
 	}
 
 	public void onMainBind() throws MyException {
+		if (mIntentPhone!=null) mEdPhone.setText(mIntentPhone);
+		mIntentPhone=null;
+		
 		Phone2Name();
+		
 		if (mPhone==null && mSavedPhone!=null) mPhone = mSavedPhone;
 		Log.i("!!!","onMainBind: "+mPhone);
     	mEdText.requestFocus();

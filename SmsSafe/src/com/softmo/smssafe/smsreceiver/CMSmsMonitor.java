@@ -88,8 +88,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 				mDbEngine.Open( context.getContentResolver() );
 
 				if (ProcessMessage(context, smsfrom, smstext)) {
-					Log.d("!!!", "SMS stored");
-					//writeFile(context, smsfrom+": "+smstext);
+					Log.d("!!!", "SMS stored ");
 					abortBroadcast();
 				}
 	
@@ -99,31 +98,5 @@ public class CMSmsMonitor extends BroadcastReceiver {
 			e.printStackTrace();
 		}
 	}
-
-	/*
-	private static void writeFile(Context context, String text) {
-		try {
-			File fileName = null;
-			String sdState = android.os.Environment.getExternalStorageState();
-			if (sdState.equals(android.os.Environment.MEDIA_MOUNTED)) {
-			    File sdDir = android.os.Environment.getExternalStorageDirectory();
-			    fileName = new File(sdDir, "sms.txt");
-		
-				if (!sdDir.exists())
-					sdDir.mkdirs();
-				
-			    FileWriter f = new FileWriter(fileName, true);
-			    Date dat = new Date();
-			    String str = new String("["+dat.toString()+"] "+text+"\n\n");
-			    f.write(str);
-			    f.flush();
-			    f.close();
-			    Log.d("!!!", "writeFile ok: "+str);
-			}
-		} catch (Exception e) {
-			Log.e("!!!", "Error in writeFile: "+e.getMessage());
-		}
-	}
-	*/
 };
 
