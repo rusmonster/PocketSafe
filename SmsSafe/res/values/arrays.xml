@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="text_passtimout">
+		<item>@string/min1</item>
+		<item>@string/min3</item>
+		<item>@string/min5</item>
+		<item>@string/min10</item>
+		<item>@string/min30</item>
+		<item>@string/min60</item>
+	</string-array>
+	<string-array name="text_passtimout_vals">
+		<item>60</item>
+		<item>180</item>
+		<item>300</item>
+		<item>600</item>
+		<item>1800</item>
+		<item>3600</item>
+	</string-array>
+</resources>

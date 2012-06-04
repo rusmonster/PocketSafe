@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmsSafeMO</string>
+    <string name="sms_new">New message</string>
+    <string name="sms_new_cnt">new messages: </string>
+    <string name="sms_sending">Sending message...</string>
+    <string name="sms_newsms">New</string>
+    <string name="sms_delall">Delete all</string>
+    <string name="about">About</string>
+    <string name="siteurl">http://soft-mo.com</string>
+    <string name="title_about">About</string>
+    <string name="sms_view_thread">View</string>
+    <string name="sms_del_thread">Delete</string>
+    <string name="sms_delmessageconf">Delete message?</string>
+    <string name="sms_delthreadconf">Delete message history for %s?</string>
+    <string name="sms_delallconf">Delete all messages?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="sms_allsms">All messages</string>
+    <string name="sms_message">Message</string>
+    <string name="sms_forward">Forward</string>
+    <string name="sms_copymessage">Copy</string>
+    <string name="sms_delmessage">Delete</string>
+    <string name="sms_resend">Resend</string>
+    <string name="options">Settings</string>
+    
+    <string name="enter_phone">Phone:</string>
+    <string name="enter_text">Text:</string>
+
+    <string name="copied">Text copyed to clipboard</string>
+
+    <string name="enter_pass">Enter password:</string>
+    <string name="enter_new_pass">Enter new password:</string>
+    <string name="repeat_pass">Repeat password:</string>
+    <string name="old_pass">Enter current password</string>
+    <string name="set_pass">Password setup</string>
+    <string name="rsa_generate">Generating keys...</string>
+    <string name="opt_changepass">Change password</string>
+    <string name="opt_passtimeout">Password timeout</string>
+    <string name="opt_locknow">Lock now</string>
+    <string name="locknow">Lock now</string>
+    <string name="pass_changed">Password changed succesfully</string>
+    <string name="pair_generated">All new sms will be shown here</string>
+
+	<string name="min1">1 min</string>
+	<string name="min3">3 min</string>
+	<string name="min5">5 min</string>
+	<string name="min10">10 min</string>
+	<string name="min30">30 min</string>
+	<string name="min60">1 hour</string>
+
+	<string name="Me">Me</string>
+	<string name="smsLoading">Loading...</string>
+
+	<string name="program">Program:</string>
+	<string name="site">WEB:</string>
+	<string name="version">Version:</string>
+	<string name="versionVal">1.0</string>
+	<string name="author">Author:</string>
+	<string name="authorVal">Dmitry Kalita</string>
+	<string name="mail">Mail:</string>
+	<string name="mailVal">rusmonster@gmail.com</string>
+
+	<string name="ErrUnknown">Unknown error</string>
+	<string name="ENoError">No Error</string>
+	<string name="EInvalidDbId">Invalid database ID</string>
+	<string name="EPhoneTooLong">Phone number is too long</string>
+	<string name="EPhoneInvalid">Invalid phone</string>
+	<string name="EDbAlreadyOpened">Database is already opened</string>
+	<string name="EDbNotOpened">Database not opened</string>
+	<string name="EDbVersionError">Invalid database version</string>
+	<string name="EDbErrCreateFolder">Error creating folders</string>
+	<string name="EDbIdNotFoundSetting">Setting not found</string>
+	<string name="EDbErrorGetLastID">Error getting last ID</string>
+	<string name="EDbIdNotFoundSms">Sms not found</string>
+	<string name="EDbErrGetCountSms">Error getting sms count</string>
+	<string name="EDbErrGetCountSetting">Error getting settings count</string>
+	<string name="EDbErrInsertSms">Error inserting sms</string>
+	<string name="EErrServiceNotBinded">Error in bind service</string>
+	<string name="EDbErrGetCountContact">Error getting contacts count</string>
+	<string name="ETimerNotReady">Timer not ready</string>
+	<string name="ESmsErrSentGeneric">Error sending sms</string>
+	<string name="ESmsErrSentNoService">Error sending sms: no connection</string>
+	<string name="ESmsErrSentNullPdu">Error sending sms</string>
+	<string name="ESmsErrSentRadioOff">Error sending sms: radio off</string>
+	<string name="ESmsErrSentGeneral">Error sending sms</string>
+	<string name="ESmsErrDeliverGeneral">Error delivering sms</string>
+	<string name="ESmsErrSenderAlreadyOpened">Sender already opened</string>
+	<string name="ESmsErrSenderObserverIsNull">Sender observer is null</string>
+	<string name="ESmsErrSenderContextIsNull">Sender context is null</string>
+	<string name="ESmsErrSenderClosed">Sender closed</string>
+	<string name="ESmsErrSenderAlreadySending">Already sending</string>
+	<string name="ESmsErrSendNoPhone">Enter phone number</string>
+	<string name="ESmsErrSendNoText">Type your message</string>
+	<string name="EDbErrGetCountSmsNew">Error getting number of new sms</string>
+	<string name="EErrPhoneFormat">Invalid phone format</string>
+	<string name="ESmsErrSendGeneral">Error sending sms</string>
+	<string name="ERsaInvalidKeyFormat">Invalid RSA key format</string>
+	<string name="ERsaErrGeneratingKeyPair">Error generating keys</string>
+	<string name="ERsaErrEncrypt">RSA encrypt error</string>
+	<string name="ERsaErrDecrypt">RSA decrypt error</string>
+	<string name="ERsaNotReady">RSA not ready</string>
+	<string name="EAesErrEncrypt">AES encrypt error</string>
+	<string name="EAesErrDecrypt">Incorrect password</string>
+	<string name="EPassNotMatch">Passwords do not match</string>
+	<string name="EPassEmpty">Enter password</string>
+	<string name="EPassInvalid">Incorrect password</string>
+	<string name="EPassExpired">Password expired</string>
+	<string name="EErrStringEncode">Error encoding</string>
+	<string name="EErrSha256">SHA256 error</string>
+	<string name="EErrSha256NullArgument">SHA256 null argument</string>
+	<string name="EErrBase64Encode">Base64 encoding error</string>
+	<string name="EErrBase64Decode">Base64 decoding error</string>
+	<string name="ESmsErrResend">Cannot resend</string>
+	<string name="EDbErrGetCountSmsByHash">Error getting sms number</string>
+	<string name="EDbIdNotFoundGroup">Group not found</string>
+	<string name="EDbErrInsertGroup">Error inserting group</string>
+	<string name="EPassNotDigital">Password should contain digits only</string>
+</resources>
