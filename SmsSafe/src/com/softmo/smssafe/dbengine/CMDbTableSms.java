@@ -29,7 +29,8 @@ public class CMDbTableSms implements IMDbTableSms {
         CMSQLiteOnlineHelper.SMS_PHONE,
         CMSQLiteOnlineHelper.SMS_TEXT,
         CMSQLiteOnlineHelper.SMS_DATE,
-        CMSQLiteOnlineHelper.SMS_STATUS
+        CMSQLiteOnlineHelper.SMS_STATUS,
+        CMSQLiteOnlineHelper.SMS_SMSID
     };
     
     private static final String[] mContentGroup = new String[] {
@@ -62,6 +63,7 @@ public class CMDbTableSms implements IMDbTableSms {
 		dest.setDate(dat);
 		
 		dest.setStatus(c.getInt(8));
+		dest.setSmsId(c.getInt(9));
 	}
 	
 	protected void LoadGroup(IMSmsGroup dest, Cursor c) throws MyException {
@@ -126,6 +128,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
         values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
+        values.put(CMSQLiteOnlineHelper.SMS_SMSID, item.getSmsId());
         
         Uri uriId = mCr.insert(CMDbProvider.CONTENT_URI_SMS, values);
         if (uriId == null) throw new MyException(TTypMyException.EDbErrInsertSms);
@@ -323,6 +326,7 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_TEXT, item.getText());
         values.put(CMSQLiteOnlineHelper.SMS_DATE, item.getDate().getTime());
         values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
+        values.put(CMSQLiteOnlineHelper.SMS_SMSID, item.getSmsId());
         
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
         
@@ -344,5 +348,23 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMSGROUP_MAXDATE, item.getDate().getTime());
         
         mCr.update(CMDbProvider.CONTENT_URI_SMSGROUP, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);
+	}
+
+	public IMSms getBySmsId(int smsId) throws MyException {
+		if (smsId<0)
+			return null;
+		
+		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SMS, mContent, CMSQLiteOnlineHelper.SMS_SMSID+"="+smsId, null, null);
+		
+		try {
+			if ( c.moveToFirst() ) {
+				IMSms res = mLocator.createSms();
+				Load(res, c);
+				return res;
+			}
+		} finally {
+			c.close();
+		}
+		return null;
 	}
 }

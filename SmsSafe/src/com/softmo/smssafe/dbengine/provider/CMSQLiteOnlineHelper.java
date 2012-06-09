@@ -13,13 +13,14 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 2;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
 	
 	public static final String TABLE_SMS = "M__SMS";
 	public static final String SMS_INDEX_HASHDATE = "idxHASH";
+	public static final String SMS_INDEX_SMSID = "idxSMSID";
 	
 	public static final String SMS_DIRECTION = "DIRECTION";
 	public static final String SMS_FOLDER = "FOLDER";
@@ -29,6 +30,7 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	public static final String SMS_TEXT = "TXT";
 	public static final String SMS_DATE = "DAT";
 	public static final String SMS_STATUS = "STATUS";
+	public static final String SMS_SMSID = "SMSID";
 	
 	public static final String TABLE_SMSGROUP = "M__SMSGROUP";
 	public static final String SMSGROUP_INDEX_HASH = "idxGrHASH";
@@ -103,10 +105,14 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 				SMS_PHONE + " TEXT," +
 				SMS_TEXT + " TEXT," +
 				SMS_DATE + " DATETIME,"+
-				SMS_STATUS+ " INTEGER)");
+				SMS_STATUS+ " INTEGER,"+
+				SMS_SMSID+ " INTEGER)");
 		
 		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_HASHDATE);
 		db.execSQL("CREATE INDEX "+SMS_INDEX_HASHDATE+" ON "+TABLE_SMS+"("+SMS_HASH+","+SMS_DATE+")");
+		
+		db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_SMSID);
+		db.execSQL("CREATE INDEX "+SMS_INDEX_SMSID+" ON "+TABLE_SMS+"("+SMS_SMSID+")");
 		
 		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMSGROUP);
 		db.execSQL("CREATE TABLE "+TABLE_SMSGROUP+"("+
@@ -128,6 +134,14 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+		if (oldVersion<2) {
+			db.execSQL("ALTER TABLE "+TABLE_SMS+" ADD "+SMS_SMSID+" INTEGER");
+			
+			db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_SMSID);
+			db.execSQL("CREATE INDEX "+SMS_INDEX_SMSID+" ON "+TABLE_SMS+"("+SMS_SMSID+")");
+			
+			oldVersion = 2;
+		}
 	}
 
 }

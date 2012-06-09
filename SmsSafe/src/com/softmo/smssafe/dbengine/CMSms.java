@@ -17,6 +17,7 @@ public class CMSms implements IMSms {
 	private String mText;
 	private Date mDate;
 	private int mStatus;
+	private int mSmsId=-1;
 	
 	public Date getDate() {
 		return mDate;
@@ -90,6 +91,14 @@ public class CMSms implements IMSms {
 
 	public void setStatus(int status) {
 		mStatus = status;
+	}
+
+	public int getSmsId() {
+		return mSmsId;
+	}
+
+	public void setSmsId(int smsId) {
+		mSmsId = smsId;
 	}
 
 }
