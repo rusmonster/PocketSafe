@@ -62,7 +62,9 @@ public class MyException extends Exception {
 		EDbErrGetCountSmsByHash(51),
 		EDbIdNotFoundGroup(52),
 		EDbErrInsertGroup(53),
-		EPassNotDigital(54)
+		EPassNotDigital(54), 
+		EImporterErrBusy(55), 
+		EImporterNullParam(56)
 		;
 		
 	    private final int mValue;
