@@ -102,4 +102,8 @@ public class MyException extends Exception {
 	public TTypMyException getId() {
 		return mId;
 	}
+	
+	public String toString() {
+		return new String("MyException: "+getId().toString());
+	}
 }

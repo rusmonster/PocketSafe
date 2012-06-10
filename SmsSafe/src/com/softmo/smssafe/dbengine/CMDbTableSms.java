@@ -130,8 +130,10 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
         values.put(CMSQLiteOnlineHelper.SMS_SMSID, item.getSmsId());
         
+        Log.d("!!!", "Inserting sms...");
         Uri uriId = mCr.insert(CMDbProvider.CONTENT_URI_SMS, values);
         if (uriId == null) throw new MyException(TTypMyException.EDbErrInsertSms);
+        Log.d("!!!", "Inserted");
         
         int id = (int) ContentUris.parseId(uriId);
         if (id<0) throw new MyException(TTypMyException.EDbErrInsertSms);
@@ -140,7 +142,6 @@ public class CMDbTableSms implements IMDbTableSms {
         try {
         	GetGroupByHash(gr, item.getHash());
         	gr.setCount( gr.getCount()+1 );
-        	Log.d("!!!", "Folder: "+item.getFolder()+"; IsNew: "+item.getIsNew());
         	
         	if ((item.getFolder()==TTypFolder.EInbox) && (item.getIsNew() == TTypIsNew.EJustRecv || item.getIsNew() == TTypIsNew.ENew))
         		gr.setCountNew( gr.getCountNew()+1 );
@@ -328,7 +329,9 @@ public class CMDbTableSms implements IMDbTableSms {
         values.put(CMSQLiteOnlineHelper.SMS_STATUS, item.getStatus());
         values.put(CMSQLiteOnlineHelper.SMS_SMSID, item.getSmsId());
         
+        Log.d("!!!", "Updating sms...");
         mCr.update(CMDbProvider.CONTENT_URI_SMS, values, CMSQLiteOnlineHelper._ID + "="+item.getId(), null);	
+        Log.d("!!!", "Updated");
         
 		if ((sms.getFolder()==TTypFolder.EInbox) && (sms.getIsNew()>=TTypIsNew.ENew && item.getIsNew()<TTypIsNew.ENew)) {
 			IMSmsGroup gr = mLocator.createSmsGroup();

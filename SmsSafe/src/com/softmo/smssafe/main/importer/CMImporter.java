@@ -8,8 +8,6 @@ import com.softmo.smssafe.dbengine.TTypDirection;
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
-import com.softmo.smssafe.main.CMMain;
-import com.softmo.smssafe.main.IMDbWriter;
 import com.softmo.smssafe.sec.IMRsa;
 import com.softmo.smssafe.sec.IMSha256;
 import com.softmo.smssafe.utils.IMLocator;
@@ -71,27 +69,62 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 		} catch(Exception e){};
 	}
 
-	
-	private void doImport() {
+	private void writeSms(IMSms sms) throws Exception {
+		IMSms sms_byId = mDbEngine.QuerySms().getBySmsId(sms.getSmsId());
 		
-		Cursor cursor = mCr.query(Uri.parse("content://sms"), new String[] {"count(*)"}, null, null, null);
+		if (sms_byId!=null) {
+			int id = sms_byId.getId();
+			sms.setId(id);
+			mDbEngine.TableSms().Update(sms);
+		} else {
+			mDbEngine.TableSms().Insert(sms);
+		}
+	}
+	
+	private void safeWriteSms(IMSms sms) throws Exception { 
+		Exception ex=null;
+		
+		for( int i=0; i<5; i++) {
+			ex=null;
+			try {
+				
+				writeSms(sms);
+				break;
+			}catch (Exception e) {
+				Log.w("!!!", "Error in writeSms "+String.valueOf(i+1)+": "+e);
+				Thread.sleep(1000);
+				ex = e; 
+			} 
+		}
+
+		if (ex != null)
+			throw ex;
+	}
+	
+	private void doImport() throws Exception {
+		
+		Cursor cursor = null;
 		try {
+			cursor = mCr.query(Uri.parse("content://sms"), new String[] {"count(*)"}, null, null, null);
 			cursor.moveToFirst();
 			
 			int cnt = cursor.getInt(0);
 			Log.d("!!!", "sms cnt: "+cnt);
+			
 			cursor.close();
+			
+			IMSms sms = mLocator.createSms();
+			IMSha256 sha = mLocator.createSha256();
+			
+			int n=0;	
+			int perc=0;
 			
 			cursor = mCr.query(Uri.parse("content://sms"), null, null, null, null);
 			
 			if (!cursor.moveToFirst())
 				return;
 	
-			IMSms sms = mLocator.createSms();
 			
-			IMSha256 sha = mLocator.createSha256();
-			
-			int n=0;
 			do{
 
 				try {
@@ -114,8 +147,8 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 					int sms_id  = cursor.getInt(col);
 					
 					String hash = sha.getHash(phone);
-					byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes(IMDbEngine.ENCODING));
-					byte[] cText = mRsa.EncryptBuffer(text.getBytes(IMDbEngine.ENCODING));
+					byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes());
+					byte[] cText = mRsa.EncryptBuffer(text.getBytes());
 					
 					sms.setHash(hash);
 					sms.setPhone( new String(cPhone, IMDbEngine.ENCODING));
@@ -151,18 +184,22 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 					sms.setStatus( status );
 					sms.setSmsId(sms_id);
 					
-					IMSms sms_byId = mDbEngine.QuerySms().getBySmsId(sms_id);
-					if (sms_byId!=null) {
-						int id = sms_byId.getId();
-						sms.setId(id);
-						mDbEngine.TableSms().Update(sms);
-					} else {
-						mDbEngine.TableSms().Insert(sms);
-					}
+					safeWriteSms(sms);
+
 					
-				} catch(Exception e){ e.printStackTrace(); };
+				} catch (MyException e) {
+					Log.e("!!!", "MyException: "+e.getId());
+					e.printStackTrace();
+				} /*catch(Exception e)
+				{ e.printStackTrace(); };*/
 			   
-			   publishProgress(++n*100/cnt);
+				int p = ++n*100/cnt;
+				if (perc != p) {
+					perc = p;
+					publishProgress(perc);
+				}
+			   
+				Thread.sleep(100);
 			} while(cursor.moveToNext());
 		} finally {
 			cursor.close();
@@ -176,6 +213,7 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 			doImport();
 			res = true;
 		} catch (Exception e) {
+			Log.e("!!", "Error in doImport: "+e);
 			e.printStackTrace();
 		}
 		
