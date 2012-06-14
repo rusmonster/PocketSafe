@@ -370,4 +370,15 @@ public class CMDbTableSms implements IMDbTableSms {
 		}
 		return null;
 	}
+
+	public void updateGroups() throws MyException {
+		mDbp.exec("delete from "+CMSQLiteOnlineHelper.TABLE_SMSGROUP);
+		mDbp.exec("insert into "+CMSQLiteOnlineHelper.TABLE_SMSGROUP+
+				"("+CMSQLiteOnlineHelper.SMSGROUP_HASH	+ "," +
+					CMSQLiteOnlineHelper.SMSGROUP_PHONE	+ "," +
+					CMSQLiteOnlineHelper.SMSGROUP_COUNT	+ "," +
+					CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW	+ "," +
+					CMSQLiteOnlineHelper.SMSGROUP_MAXDATE + ")" +
+				" select * from "+CMSQLiteOnlineHelper.QUERY_SMSGROUP);
+	}
 }

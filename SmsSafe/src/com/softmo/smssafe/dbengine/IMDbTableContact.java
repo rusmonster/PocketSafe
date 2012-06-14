@@ -1,5 +1,7 @@
 package com.softmo.smssafe.dbengine;
 
-public interface IMDbTableContact extends IMDbQueryContact {
+import android.content.ContentResolver;
 
+public interface IMDbTableContact extends IMDbQueryContact {
+	void SetContentResolver(ContentResolver cr);
 }

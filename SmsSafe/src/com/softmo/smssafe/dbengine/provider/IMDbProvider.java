@@ -1,5 +1,7 @@
 package com.softmo.smssafe.dbengine.provider;
 
+import com.softmo.smssafe.utils.MyException;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,5 +17,7 @@ public interface IMDbProvider {
 
 	public abstract int update(Uri uri, ContentValues values, String where,
 			String[] whereArgs);
+
+	public abstract void exec(String sql) throws MyException;
 
 }

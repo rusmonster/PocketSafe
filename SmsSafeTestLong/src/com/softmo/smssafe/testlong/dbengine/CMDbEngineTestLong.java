@@ -17,7 +17,7 @@ import com.softmo.smssafe.dbengine.TTypDirection;
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.dbengine.provider.CMDbProvider;
+import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.sec.IMSha256;
 import com.softmo.smssafe.utils.CMLocator;
 import com.softmo.smssafe.utils.IMLocator;
@@ -37,7 +37,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		mDbEngine = new CMDbEngine(mLocator);
 		
 		
-		mDbEngine.Open( new CMDbProvider(getContext() ));
+		mDbEngine.Open( getContext() );
 		mDbEngine.TableSms().Clear();
 		int cnt = mDbEngine.TableSms().getCount();
 		assertEquals(0, cnt);
@@ -94,6 +94,9 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		src.setIsNew(TTypIsNew.ENew);
 		src.setPhone("1234567");
 		src.setText("hellow world");
+		src.setHash("myHash");
+		src.setStatus(TTypStatus.ERecv);
+		src.setSmsId(-1);
 		
 		int id = mDbEngine.TableSms().Insert(src);
 		
@@ -107,6 +110,9 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		assertEquals(src.getIsNew(), dest.getIsNew());
 		assertEquals(src.getPhone(), dest.getPhone());
 		assertEquals(src.getText(), dest.getText());
+		assertEquals(src.getStatus(), dest.getStatus());
+		assertEquals(src.getSmsId(), dest.getSmsId());
+		assertEquals(src.getHash(), dest.getHash());
 	}
 	
 	public void testSmsGetFailed() {
@@ -349,5 +355,18 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 	public void testContactGetCount() throws MyException {
 		int cnt = mDbEngine.QueryContact().getCount();
 		Log.d("!!!", "Contact.getCount = "+cnt);
+	}
+	
+	public void testSmsUpdateGroups() {
+		
+		Exception ex = null;
+		
+		try {
+			mDbEngine.TableSms().updateGroups();
+		} catch (Exception e) {
+			ex=e;
+		}
+		
+		assertNull(ex);
 	}
 }

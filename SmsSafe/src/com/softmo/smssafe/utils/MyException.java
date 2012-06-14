@@ -64,7 +64,10 @@ public class MyException extends Exception {
 		EDbErrInsertGroup(53),
 		EPassNotDigital(54), 
 		EImporterErrBusy(55), 
-		EImporterNullParam(56)
+		EImporterNullParam(56), 
+		EDbErrExecSQL(57), 
+		EImporterCancelled(58),
+		EImporterErrGeneral(59)
 		;
 		
 	    private final int mValue;

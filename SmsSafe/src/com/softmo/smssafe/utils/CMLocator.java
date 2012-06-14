@@ -1,5 +1,7 @@
 package com.softmo.smssafe.utils;
 
+import android.content.Context;
+
 import com.softmo.smssafe.dbengine.CMContact;
 import com.softmo.smssafe.dbengine.CMDbEngine;
 import com.softmo.smssafe.dbengine.CMDbTableContact;
@@ -16,6 +18,8 @@ import com.softmo.smssafe.dbengine.IMDbTableSms;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
+import com.softmo.smssafe.dbengine.provider.CMDbProvider;
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 import com.softmo.smssafe.main.CMDbWriter;
 import com.softmo.smssafe.main.CMDispatcher;
 import com.softmo.smssafe.main.CMEvent;
@@ -136,6 +140,10 @@ public class CMLocator implements IMLocator {
 
 	public IMSha256 createSha256() {
 		return new CMSha256();
+	}
+
+	public IMDbProvider createDbProvider(Context context) {
+		return new CMDbProvider(context);
 	}
 
 

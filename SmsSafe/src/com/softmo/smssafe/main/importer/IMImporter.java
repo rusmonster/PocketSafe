@@ -13,5 +13,6 @@ public interface IMImporter {
 	public void setContentResolver(ContentResolver cr);
 	
 	public void startImport() throws MyException;
+	public void cancelImport();
 
 }

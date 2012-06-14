@@ -3,7 +3,6 @@ package com.softmo.smssafe.testlong.importer;
 import com.softmo.smssafe.dbengine.IMDbEngine;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.main.importer.CMImporter;
 import com.softmo.smssafe.main.importer.IMImporter;
 import com.softmo.smssafe.main.importer.IMImporterObserver;
@@ -12,6 +11,7 @@ import com.softmo.smssafe.testlong.utils.CMTestThread;
 import com.softmo.smssafe.utils.CMLocator;
 import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import android.content.ContentResolver;
 import android.test.AndroidTestCase;
@@ -25,11 +25,17 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 	
 	private boolean mFinished;
 	private boolean mSuccess;
+
+	private int mErrCode;
+	private int mProcess;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		mFinished = false;
 		mSuccess = false;
+		mErrCode = 0;
+		mProcess = 0;
+		
 		mImporter = new CMImporter(mLocator);
 		mImporter.setObserver(this);
 		
@@ -37,7 +43,7 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 		mImporter.setContentResolver( cr );
 		
 		IMDbEngine db = mLocator.createDbEngine();
-		db.Open( new CMDbProvider(getContext()) );
+		db.Open( getContext() );
 		
 		IMSetting set = mLocator.createSetting();
 		db.QuerySetting().getById(set, TTypSetting.ERsaPub);
@@ -77,6 +83,40 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 		assertTrue(mFinished);
 		assertTrue(mSuccess);
 	}
+	
+	public void testImportCancel() throws InterruptedException {
+		Runnable r = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					mImporter.startImport();
+				} catch (MyException e) {
+					Log.d("!!!", "importerStart exception: "+e.getId());
+				}
+			}
+		};
+		CMTestThread th = new CMTestThread(r);
+		th.start();
+		
+		Thread.sleep(2000);
+		
+		int n=200;
+		while (mProcess<3 && n-- >0 )
+			Thread.sleep(1000);
+		
+		mImporter.cancelImport();
+		
+		n=3;
+		while (!mFinished && n-- >0 )
+			Thread.sleep(1000);
+		
+		th.stopThread();
+		
+		assertTrue(mFinished);
+		assertFalse(mSuccess);
+		assertEquals(TTypMyException.EImporterCancelled.getValue(), mErrCode);
+	}
 
 	@Override
 	public void importerStart() {
@@ -86,6 +126,7 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 	@Override
 	public void importerProgress(int perc) {
 		Log.d("!!!", "importerProgress: "+perc);
+		mProcess = perc;
 	}
 
 	@Override
@@ -96,9 +137,10 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 	}
 
 	@Override
-	public void importerError() {
+	public void importerError(int err) {
 		Log.d("!!!", "importerError");	
 		mFinished = true;
+		mErrCode = err;
 	}
 
 }

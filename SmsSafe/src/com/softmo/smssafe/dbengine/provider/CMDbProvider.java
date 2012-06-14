@@ -1,6 +1,9 @@
 package com.softmo.smssafe.dbengine.provider;
 
 
+import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
+
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -134,5 +137,14 @@ public class CMDbProvider implements IMDbProvider  {
 
         return retVal;
     }
+
+	public void exec(String sql) throws MyException {
+		try {
+			mDb.execSQL(sql);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new MyException(TTypMyException.EDbErrExecSQL);
+		}
+	}
 	
 }

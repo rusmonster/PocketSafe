@@ -1,5 +1,6 @@
 package com.softmo.smssafe.dbengine;
 
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -13,7 +14,7 @@ import com.softmo.smssafe.utils.MyException.TTypMyException;
 public class CMDbTableContact implements IMDbTableContact {
 	
 	private IMLocator mLocator;
-	private IMDbProvider mDbp;
+	private ContentResolver mCr;
 	
 	public CMDbTableContact(IMLocator locator) {
 		mLocator = locator;
@@ -27,7 +28,7 @@ public class CMDbTableContact implements IMDbTableContact {
 		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phone));
 		String[] proj = new String[] {PhoneLookup.DISPLAY_NAME, PhoneLookup.NUMBER};
 		
-		Cursor c = mDbp.query(uri, proj, null, null, null);
+		Cursor c = mCr.query(uri, proj, null, null, null);
 		try {
 			if (c.moveToFirst()) {
 				IMContact res = mLocator.createContact();
@@ -43,11 +44,11 @@ public class CMDbTableContact implements IMDbTableContact {
 	}
 
 	public void SetDbProvider(IMDbProvider dbp) {
-		mDbp = dbp;
+		//nothing
 	}
 
 	public int getCount() throws MyException {
-		Cursor c = mDbp.query(ContactsContract.Contacts.CONTENT_URI, new String[] {"count(*) as count"}, null, null, null);
+		Cursor c = mCr.query(ContactsContract.Contacts.CONTENT_URI, new String[] {"count(*) as cnt"}, null, null, null);
 		try {
 			if (c.moveToFirst()) 
 				return c.getInt(0);
@@ -56,6 +57,10 @@ public class CMDbTableContact implements IMDbTableContact {
 		} finally {
 			c.close();
 		}
+	}
+
+	public void SetContentResolver(ContentResolver cr) {
+		mCr = cr;
 	}
 
 }

@@ -4,6 +4,6 @@ public interface IMImporterObserver {
 	public void importerStart();
 	public void importerProgress(int perc);
 	public void importerFinish();
-	public void importerError();
+	public void importerError(int err);
 
 }

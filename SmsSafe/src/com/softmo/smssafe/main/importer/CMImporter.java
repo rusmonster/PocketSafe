@@ -22,15 +22,19 @@ import android.util.Log;
 
 public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMImporter {
 	
+	private static final int PAGE_SIZE = 100;
+	
 	private IMLocator mLocator;
 	private IMImporterObserver mObserver;
 	private IMDbEngine mDbEngine;
 	private ContentResolver mCr;
 	private IMRsa mRsa;
+	private int mErrCode = TTypMyException.EImporterErrGeneral.getValue();
 	
 	private enum TImporterState {
 		EIdle,
-		EBusy
+		EBusy,
+		EFinised
 	}
 
 	TImporterState mState = TImporterState.EIdle;
@@ -81,26 +85,6 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 		}
 	}
 	
-	private void safeWriteSms(IMSms sms) throws Exception { 
-		Exception ex=null;
-		
-		for( int i=0; i<5; i++) {
-			ex=null;
-			try {
-				
-				writeSms(sms);
-				break;
-			}catch (Exception e) {
-				Log.w("!!!", "Error in writeSms "+String.valueOf(i+1)+": "+e);
-				Thread.sleep(1000);
-				ex = e; 
-			} 
-		}
-
-		if (ex != null)
-			throw ex;
-	}
-	
 	private void doImport() throws Exception {
 		
 		Cursor cursor = null;
@@ -111,98 +95,104 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 			int cnt = cursor.getInt(0);
 			Log.d("!!!", "sms cnt: "+cnt);
 			
-			cursor.close();
-			
 			IMSms sms = mLocator.createSms();
 			IMSha256 sha = mLocator.createSha256();
 			
 			int n=0;	
 			int perc=0;
+			int cur = 0;
 			
-			cursor = mCr.query(Uri.parse("content://sms"), null, null, null, null);
 			
-			if (!cursor.moveToFirst())
-				return;
+			do {
+				cursor.close();
+				cursor = mCr.query(Uri.parse("content://sms"), null, null, null, "1 LIMIT "+cur+","+PAGE_SIZE);
+				cur += PAGE_SIZE;
+				
+				if (!cursor.moveToFirst())
+					return;
+		
+				
+				do{
 	
-			
-			do{
-
-				try {
-					int col = cursor.getColumnIndex("address");
-					String phone = cursor.getString(col);
+					if ( isCancelled() )
+						throw new MyException(TTypMyException.EImporterCancelled);
 					
-					col = cursor.getColumnIndex("body");
-					String text  = cursor.getString(col);
+					try {
+						int col = cursor.getColumnIndex("address");
+						String phone = cursor.getString(col);
+						
+						col = cursor.getColumnIndex("body");
+						String text  = cursor.getString(col);
+		
+						col = cursor.getColumnIndex("read");
+						int read  = cursor.getInt(col);
+						
+						col = cursor.getColumnIndex("date");
+						long dat  = cursor.getLong(col);
 	
-					col = cursor.getColumnIndex("read");
-					int read  = cursor.getInt(col);
-					
-					col = cursor.getColumnIndex("date");
-					long dat  = cursor.getLong(col);
-
-					col = cursor.getColumnIndex("type");
-					int typ  = cursor.getInt(col);
-					
-					col = cursor.getColumnIndex("_id");
-					int sms_id  = cursor.getInt(col);
-					
-					String hash = sha.getHash(phone);
-					byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes());
-					byte[] cText = mRsa.EncryptBuffer(text.getBytes());
-					
-					sms.setHash(hash);
-					sms.setPhone( new String(cPhone, IMDbEngine.ENCODING));
-					sms.setText( new String(cText, IMDbEngine.ENCODING));
-					sms.setDate( new Date(dat) );
-					sms.setDirection((typ==1)?TTypDirection.EIncoming:TTypDirection.EOutgoing);
-					
-					int folder;
-					/*
-					 	MESSAGE_TYPE_ALL    = 0;
-						MESSAGE_TYPE_INBOX  = 1;
-						MESSAGE_TYPE_SENT   = 2;
-						MESSAGE_TYPE_DRAFT  = 3;
-						MESSAGE_TYPE_OUTBOX = 4;
-						MESSAGE_TYPE_FAILED = 5; // for failed outgoing messages
-						MESSAGE_TYPE_QUEUED = 6; // for messages to send later
-					 */
-					switch(typ) {
-						case 1: folder=TTypFolder.EInbox; break;
-						case 2: folder=TTypFolder.ESent; break;
-						default:folder=TTypFolder.EOutbox; break;
+						col = cursor.getColumnIndex("type");
+						int typ  = cursor.getInt(col);
+						
+						col = cursor.getColumnIndex("_id");
+						int sms_id  = cursor.getInt(col);
+						
+						String hash = sha.getHash(phone);
+						byte[] cPhone = mRsa.EncryptBuffer(phone.getBytes());
+						byte[] cText = mRsa.EncryptBuffer(text.getBytes());
+						
+						sms.setHash(hash);
+						sms.setPhone( new String(cPhone, IMDbEngine.ENCODING));
+						sms.setText( new String(cText, IMDbEngine.ENCODING));
+						sms.setDate( new Date(dat) );
+						sms.setDirection((typ==1)?TTypDirection.EIncoming:TTypDirection.EOutgoing);
+						
+						int folder;
+						/*
+						 	MESSAGE_TYPE_ALL    = 0;
+							MESSAGE_TYPE_INBOX  = 1;
+							MESSAGE_TYPE_SENT   = 2;
+							MESSAGE_TYPE_DRAFT  = 3;
+							MESSAGE_TYPE_OUTBOX = 4;
+							MESSAGE_TYPE_FAILED = 5; // for failed outgoing messages
+							MESSAGE_TYPE_QUEUED = 6; // for messages to send later
+						 */
+						switch(typ) {
+							case 1: folder=TTypFolder.EInbox; break;
+							case 2: folder=TTypFolder.ESent; break;
+							default:folder=TTypFolder.EOutbox; break;
+						}
+						sms.setFolder(folder);
+						
+						sms.setIsNew( (read==0)?TTypIsNew.ENew:TTypIsNew.EOld );
+						
+						int status;
+						switch(typ) {
+							case 1: status=TTypStatus.ERecv; break;
+							case 2: status=TTypStatus.ESent; break;
+							default:status=TTypStatus.ESendError; break;
+						}
+						sms.setStatus( status );
+						sms.setSmsId(sms_id);
+						
+						writeSms(sms);
+	
+						
+					} catch (MyException e) {
+						Log.e("!!!", "MyException: "+e.getId());
+						e.printStackTrace();
+					} /*catch(Exception e)
+					{ e.printStackTrace(); };*/
+				   
+					int p = ++n*100/cnt;
+					if (perc != p) {
+						perc = p;
+						publishProgress(perc);
 					}
-					sms.setFolder(folder);
-					
-					sms.setIsNew( (read==0)?TTypIsNew.ENew:TTypIsNew.EOld );
-					
-					int status;
-					switch(typ) {
-						case 1: status=TTypStatus.ERecv; break;
-						case 2: status=TTypStatus.ESent; break;
-						default:status=TTypStatus.ESendError; break;
-					}
-					sms.setStatus( status );
-					sms.setSmsId(sms_id);
-					
-					safeWriteSms(sms);
-
-					
-				} catch (MyException e) {
-					Log.e("!!!", "MyException: "+e.getId());
-					e.printStackTrace();
-				} /*catch(Exception e)
-				{ e.printStackTrace(); };*/
-			   
-				int p = ++n*100/cnt;
-				if (perc != p) {
-					perc = p;
-					publishProgress(perc);
-				}
-			   
-				Thread.sleep(100);
-			} while(cursor.moveToNext());
+				} while(cursor.moveToNext());
+			} while (true);
 		} finally {
 			cursor.close();
+			mDbEngine.TableSms().updateGroups();
 		}
 	}
 	
@@ -212,33 +202,54 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 		try {
 			doImport();
 			res = true;
-		} catch (Exception e) {
+		}catch (MyException e) {
+			mErrCode = e.getId().getValue();
+			Log.e("!!", "Error in doImport: "+e);
+		}
+		catch (Exception e) {
 			Log.e("!!", "Error in doImport: "+e);
 			e.printStackTrace();
 		}
 		
-		mState = TImporterState.EIdle;
 		return res;
 	}
 
 	@Override
 	protected void onPostExecute(Boolean result) {
+		Log.d("!!", "onPostExecute ");
+		
+		mState = TImporterState.EFinised;
+		
 		try {
 			if (result)
 				mObserver.importerFinish();
 			else
-				mObserver.importerError();
+				mObserver.importerError(mErrCode);
 		} catch(Exception e) {}
 		
 		super.onPostExecute(result);
 	}
 	
+	
+	@Override
+	protected void onCancelled() {
+		try {
+			mObserver.importerError(TTypMyException.EImporterCancelled.getValue());
+		} catch(Exception e) {}
+		super.onCancelled();
+	}
+
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		try {
 			mObserver.importerProgress(values[0]);
 		} catch(Exception e) {}
 		super.onProgressUpdate(values);
+	}
+
+	public void cancelImport() {
+		cancel(false);
+		Log.d("!!!", "Import cancelled");
 	}
 
 }

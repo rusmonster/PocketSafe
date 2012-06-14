@@ -1,5 +1,7 @@
 package com.softmo.smssafe.utils;
 
+import android.content.Context;
+
 import com.softmo.smssafe.dbengine.IMContact;
 import com.softmo.smssafe.dbengine.IMDbEngine;
 import com.softmo.smssafe.dbengine.IMDbTableContact;
@@ -8,6 +10,7 @@ import com.softmo.smssafe.dbengine.IMDbTableSms;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 import com.softmo.smssafe.main.IMDbWriterInternal;
 import com.softmo.smssafe.main.IMDispatcherSender;
 import com.softmo.smssafe.main.IMEvent;
@@ -46,4 +49,5 @@ public interface IMLocator {
 	IMTimer createTimer();
 	IMTimerWakeup createTimerWakeup();
 	IMSha256 createSha256();
+	IMDbProvider createDbProvider(Context context);
 }

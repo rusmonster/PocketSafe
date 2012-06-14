@@ -13,7 +13,6 @@ import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.sec.IMRsa;
 import com.softmo.smssafe.sec.IMSha256;
 import com.softmo.smssafe.utils.CMLocator;
@@ -32,7 +31,7 @@ public class CMDbEnginePrintAllSms extends AndroidTestCase {
 		
 		mLocator = new CMLocator();
 		mDbEngine = new CMDbEngine(mLocator);
-		mDbEngine.Open( new CMDbProvider(getContext() ));
+		mDbEngine.Open( getContext() );
 	}
 	
 	public void testPrint() throws MyException {
