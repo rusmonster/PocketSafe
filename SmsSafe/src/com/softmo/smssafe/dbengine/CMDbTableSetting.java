@@ -2,15 +2,15 @@ package com.softmo.smssafe.dbengine;
 
 import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper;
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 
 public class CMDbTableSetting implements IMDbTableSetting {
-	private ContentResolver mCr;
+	private IMDbProvider mDbp;
 	
     private static final String[] mContent = new String[] {
         CMSQLiteOnlineHelper._ID, 
@@ -27,11 +27,11 @@ public class CMDbTableSetting implements IMDbTableSetting {
         values.put(CMSQLiteOnlineHelper._ID, setting.getId());
         values.put(CMSQLiteOnlineHelper.SETTING_VAL, setting.getStrVal());
         
-		mCr.update(CMDbProvider.CONTENT_URI_SETTING, values, CMSQLiteOnlineHelper._ID+"=" + setting.getId(), null);
+		mDbp.update(CMDbProvider.CONTENT_URI_SETTING, values, CMSQLiteOnlineHelper._ID+"=" + setting.getId(), null);
 	}
 
 	public void getById(IMSetting dest, TTypSetting id) throws MyException {
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mContent, CMSQLiteOnlineHelper._ID+"=" + id.ordinal(), null, null);
+		Cursor c = mDbp.query(CMDbProvider.CONTENT_URI_SETTING, mContent, CMSQLiteOnlineHelper._ID+"=" + id.ordinal(), null, null);
 		
 		try {
 			if ( c.moveToFirst() ) {
@@ -49,7 +49,7 @@ public class CMDbTableSetting implements IMDbTableSetting {
 	}
 
 	public int getCount() throws MyException {
-		Cursor c = mCr.query(CMDbProvider.CONTENT_URI_SETTING, mCount, null, null, null);
+		Cursor c = mDbp.query(CMDbProvider.CONTENT_URI_SETTING, mCount, null, null, null);
 				
 		try {
 			if ( c.moveToFirst() ) {
@@ -63,8 +63,8 @@ public class CMDbTableSetting implements IMDbTableSetting {
 		}	
 	}
 
-	public void SetContentResolver(ContentResolver cr) {
-		mCr = cr;
+	public void SetDbProvider(IMDbProvider dbp) {
+		mDbp = dbp;
 	}
 
 }

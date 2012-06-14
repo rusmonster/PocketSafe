@@ -19,9 +19,6 @@
         android:label="@string/app_name"
         android:debuggable="true"
         >
-        <provider
-            android:name=".dbengine.provider.CMDbProvider"
-            android:authorities="com.softmo.smssafe.dbengine.provider.cmdbprovider" />
        <activity
             android:label="@string/app_name"
             android:name=".SmsMainActivity" >

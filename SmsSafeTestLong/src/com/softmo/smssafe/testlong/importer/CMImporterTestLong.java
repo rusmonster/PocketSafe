@@ -3,6 +3,7 @@ package com.softmo.smssafe.testlong.importer;
 import com.softmo.smssafe.dbengine.IMDbEngine;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.main.importer.CMImporter;
 import com.softmo.smssafe.main.importer.IMImporter;
 import com.softmo.smssafe.main.importer.IMImporterObserver;
@@ -36,7 +37,7 @@ public class CMImporterTestLong extends AndroidTestCase implements IMImporterObs
 		mImporter.setContentResolver( cr );
 		
 		IMDbEngine db = mLocator.createDbEngine();
-		db.Open(cr);
+		db.Open( new CMDbProvider(getContext()) );
 		
 		IMSetting set = mLocator.createSetting();
 		db.QuerySetting().getById(set, TTypSetting.ERsaPub);

@@ -16,6 +16,7 @@ import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.main.notificator.IMSmsNotificator;
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
@@ -75,7 +76,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	public void Open(Context context) throws MyException {
 		mContext = context;
 		
-		mDbEngine.Open(mContext.getContentResolver());
+		mDbEngine.Open(new CMDbProvider(mContext));
 		
 		mSmsSender.SetObserver(this);
 		mSmsSender.SetContext(mContext);

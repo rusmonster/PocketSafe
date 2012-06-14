@@ -1,13 +1,12 @@
 package com.softmo.smssafe.dbengine;
 
-import android.content.ContentResolver;
-
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 import com.softmo.smssafe.utils.IMLocator;
 
 
 public class CMDbEngine implements IMDbEngine {
 	private IMLocator mLocator;
-	private ContentResolver mCr;
+	private IMDbProvider mDbp;
 	private IMDbTableSetting mTabSetting;
 	private IMDbTableSms mTabSms;
 	private IMDbTableContact mTabContact;
@@ -16,18 +15,18 @@ public class CMDbEngine implements IMDbEngine {
 		mLocator = locator;
 	}
 	
-	public void Open(ContentResolver cr) {
+	public void Open(IMDbProvider dbp) {
 		
-		mCr = cr;
+		mDbp = dbp;
 		
 		mTabSetting = mLocator.createDbTableSetting();
-		mTabSetting.SetContentResolver(mCr);
+		mTabSetting.SetDbProvider(mDbp);
 		
 		mTabSms = mLocator.createDbTableSms();
-		mTabSms.SetContentResolver(mCr);
+		mTabSms.SetDbProvider(mDbp);
 		
 		mTabContact = mLocator.createDbTableContact();
-		mTabContact.SetContentResolver(mCr);
+		mTabContact.SetDbProvider(mDbp);
 		
 	}
 

@@ -17,6 +17,7 @@ import com.softmo.smssafe.dbengine.TTypDirection;
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.sec.IMSha256;
 import com.softmo.smssafe.utils.CMLocator;
 import com.softmo.smssafe.utils.IMLocator;
@@ -36,7 +37,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		mDbEngine = new CMDbEngine(mLocator);
 		
 		
-		mDbEngine.Open(getContext().getContentResolver());
+		mDbEngine.Open( new CMDbProvider(getContext() ));
 		mDbEngine.TableSms().Clear();
 		int cnt = mDbEngine.TableSms().getCount();
 		assertEquals(0, cnt);

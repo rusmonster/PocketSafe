@@ -3,7 +3,6 @@ package com.softmo.smssafe.main.importer;
 import android.content.ContentResolver;
 
 import com.softmo.smssafe.dbengine.IMDbEngine;
-import com.softmo.smssafe.main.IMDbWriter;
 import com.softmo.smssafe.sec.IMRsa;
 import com.softmo.smssafe.utils.MyException;
 

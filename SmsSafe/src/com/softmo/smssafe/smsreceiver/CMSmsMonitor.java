@@ -10,6 +10,7 @@ import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.provider.CMDbProvider;
 import com.softmo.smssafe.main.TTypEvent;
 import com.softmo.smssafe.main.TTypEventStrings;
 import com.softmo.smssafe.safeservice.CMSafeService;
@@ -85,7 +86,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 					smsfrom = messages[0].getOriginatingAddress();
 				
 				
-				mDbEngine.Open( context.getContentResolver() );
+				mDbEngine.Open( new CMDbProvider(context) );
 
 				if (ProcessMessage(context, smsfrom, smstext)) {
 					Log.d("!!!", "SMS stored ");

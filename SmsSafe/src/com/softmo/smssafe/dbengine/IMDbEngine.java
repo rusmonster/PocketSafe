@@ -1,11 +1,11 @@
 package com.softmo.smssafe.dbengine;
 
-import android.content.ContentResolver;
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 
 public interface IMDbEngine extends IMDbReader {
 	final static String ENCODING = "ISO_8859_1";
 	
-	void Open(ContentResolver cr);
+	void Open(IMDbProvider cr);
 	
 	IMDbQuerySetting QuerySetting();
 	IMDbTableSetting TableSetting();
