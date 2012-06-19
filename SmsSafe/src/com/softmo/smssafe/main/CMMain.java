@@ -16,6 +16,8 @@ import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.main.importer.IMImporter;
+import com.softmo.smssafe.main.importer.IMImporterObserver;
 import com.softmo.smssafe.main.notificator.IMSmsNotificator;
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
@@ -28,7 +30,7 @@ import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
-public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObserver, IMPassHolderObserver {
+public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObserver, IMPassHolderObserver, IMImporterObserver {
 	
 	private Context mContext;
 	private IMLocator mLocator;
@@ -42,6 +44,8 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	private IMSha256 mSha;
 	private IMPassHolder mPassHolder;
 	
+	private TMainState mState;
+	
 	private Runnable mRunUpdateNotificator = new Runnable() {
 		public void run() {
 			mSmsNotificator.Update( GetCountNewSms() );
@@ -51,6 +55,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	public CMMain(IMLocator locator) {
 		super();
 		mLocator = locator;
+		mState = TMainState.EIdle;
 		mDbEngine = mLocator.createDbEngine();
 		mDispatcher = mLocator.createDispatcher();
 		
@@ -465,5 +470,54 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 
 	public void guiResume() {
 		mPassHolder.cancelTimer();
+	}
+
+	public TMainState getState() {
+		return mState;
+	}
+
+	public void importSms() throws MyException {
+		if (mState!=TMainState.EIdle)
+			throw new MyException(TTypMyException.EErrBusy);
+		
+		IMImporter importer = mLocator.createImporter();
+		importer.setObserver(this);
+		importer.setDbEngine(mDbEngine);
+		importer.setRsa(mRsa);
+		importer.setContentResolver(mContext.getContentResolver());
+		importer.startImport();
+		
+		mState = TMainState.EImport;
+		
+	}
+
+	public void importerStart() {
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.EImportStart);
+		mDispatcher.pushEvent(ev);
+	}
+
+	public void importerProgress(int perc) {
+		IMEventSimpleID ev = mLocator.createEventSimpleID();
+		ev.setTyp(TTypEvent.EImportProgress);
+		ev.setId(perc);
+		mDispatcher.pushEvent(ev);
+	}
+
+	public void importerFinish() {
+		mState = TMainState.EIdle;
+		
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.EImportFinish);
+		mDispatcher.pushEvent(ev);
+	}
+
+	public void importerError(int err) {
+		mState = TMainState.EIdle;	
+		
+		IMEventErr ev = mLocator.createEventErr();
+		ev.setTyp(TTypEvent.EImportError);
+		ev.setErr(err);
+		mDispatcher.pushEvent(ev);
 	}
 }

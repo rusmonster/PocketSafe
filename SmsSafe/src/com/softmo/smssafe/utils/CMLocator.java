@@ -34,6 +34,8 @@ import com.softmo.smssafe.main.IMEventErr;
 import com.softmo.smssafe.main.IMEventSimpleID;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.main.IMPassHolder;
+import com.softmo.smssafe.main.importer.CMImporter;
+import com.softmo.smssafe.main.importer.IMImporter;
 import com.softmo.smssafe.main.notificator.CMSmsNotificator;
 import com.softmo.smssafe.main.notificator.IMSmsNotificator;
 import com.softmo.smssafe.sec.CMAes;
@@ -144,6 +146,10 @@ public class CMLocator implements IMLocator {
 
 	public IMDbProvider createDbProvider(Context context) {
 		return new CMDbProvider(context);
+	}
+
+	public IMImporter createImporter() {
+		return new CMImporter(this);
 	}
 
 

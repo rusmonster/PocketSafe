@@ -8,4 +8,5 @@ public interface IMBaseActivity {
 	IMLocator getLocator();
 	IMMain getMain() throws MyException;
 	void lockNow();
+	void importSms();
 }

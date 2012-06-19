@@ -77,7 +77,10 @@ public abstract class CMBaseActivity extends Activity implements IMHelperBaseAct
 		return mHelper.onCreateDialog(id);
 	}
 
+	
 	public IMBaseActivity getHelper() {
 		return mHelper;
 	}
+	
+	
 }

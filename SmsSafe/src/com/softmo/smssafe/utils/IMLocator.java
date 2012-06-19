@@ -18,6 +18,7 @@ import com.softmo.smssafe.main.IMEventErr;
 import com.softmo.smssafe.main.IMEventSimpleID;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.main.IMPassHolder;
+import com.softmo.smssafe.main.importer.IMImporter;
 import com.softmo.smssafe.main.notificator.IMSmsNotificator;
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
@@ -50,4 +51,5 @@ public interface IMLocator {
 	IMTimerWakeup createTimerWakeup();
 	IMSha256 createSha256();
 	IMDbProvider createDbProvider(Context context);
+	IMImporter createImporter();
 }

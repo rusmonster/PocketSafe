@@ -39,6 +39,7 @@
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
     <string name="opt_locknow">Lock now</string>
+    <string name="opt_import">Import sms</string> 
     <string name="locknow">Lock now</string>
     <string name="pass_changed">Password changed succesfully</string>
     <string name="pair_generated">All new sms will be shown here</string>
@@ -61,6 +62,9 @@
 	<string name="authorVal">Dmitry Kalita</string>
 	<string name="mail">Mail:</string>
 	<string name="mailVal">rusmonster@gmail.com</string>
+	
+	<string name="confimport">Import all SMS from android?</string>
+	<string name="dlg_import">Importing...</string>
 
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>

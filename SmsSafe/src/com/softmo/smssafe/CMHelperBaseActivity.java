@@ -19,6 +19,7 @@ import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.IMEventErr;
+import com.softmo.smssafe.main.IMEventSimpleID;
 import com.softmo.smssafe.main.IMListener;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.main.TTypEvent;
@@ -34,6 +35,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 	private static final int ENTER_PASS_RESULT = 1004;
 
 	private static final int IDD_GENERATE = 50;
+	private static final int IDD_IMPORT	= 51;
 	
 	public static final String KILL_ACTION = "com.softmo.smssafe.CMHelperBaseActivity.KILL_ACTION";
 	
@@ -213,8 +215,8 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 	
 
     public void onPause() {
-		Log.d("!!!", "onPause "+mOwner.toString());
-		if (mDlg != null) mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+		Log.d("!!!", "onPause "+mOwner.toString()); 
+		if (mDlg != null) mDlg.dismiss(); mDlg = null;
 		mOwner.setVisible(false); //for disable moment show activity before passEnter
 		
 		try {
@@ -266,17 +268,33 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 				Log.d("!!!", "showDialog: "+IDD_GENERATE);
 				break;
 			case ERsaKeyPairGenerated:
-				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
 				Toast.makeText(mOwner, R.string.pair_generated, Toast.LENGTH_LONG).show();
 				break;
 			case ERsaKeyPairGenerateError:
 				IMEventErr evErr = (IMEventErr)event;
-				mOwner.dismissDialog(IDD_GENERATE); mDlg = null;
+				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
 				ErrorDisplayer.displayError(mOwner, evErr.getErr());
 				break;
 			case EPassExpired:
 				Log.d("!!!", "EPassExpired received");
 				checkPassActual();
+				break;
+			case EImportStart:
+				mOwner.showDialog(IDD_IMPORT);
+				break;
+			case EImportFinish:
+				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
+				break;
+			case EImportError:
+				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
+				ErrorDisplayer.displayError(mOwner, ((IMEventErr)event).getErr());
+				break;
+			case EImportProgress:
+				if (mDlg!=null) {
+					int p = ((IMEventSimpleID)event).getId();
+					mDlg.setProgress(p);
+				}
 				break;
 		}
 		
@@ -288,15 +306,20 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 	public Dialog onCreateDialog(int id) {
 		Log.d("!!!", "Helper onCreateDialog: : "+id);
 		Dialog dlg = null;
+		if (mDlg!=null) mDlg.dismiss(); mDlg=null;
 		
 		switch (id) {
 		case IDD_GENERATE:
-			if (mDlg!=null) 
-				mOwner.dismissDialog(IDD_GENERATE);
 			mDlg = new ProgressDialog(mOwner);
 			mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mDlg.setCancelable(false);
 			mDlg.setMessage(mOwner.getResources().getString(R.string.rsa_generate));
+			dlg = mDlg;
+			break;
+		case IDD_IMPORT:
+			mDlg = new ProgressDialog(mOwner);
+			mDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mDlg.setMessage(mOwner.getResources().getString(R.string.dlg_import));
 			dlg = mDlg;
 			break;
 		}
@@ -313,5 +336,22 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 			e.printStackTrace();
 			ErrorDisplayer.displayError(mOwner, e);
 		}
-	}		
+	}
+
+	public void importSms() {
+		try {
+			getMain();
+		} catch (MyException e) {
+			ErrorDisplayer.displayError(mOwner, e);
+		}
+	}	
+	
+	public void onPrepareDialog(int id, Dialog dialog) {
+		switch(id) {
+		case IDD_GENERATE:
+		case IDD_IMPORT:
+			mDlg = (ProgressDialog) dialog;
+			break;
+		}
+	}	
 }

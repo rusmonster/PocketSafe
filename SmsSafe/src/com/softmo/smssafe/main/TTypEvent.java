@@ -20,7 +20,11 @@ public enum TTypEvent
     ERsaKeyPairGenerated(13),
     ERsaKeyPairGenerateError(14), 
     EPassExpired(15), 
-    ESettingUpdated(16)
+    ESettingUpdated(16), 
+    EImportStart(17),
+    EImportProgress(18),
+    EImportFinish(19), 
+    EImportError(20)
     ;
  
     private final int mValue;
