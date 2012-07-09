@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -22,6 +23,7 @@ import com.softmo.smssafe.main.IMEventErr;
 import com.softmo.smssafe.main.IMEventSimpleID;
 import com.softmo.smssafe.main.IMListener;
 import com.softmo.smssafe.main.IMMain;
+import com.softmo.smssafe.main.IMMain.TMainState;
 import com.softmo.smssafe.main.TTypEvent;
 import com.softmo.smssafe.safeservice.CMSafeService;
 import com.softmo.smssafe.utils.CMLocator;
@@ -164,6 +166,11 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		
 		getMain().guiResume();
 		mOwner.setVisible(true);
+		
+		if (getMain().getState()==TMainState.EImport) {
+			mOwner.showDialog(IDD_IMPORT);
+		}
+		
 		return true;
 	}
 	
@@ -285,6 +292,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 				break;
 			case EImportFinish:
 				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
+				Toast.makeText(mOwner, R.string.importfinish, Toast.LENGTH_SHORT).show();
 				break;
 			case EImportError:
 				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
@@ -294,6 +302,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 				if (mDlg!=null) {
 					int p = ((IMEventSimpleID)event).getId();
 					mDlg.setProgress(p);
+					Log.d("!!!", "listenerEvent: setProgress");
 				}
 				break;
 		}
@@ -304,9 +313,8 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 	}
 	
 	public Dialog onCreateDialog(int id) {
-		Log.d("!!!", "Helper onCreateDialog: : "+id);
+		Log.d("!!!", "Helper onCreateDialog: "+id);
 		Dialog dlg = null;
-		if (mDlg!=null) mDlg.dismiss(); mDlg=null;
 		
 		switch (id) {
 		case IDD_GENERATE:
@@ -319,7 +327,21 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		case IDD_IMPORT:
 			mDlg = new ProgressDialog(mOwner);
 			mDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mDlg.setCancelable(false);
 			mDlg.setMessage(mOwner.getResources().getString(R.string.dlg_import));
+			mDlg.setButton(mOwner.getResources().getString(android.R.string.cancel), 
+					new android.content.DialogInterface.OnClickListener() {
+				
+						public void onClick(DialogInterface dialog, int which) {
+							try {
+								Log.d("!!!", "CancelImport pressed");
+								getMain().importSmsCancel();
+							} catch (MyException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+			);
 			dlg = mDlg;
 			break;
 		}
@@ -340,16 +362,18 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 
 	public void importSms() {
 		try {
-			getMain();
+			getMain().importSms();
 		} catch (MyException e) {
 			ErrorDisplayer.displayError(mOwner, e);
 		}
 	}	
 	
 	public void onPrepareDialog(int id, Dialog dialog) {
+		Log.d("!!!", "Helper onPrepareDialog: "+id);
 		switch(id) {
 		case IDD_GENERATE:
 		case IDD_IMPORT:
+			if (mDlg!=null) mDlg.dismiss(); 
 			mDlg = (ProgressDialog) dialog;
 			break;
 		}

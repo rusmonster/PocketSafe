@@ -6,7 +6,6 @@ import java.util.Date;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-
 import com.softmo.smssafe.dbengine.IMDbEngine;
 import com.softmo.smssafe.dbengine.IMDbReader;
 import com.softmo.smssafe.dbengine.IMSetting;
@@ -51,6 +50,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			mSmsNotificator.Update( GetCountNewSms() );
 		}
 	};
+	private IMImporter mImporter;
 
 	public CMMain(IMLocator locator) {
 		super();
@@ -331,8 +331,11 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			mSmsNotificator.Popup( GetCountNewSms() );
 			break;
 		case ESmsUpdated:
+		case ESmsUpdatedMany:
 		case ESmsDelMany:
 		case ESmsDeleted:
+		case EImportFinish:
+		case EImportError:
 			mHandler.removeCallbacks(mRunUpdateNotificator);
 			mHandler.postDelayed(mRunUpdateNotificator, 500);
 			break;
@@ -480,12 +483,12 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		if (mState!=TMainState.EIdle)
 			throw new MyException(TTypMyException.EErrBusy);
 		
-		IMImporter importer = mLocator.createImporter();
-		importer.setObserver(this);
-		importer.setDbEngine(mDbEngine);
-		importer.setRsa(mRsa);
-		importer.setContentResolver(mContext.getContentResolver());
-		importer.startImport();
+		mImporter = mLocator.createImporter();
+		mImporter.setObserver(this);
+		mImporter.setDbEngine(mDbEngine);
+		mImporter.setRsa(mRsa);
+		mImporter.setContentResolver(mContext.getContentResolver());
+		mImporter.startImport();
 		
 		mState = TMainState.EImport;
 		
@@ -519,5 +522,13 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		ev.setTyp(TTypEvent.EImportError);
 		ev.setErr(err);
 		mDispatcher.pushEvent(ev);
+	}
+
+	public void importSmsCancel() {
+		if (mState!=TMainState.EImport)
+			return;
+		
+		mImporter.cancelImport();
+		
 	}
 }

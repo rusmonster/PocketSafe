@@ -16,6 +16,10 @@
         android:title="@string/locknow" 
         android:icon="@android:drawable/ic_lock_lock">
     </item>
+        <item android:id="@+id/mnuMainRead" 
+        android:title="@string/mark_all_read" 
+        android:icon="@android:drawable/ic_menu_agenda">
+    </item>
     <item android:id="@+id/mnuMainAbout" 
         android:title="@string/about" 
         android:icon="@android:drawable/ic_menu_info_details">

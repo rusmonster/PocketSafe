@@ -11,4 +11,5 @@ public interface IMDbWriter {
 	void SmsDelete(int sms_id) throws MyException;
 	
 	void UpdateSetting(TTypSetting typ, String val) throws MyException;
+	void SmsMarkAllRead() throws MyException;
 }

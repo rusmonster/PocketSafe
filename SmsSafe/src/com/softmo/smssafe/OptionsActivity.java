@@ -159,9 +159,10 @@ public class OptionsActivity extends CMBaseListActivity {
 	
 	@Override
 	public Dialog onCreateDialog(int id) {
-		Dialog dlg = null;
-		
-		if (mDlg!=null) mDlg.dismiss(); mDlg=null;
+		Log.d("!!!", "OptionsActivity onCreateDialog: "+id);
+		Dialog dlg = super.onCreateDialog(id);
+		if (dlg!=null)
+			return dlg;
 		
 		switch (id) {
 		case IDD_PASSTIMOUT:
@@ -246,6 +247,8 @@ public class OptionsActivity extends CMBaseListActivity {
 
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
+		Log.d("!!!", "OptionsActivity onPrepareDialog: "+id);
+		if (mDlg!=null) mDlg.dismiss();
 		mDlg=dialog;
 		super.onPrepareDialog(id, dialog);
 	}	

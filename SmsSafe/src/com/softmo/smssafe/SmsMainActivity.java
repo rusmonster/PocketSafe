@@ -147,6 +147,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		case ESmsOutboxAdded:
 		case ESmsDelMany:
 		case ESmsDeleted:
+		case ESmsUpdatedMany:
 			mHandler.removeCallbacks(mRunReload);
 			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
@@ -200,6 +201,9 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				break;
 			case R.id.mnuMainLock:
 				getHelper().lockNow();
+				break;
+			case R.id.mnuMainRead:
+				getHelper().getMain().DbWriter().SmsMarkAllRead();
 				break;
 			}
 		} catch(Exception e) {

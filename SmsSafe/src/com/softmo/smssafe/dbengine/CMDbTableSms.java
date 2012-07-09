@@ -381,4 +381,10 @@ public class CMDbTableSms implements IMDbTableSms {
 					CMSQLiteOnlineHelper.SMSGROUP_MAXDATE + ")" +
 				" select * from "+CMSQLiteOnlineHelper.QUERY_SMSGROUP);
 	}
+
+	public void markAllRead() throws MyException {
+		mDbp.exec("update "+CMSQLiteOnlineHelper.TABLE_SMS+" set "+CMSQLiteOnlineHelper.SMS_ISNEW+"="+TTypIsNew.EOld+
+				" where "+CMSQLiteOnlineHelper.SMS_FOLDER+"="+TTypFolder.EInbox);
+		updateGroups();
+	}
 }

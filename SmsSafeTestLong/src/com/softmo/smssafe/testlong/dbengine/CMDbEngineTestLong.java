@@ -369,4 +369,18 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		
 		assertNull(ex);
 	}
+	
+	
+	public void testSmsMarkAllRead() {
+		
+		Exception ex = null;
+		
+		try {
+			mDbEngine.TableSms().markAllRead();
+		} catch (Exception e) {
+			ex=e;
+		}
+		
+		assertNull(ex);
+	}	
 }

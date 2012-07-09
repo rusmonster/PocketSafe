@@ -24,7 +24,8 @@ public enum TTypEvent
     EImportStart(17),
     EImportProgress(18),
     EImportFinish(19), 
-    EImportError(20)
+    EImportError(20),
+    ESmsUpdatedMany(21)
     ;
  
     private final int mValue;

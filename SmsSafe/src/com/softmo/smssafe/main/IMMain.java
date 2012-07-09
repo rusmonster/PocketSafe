@@ -31,5 +31,5 @@ public interface IMMain {
 	void guiPause();
 	void guiResume();
 	void importSms() throws MyException;
-
+	void importSmsCancel();
 }

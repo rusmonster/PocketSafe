@@ -135,6 +135,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		switch (event.getTyp()) {
 		case ESmsRecieved:
 		//case ESmsUpdated:
+		//case ESmsUpdatedMany:
 		case ESmsOutboxAdded:
 		case ESmsDelMany:
 		case ESmsDeleted:

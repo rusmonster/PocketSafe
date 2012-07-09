@@ -66,6 +66,12 @@ public abstract class CMBaseListActivity extends ListActivity implements IMHelpe
 		return mHelper.onCreateDialog(id);
 	}
 
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		Log.d("!!!", "onPrepareDialog: : "+this);
+		mHelper.onPrepareDialog(id, dialog);
+	}
+	
 	public IMBaseActivity getHelper() {
 		return mHelper;
 	}

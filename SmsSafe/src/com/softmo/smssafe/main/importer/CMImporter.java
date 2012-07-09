@@ -34,7 +34,9 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 	private enum TImporterState {
 		EIdle,
 		EBusy,
-		EFinised
+		EFinised,
+		ECanceling,
+		ECanceled
 	}
 
 	TImporterState mState = TImporterState.EIdle;
@@ -67,7 +69,7 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 			throw new MyException(TTypMyException.EImporterNullParam); 
 		
 		execute();
-		mState = TImporterState.EIdle;
+		mState = TImporterState.EBusy;
 		try {
 			mObserver.importerStart();
 		} catch(Exception e){};
@@ -204,10 +206,10 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 			res = true;
 		}catch (MyException e) {
 			mErrCode = e.getId().getValue();
-			Log.e("!!", "Error in doImport: "+e);
+			Log.e("!!!", "Error in doImport: "+e);
 		}
 		catch (Exception e) {
-			Log.e("!!", "Error in doImport: "+e);
+			Log.e("!!!", "Error in doImport: "+e);
 			e.printStackTrace();
 		}
 		
@@ -216,7 +218,7 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		Log.d("!!", "onPostExecute ");
+		Log.d("!!!", "onPostExecute ");
 		
 		mState = TImporterState.EFinised;
 		
@@ -233,6 +235,8 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 	
 	@Override
 	protected void onCancelled() {
+		mState = TImporterState.ECanceled;
+		
 		try {
 			mObserver.importerError(TTypMyException.EImporterCancelled.getValue());
 		} catch(Exception e) {}
@@ -248,7 +252,11 @@ public class CMImporter extends AsyncTask<Void, Integer, Boolean>implements IMIm
 	}
 
 	public void cancelImport() {
+		if (mState!=TImporterState.EBusy) 
+			return;
+		
 		cancel(false);
+		mState = TImporterState.ECanceling;
 		Log.d("!!!", "Import cancelled");
 	}
 

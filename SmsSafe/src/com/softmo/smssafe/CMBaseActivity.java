@@ -77,6 +77,11 @@ public abstract class CMBaseActivity extends Activity implements IMHelperBaseAct
 		return mHelper.onCreateDialog(id);
 	}
 
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		Log.d("!!!", "onPrepareDialog: : "+this);
+		mHelper.onPrepareDialog(id, dialog);
+	}
 	
 	public IMBaseActivity getHelper() {
 		return mHelper;
