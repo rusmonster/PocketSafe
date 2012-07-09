@@ -233,7 +233,7 @@ public class CMDbTableSms implements IMDbTableSms {
 		}
 	}
 
-	public void QueryGroupByHashOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) throws MyException {
+	public void QueryGroupOrderByMaxDatDesc(ArrayList<IMSmsGroup> dest, int start, int count) throws MyException {
 		dest.clear();
 		
 		Cursor c = mDbp.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, null, null, CMSQLiteOnlineHelper.SMSGROUP_MAXDATE+" DESC LIMIT "+start+","+count); 
@@ -386,5 +386,35 @@ public class CMDbTableSms implements IMDbTableSms {
 		mDbp.exec("update "+CMSQLiteOnlineHelper.TABLE_SMS+" set "+CMSQLiteOnlineHelper.SMS_ISNEW+"="+TTypIsNew.EOld+
 				" where "+CMSQLiteOnlineHelper.SMS_FOLDER+"="+TTypFolder.EInbox);
 		updateGroups();
+	}
+
+	public int getCountGroup() throws MyException {
+		Cursor c = mDbp.query(CMDbProvider.CONTENT_URI_SMSGROUP, mCount, null, null, null);
+		
+		try {
+			if ( c.moveToFirst() ) {
+				int cnt = c.getInt(0);
+				return cnt;
+			}
+			
+			throw  new MyException(TTypMyException.EDbErrGetCountGroup);
+		} finally {
+			c.close();
+		}
+	}
+
+	public void getGroupById(IMSmsGroup dest, int id) throws MyException {
+		Cursor c = mDbp.query(CMDbProvider.CONTENT_URI_SMSGROUP, mContentGroup, CMSQLiteOnlineHelper._ID+"="+id, null, null);
+		
+		try {
+			if ( c.moveToFirst() ) {
+				LoadGroup(dest, c);
+				return;
+			}
+			
+			throw  new MyException(TTypMyException.EDbIdNotFoundGroup);
+		} finally {
+			c.close();
+		}		
 	}
 }

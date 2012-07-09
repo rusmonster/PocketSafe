@@ -54,7 +54,7 @@
 	<string name="min60">1 час</string>
 
 	<string name="Me">Я</string>
-	<string name="smsLoading">Загрузка...</string>
+	<string name="Loading">Загрузка...</string>
 
 	<string name="program">Приложение:</string>
 	<string name="site">Сайт:</string>

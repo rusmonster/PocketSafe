@@ -313,7 +313,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		*/
 		//Log.v("!!!", "Checking...");
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 0, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 0, 3);
 		assertEquals(3,res.size());
 		
 		for (int i=0; i<3; i++) {
@@ -328,7 +328,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 3, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 3, 3);
 		assertEquals(2,res.size());
 		
 		for (int i=0; i<2; i++) {
@@ -342,7 +342,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 6, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 6, 3);
 		assertEquals(0,res.size());
 	}
 	

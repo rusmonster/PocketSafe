@@ -58,12 +58,12 @@
 	</LinearLayout>
 	
 	<TextView
-	    android:id="@+id/smsLoading"
+	    android:id="@+id/Loading"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:gravity="center"
 	    android:layout_alignTop="@+id/smsItem"
 	    android:layout_alignBottom="@+id/smsItem"
-	    android:text="@string/smsLoading" 
+	    android:text="@string/Loading" 
 	    />	
 </RelativeLayout>

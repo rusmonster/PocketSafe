@@ -68,7 +68,8 @@ public class MyException extends Exception {
 		EDbErrExecSQL(57), 
 		EImporterCancelled(58),
 		EImporterErrGeneral(59),
-		EErrBusy(60)
+		EErrBusy(60),
+		EDbErrGetCountGroup(61)
 		;
 		
 	    private final int mValue;

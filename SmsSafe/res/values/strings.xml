@@ -54,7 +54,7 @@
 	<string name="min60">1 hour</string>
 
 	<string name="Me">Me</string>
-	<string name="smsLoading">Loading...</string>
+	<string name="Loading">Loading...</string>
 
 	<string name="program">Program:</string>
 	<string name="site">WEB:</string>

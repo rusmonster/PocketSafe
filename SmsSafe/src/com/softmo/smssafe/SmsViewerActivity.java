@@ -441,6 +441,8 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		Log.d("!!!", "Sms: onSaveInstanceState");
+		
 		outState.putString("text", mEdText.getText().toString());
 		if (mAdapter!=null) {
 			Map<Integer, String> map = mAdapter.getMap(); 
@@ -462,6 +464,8 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 
 	@Override
 	protected void onRestoreInstanceState(Bundle outState) {
+		Log.d("!!!", "Sms: onRestoreInstanceState");
+		
 		mEdText.setText(outState.getString("text"));
 		
 		ArrayList<Integer> keys = outState.getIntegerArrayList("keys");
