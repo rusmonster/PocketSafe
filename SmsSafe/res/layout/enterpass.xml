@@ -123,20 +123,20 @@
 		>
     	
        <Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="0"
-    	    android:onClick="onClick0" 
-    	    />
-		
-       <Button
            	android:id="@+id/btDel"
     	    android:layout_width="fill_parent"
     	    android:layout_height="fill_parent"
     	    android:layout_weight="1"
     	    android:text="C"
     	    android:onClick="onClickDel" 
+    	    />
+              
+       <Button
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="fill_parent"
+    	    android:layout_weight="1"
+    	    android:text="0"
+    	    android:onClick="onClick0" 
     	    />
               
     	<Button
