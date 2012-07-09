@@ -8,6 +8,7 @@
     <string name="sms_newsms">New</string>
     <string name="sms_delall">Delete all</string>
     <string name="about">About</string>
+    <string name="mark_all_read">Mark all as read</string>
     <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">About</string>
     <string name="sms_view_thread">View</string>
@@ -39,6 +40,7 @@
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
     <string name="opt_locknow">Lock now</string>
+    <string name="opt_import">Import sms</string> 
     <string name="locknow">Lock now</string>
     <string name="pass_changed">Password changed succesfully</string>
     <string name="pair_generated">All new sms will be shown here</string>
@@ -61,6 +63,10 @@
 	<string name="authorVal">Dmitry Kalita</string>
 	<string name="mail">Mail:</string>
 	<string name="mailVal">rusmonster@gmail.com</string>
+	
+	<string name="confimport">Import all SMS from android?</string>
+	<string name="dlg_import">Importing...</string>
+	<string name="importfinish">Import complete. Now you can delete sms from android</string>
 
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
@@ -117,4 +123,10 @@
 	<string name="EDbIdNotFoundGroup">Group not found</string>
 	<string name="EDbErrInsertGroup">Error inserting group</string>
 	<string name="EPassNotDigital">Password should contain digits only</string>
+	<string name="EImporterErrBusy">Import already running</string>
+	<string name="EImporterNullParam">Invalid import parameter</string>
+	<string name="EDbErrExecSQL">Incorrect database request</string>
+	<string name="EImporterCancelled">Import cancelled</string>
+	<string name="EImporterErrGeneral">Import error</string>
+	<string name="EErrBusy">System busy, try later</string>
 </resources>

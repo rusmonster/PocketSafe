@@ -31,7 +31,7 @@ public class CMDbEnginePrintAllSms extends AndroidTestCase {
 		
 		mLocator = new CMLocator();
 		mDbEngine = new CMDbEngine(mLocator);
-		mDbEngine.Open(getContext().getContentResolver());
+		mDbEngine.Open( getContext() );
 	}
 	
 	public void testPrint() throws MyException {

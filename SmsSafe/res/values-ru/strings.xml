@@ -8,6 +8,7 @@
     <string name="sms_newsms">Новое смс</string>
     <string name="sms_delall">Удалить все</string>
     <string name="about">О программе</string>
+    <string name="mark_all_read">Все прочитанные</string>
     <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">О программе</string>
     <string name="sms_view_thread">Смотреть</string>
@@ -39,6 +40,7 @@
     <string name="opt_changepass">Сменить пароль</string>
     <string name="opt_passtimeout">Помнить пароль</string>
     <string name="opt_locknow">Заблокировать сейчас</string>
+    <string name="opt_import">Импортировать смс</string>
     <string name="locknow">Заблокировать</string>
     <string name="pass_changed">Пароль успешно изменен</string>
     <string name="pair_generated">Новые смс будут отображаться тут</string>
@@ -61,6 +63,10 @@
 	<string name="authorVal">Дмитрий Калита</string>
 	<string name="mail">Mail:</string>
 	<string name="mailVal">rusmonster@gmail.com</string>
+
+	<string name="confimport">Импортировать все смс из адроид?</string>
+	<string name="dlg_import">Импорт...</string>
+	<string name="importfinish">Импорт завершен. Вы можете удалить смс из андроид.</string>
 
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
@@ -117,4 +123,11 @@
 	<string name="EDbIdNotFoundGroup">Группа не найдена</string>
 	<string name="EDbErrInsertGroup">Ошибка добавления группы</string>
 	<string name="EPassNotDigital">Пароль должен состоять из цифр</string>
+	<string name="EImporterErrBusy">Импорт уже запущен</string>
+	<string name="EImporterNullParam">Неверный параметр импорта</string>
+	<string name="EDbErrExecSQL">Неверный запрос к БД</string>
+	<string name="EImporterCancelled">Импорт отменен</string>
+	<string name="EImporterErrGeneral">Ошибка импорта</string>
+	<string name="EErrBusy">Система занята, попробуйте позже</string>
+
 </resources>
