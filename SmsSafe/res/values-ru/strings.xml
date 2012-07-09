@@ -9,6 +9,7 @@
     <string name="sms_delall">Удалить все</string>
     <string name="about">О программе</string>
     <string name="mark_all_read">Все прочитанные</string>
+    <string name="all_sms_readed">Все смс помеченны как прочитанные</string>
     <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">О программе</string>
     <string name="sms_view_thread">Смотреть</string>

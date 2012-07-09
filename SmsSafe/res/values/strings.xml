@@ -9,6 +9,7 @@
     <string name="sms_delall">Delete all</string>
     <string name="about">About</string>
     <string name="mark_all_read">Mark all as read</string>
+    <string name="all_sms_readed">All sms marked as read</string>
     <string name="siteurl">http://soft-mo.com</string>
     <string name="title_about">About</string>
     <string name="sms_view_thread">View</string>

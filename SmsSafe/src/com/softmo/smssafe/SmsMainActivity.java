@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class SmsMainActivity extends CMBaseListActivity  {
 	
@@ -204,6 +205,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				break;
 			case R.id.mnuMainRead:
 				getHelper().getMain().DbWriter().SmsMarkAllRead();
+				Toast.makeText(this, R.string.all_sms_readed, Toast.LENGTH_SHORT).show();
 				break;
 			}
 		} catch(Exception e) {
