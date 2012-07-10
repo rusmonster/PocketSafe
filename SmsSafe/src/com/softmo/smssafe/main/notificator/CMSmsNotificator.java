@@ -54,7 +54,10 @@ public class CMSmsNotificator implements IMSmsNotificator {
 			mNotifyMgr.cancel(TTypEvent.ESmsRecieved.getValue());
 			mNotification=null;
 			Log.d("!!!", "NOTIF cancel");
-		} else if (mNotification != null) {
+		} else {
+			int icon = R.drawable.notificator;
+			long when = System.currentTimeMillis();
+			mNotification = new Notification(icon, mTickerText, when);
 			CharSequence contentText=mContext.getResources().getText( R.string.sms_new_cnt )+Integer.toString(cnt_newsms);
 	        mNotification.setLatestEventInfo(mContext, mTickerText, contentText, mNotificationPendingIntent);
 	        mNotification.defaults &= ~Notification.DEFAULT_SOUND;
@@ -62,8 +65,6 @@ public class CMSmsNotificator implements IMSmsNotificator {
 	        mNotifyMgr.notify(TTypEvent.ESmsRecieved.getValue(), mNotification);
 	        
 	        Log.d("!!!", "NOTIF update: "+contentText);
-		} else {
-			Popup(cnt_newsms);
 		}
 	}
 
