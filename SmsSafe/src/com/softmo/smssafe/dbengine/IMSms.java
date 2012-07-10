@@ -22,4 +22,6 @@ public interface IMSms extends IMDbItem {
 	public void setDate(Date dat);
 	public int getStatus();
 	public void setStatus(int status);
+	public int getSmsId();
+	public void setSmsId(int smsId);
 }

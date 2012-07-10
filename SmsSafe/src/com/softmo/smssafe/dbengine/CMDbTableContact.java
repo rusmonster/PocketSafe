@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 
+import com.softmo.smssafe.dbengine.provider.IMDbProvider;
 import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
@@ -42,12 +43,12 @@ public class CMDbTableContact implements IMDbTableContact {
 		}
 	}
 
-	public void SetContentResolver(ContentResolver cr) {
-		mCr = cr;
+	public void SetDbProvider(IMDbProvider dbp) {
+		//nothing
 	}
 
 	public int getCount() throws MyException {
-		Cursor c = mCr.query(ContactsContract.Contacts.CONTENT_URI, new String[] {"count(*) as count"}, null, null, null);
+		Cursor c = mCr.query(ContactsContract.Contacts.CONTENT_URI, new String[] {"count(*) as cnt"}, null, null, null);
 		try {
 			if (c.moveToFirst()) 
 				return c.getInt(0);
@@ -56,6 +57,10 @@ public class CMDbTableContact implements IMDbTableContact {
 		} finally {
 			c.close();
 		}
+	}
+
+	public void SetContentResolver(ContentResolver cr) {
+		mCr = cr;
 	}
 
 }

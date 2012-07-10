@@ -7,6 +7,12 @@ import com.softmo.smssafe.utils.MyException;
 
 public interface IMMain {
 	
+	enum TMainState {
+		EIdle,
+		EImport
+	}
+	
+	TMainState getState();
 	IMDbReader DbReader();
 	IMDbWriter DbWriter();
 	
@@ -24,5 +30,6 @@ public interface IMMain {
 	void ResendSms(int id) throws MyException;
 	void guiPause();
 	void guiResume();
-
+	void importSms() throws MyException;
+	void importSmsCancel();
 }

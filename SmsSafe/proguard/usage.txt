@@ -2,6 +2,7 @@ com.softmo.smssafe.CMHelperBaseActivity:
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT
     private static final int IDD_GENERATE
+    private static final int IDD_IMPORT
     public static final java.lang.String KILL_ACTION
 com.softmo.smssafe.CSmsCounter:
     public static final int LEN_SMALL
@@ -15,8 +16,12 @@ com.softmo.smssafe.EnterPassActivity:
     public static final java.lang.String PASS
 com.softmo.smssafe.ErrorDisplayer:
     11:11:public ErrorDisplayer()
+com.softmo.smssafe.MainAdapter:
+    private static final int LAYOUT
+    private static final int MAX_LOADERS
 com.softmo.smssafe.OptionsActivity:
     private static final int IDD_PASSTIMOUT
+    private static final int IDD_IMPORTCONF
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT
     private static final java.lang.String TITLE_KEY
@@ -59,19 +64,18 @@ com.softmo.smssafe.TStruct
 com.softmo.smssafe.bootreceiver.CMBootReceiver:
     private static final java.lang.String ACTION
 com.softmo.smssafe.dbengine.CMDbTableContact:
-    50:58:public int getCount()
+    51:59:public int getCount()
 com.softmo.smssafe.dbengine.CMDbTableSetting:
     52:63:public int getCount()
 com.softmo.smssafe.dbengine.CMDbTableSms:
-    197:208:public int getCount()
-    214:230:public void QueryByFolderOrderByDatDesc(java.util.ArrayList,int,int,int)
+    201:212:public int getCount()
+    218:234:public void QueryByFolderOrderByDatDesc(java.util.ArrayList,int,int,int)
 com.softmo.smssafe.dbengine.CMSetting:
     14:15:public void setIntVal(int)
 com.softmo.smssafe.dbengine.IMDbDataSet:
     public abstract int getCount()
 com.softmo.smssafe.dbengine.IMDbEngine:
     public static final java.lang.String ENCODING
-    public abstract com.softmo.smssafe.dbengine.IMDbQuerySms QuerySms()
 com.softmo.smssafe.dbengine.IMDbQuerySms:
     public abstract void QueryByFolderOrderByDatDesc(java.util.ArrayList,int,int,int)
 com.softmo.smssafe.dbengine.IMSetting:
@@ -95,6 +99,7 @@ com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper:
     public static final java.lang.String SETTING_VAL
     public static final java.lang.String TABLE_SMS
     public static final java.lang.String SMS_INDEX_HASHDATE
+    public static final java.lang.String SMS_INDEX_SMSID
     public static final java.lang.String SMS_DIRECTION
     public static final java.lang.String SMS_FOLDER
     public static final java.lang.String SMS_ISNEW
@@ -103,6 +108,7 @@ com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper:
     public static final java.lang.String SMS_TEXT
     public static final java.lang.String SMS_DATE
     public static final java.lang.String SMS_STATUS
+    public static final java.lang.String SMS_SMSID
     public static final java.lang.String TABLE_SMSGROUP
     public static final java.lang.String SMSGROUP_INDEX_HASH
     public static final java.lang.String SMSGROUP_INDEX_MAXDATE
@@ -113,6 +119,8 @@ com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper:
     public static final java.lang.String SMSGROUP_MAXDATE
     public static final java.lang.String QUERY_SMSGROUP
 com.softmo.smssafe.main.TTypEventStrings
+com.softmo.smssafe.main.importer.CMImporter:
+    private static final int PAGE_SIZE
 com.softmo.smssafe.sec.CMBase64:
     private static final java.lang.String BASE64_STR
     private static final byte BASE64_ZERO
@@ -124,7 +132,7 @@ com.softmo.smssafe.smssender.CMSmsSender:
     private static final java.lang.String SMS_ID
     private static final java.lang.String PART_NUM
 com.softmo.smssafe.utils.CMLocator:
-    129:129:public com.softmo.smssafe.utils.IMTimer createTimer()
+    135:135:public com.softmo.smssafe.utils.IMTimer createTimer()
 com.softmo.smssafe.utils.CMTimer
 com.softmo.smssafe.utils.CMTimer$1
 com.softmo.smssafe.utils.CMTimer$TTimerState

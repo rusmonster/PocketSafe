@@ -256,7 +256,7 @@ public class SmsAdapter extends BaseAdapter {
 			v = inflater.inflate(LAYOUT, null, true);
 			
 			sav = new SmsAdapterView();
-			sav.mSmsLoading = (TextView)v.findViewById(R.id.smsLoading);
+			sav.mSmsLoading = (TextView)v.findViewById(R.id.Loading);
 			
 			//sav.mImgMsg = (ImageView)v.findViewById(R.id.msg_icon);
 			sav.mCap	= (TextView)v.findViewById(R.id.smsCap);
@@ -290,6 +290,7 @@ public class SmsAdapter extends BaseAdapter {
 		String text = mMap.get(sms.getId());
 		
 		if (text != null) {
+			Log.d("!!!", "SmsAdapter: text cached: "+position);
 			FillView(sav, sms, text);
 		} else {
 			sav.mItem.setVisibility(View.INVISIBLE);

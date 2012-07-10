@@ -85,7 +85,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 					smsfrom = messages[0].getOriginatingAddress();
 				
 				
-				mDbEngine.Open( context.getContentResolver() );
+				mDbEngine.Open( context );
 
 				if (ProcessMessage(context, smsfrom, smstext)) {
 					Log.d("!!!", "SMS stored ");

@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 public class OptionsActivity extends CMBaseListActivity {
 
 	private static final int IDD_PASSTIMOUT = 1001;
+	private static final int IDD_IMPORTCONF = 1002;
 	
 	private static final int SET_PASS_RESULT = 1010;
 	private static final int ENTER_PASS_RESULT = 1011;	
@@ -38,10 +40,8 @@ public class OptionsActivity extends CMBaseListActivity {
     
     private String mEnteredPass;
     private String mNewPass;
+    private Dialog mDlg;
     
-	private Dialog mDlg;
-	
-	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +83,13 @@ public class OptionsActivity extends CMBaseListActivity {
         str = getResources().getString(R.string.opt_passtimeout);
         item = new HashMap<String, String>();
         item.put(TITLE_KEY, str);
-        
         item.put(DESCRIPTION_KEY, val);
+        data.add(item);
+        
+        str = getResources().getString(R.string.opt_import);
+        item = new HashMap<String, String>();
+        item.put(TITLE_KEY, str);
+        item.put(DESCRIPTION_KEY, "");
         data.add(item);       
         
         str = getResources().getString(R.string.opt_locknow);
@@ -135,6 +140,9 @@ public class OptionsActivity extends CMBaseListActivity {
 			passTimout();
 			break;
 		case 2:
+			showDialog(IDD_IMPORTCONF);
+			break;
+		case 3:
 			getHelper().lockNow();
 			break;
 		}
@@ -151,13 +159,14 @@ public class OptionsActivity extends CMBaseListActivity {
 	
 	@Override
 	public Dialog onCreateDialog(int id) {
-		Dialog dlg = null;
+		Log.d("!!!", "OptionsActivity onCreateDialog: "+id);
+		Dialog dlg = super.onCreateDialog(id);
+		if (dlg!=null)
+			return dlg;
 		
 		switch (id) {
 		case IDD_PASSTIMOUT:
-			if (mDlg!=null) 
-				dismissDialog(IDD_PASSTIMOUT);
-			
+			{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.opt_passtimeout);
 
@@ -175,8 +184,30 @@ public class OptionsActivity extends CMBaseListActivity {
 				}
 			});
 			
-			mDlg = builder.create();
-			dlg = mDlg;
+			dlg =  builder.create();
+			}
+			break;
+		case IDD_IMPORTCONF:
+			{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.confimport);
+			
+			builder.setPositiveButton(android.R.string.yes, new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					getHelper().importSms();
+				}
+			});
+			
+			builder.setNegativeButton(android.R.string.no, new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					//nothing
+				}
+			});
+			
+			dlg =  builder.create();
+			}
 			break;
 		}
 		
@@ -203,7 +234,25 @@ public class OptionsActivity extends CMBaseListActivity {
 		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void onPause() {
+		if (mDlg!=null){  
+			mDlg.dismiss(); 
+			mDlg=null;
+		}
+		super.onPause();
+	}
+
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		Log.d("!!!", "OptionsActivity onPrepareDialog: "+id);
+		if (mDlg!=null) mDlg.dismiss();
+		mDlg=dialog;
+		super.onPrepareDialog(id, dialog);
 	}	
+	
 	
 	
 }

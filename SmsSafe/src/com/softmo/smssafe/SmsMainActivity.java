@@ -1,6 +1,10 @@
 package com.softmo.smssafe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.dbengine.IMContact;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
@@ -22,25 +26,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class SmsMainActivity extends CMBaseListActivity  {
 	
-
 	protected static final int NEW_SMS_RESULT = 1002;
 	
 	private static final int IDD_DELTHREAD = 1001;
 	private static final int IDD_DELALL = 1002;
 
 	private Button mBtNewSms;
-	private ArrayList<IMSmsGroup> mGroups = new ArrayList<IMSmsGroup>();
 	private final android.os.Handler mHandler = new android.os.Handler();
 	
+	private MainAdapter mAdapter;
+	private Map<Integer, String> mSavedMap;
+	
 	private void GotoGroup(int idx) throws MyException {
-		
-		String hash = mGroups.get(idx).getHash();
+		String hash = getHashByIndex(idx);
 		
         Intent intent = new Intent(this, SmsViewerActivity.class); 
         intent.putExtra(SmsViewerActivity.HASH, hash); 
@@ -59,46 +63,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		}
 
 	}
-	
-	private void createListAdapter() throws MyException {
-		
-		Log.v("!!!", "createListAdapter()");
-		
-		getHelper().getMain().DbReader().QuerySms().QueryGroupByHashOrderByMaxDatDesc(mGroups, 0, Integer.MAX_VALUE);
-		
-		int cnt = mGroups.size();
-		ArrayList<String> list = new ArrayList<String>( cnt );
-		
-		for (int i=0; i<cnt; i++) {
-			try {
-				IMSmsGroup gr = mGroups.get(i);
-				
-				String name = null;
-				try {
-					name = getHelper().getMain().decryptString(gr.getPhone());
-				}catch (MyException e){
-					name = ErrorDisplayer.getErrStr(this, e.getId().getValue());
-				}
-				
-				IMContact cont = getHelper().getMain().DbReader().QueryContact().getByPhone(name);
-				if (cont != null)
-					name = cont.getName();
-				
-				if (gr.getCountNew()>0)
-					list.add(name+" ("+gr.getCountNew()+"/"+gr.getCount()+")");
-				else
-					list.add(name+" ("+gr.getCount()+")");
-			} catch(MyException e) {
-				ErrorDisplayer.displayError(this, e);
-			}
-		}
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.mainitem, list);
-        
-        setListAdapter(adapter);
-	}
-	
-    
+	   
     void GotoNewSms() {
     	Intent intent = new Intent(this, SmsNewActivity.class); 
         startActivityForResult(intent, NEW_SMS_RESULT);
@@ -122,20 +87,22 @@ public class SmsMainActivity extends CMBaseListActivity  {
     
 
     public void onMainBind() throws MyException {
-    	createListAdapter();
+        mAdapter = new MainAdapter(getHelper().getMain(), this);
+       	mAdapter.setMap(mSavedMap);
+       	
+       	Log.d("!!!", "Main: setting adapter...");
+        setListAdapter(mAdapter);    	
     }
  
 
 	private final Runnable mRunReload = new Runnable() {
 		
 		public void run() {
-			try {
-				createListAdapter();
-			} catch (MyException e) {
-				e.printStackTrace();
-			}	
+			Log.d("!!!", "Main: mRunReload");
+			mAdapter.notifyDataSetChanged();	
 		}
 	};
+	
 	private int mThreadForDelId;
 	
 	public void listenerEvent(IMEvent event) throws MyException {
@@ -147,6 +114,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		case ESmsOutboxAdded:
 		case ESmsDelMany:
 		case ESmsDeleted:
+		case ESmsUpdatedMany:
 			mHandler.removeCallbacks(mRunReload);
 			mHandler.postDelayed(mRunReload, TStruct.DEFAULT_DELAY_VIEW_RELOAD);
 			break;
@@ -201,6 +169,10 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			case R.id.mnuMainLock:
 				getHelper().lockNow();
 				break;
+			case R.id.mnuMainRead:
+				getHelper().getMain().DbWriter().SmsMarkAllRead();
+				Toast.makeText(this, R.string.all_sms_readed, Toast.LENGTH_SHORT).show();
+				break;
 			}
 		} catch(Exception e) {
 			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
@@ -218,10 +190,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				
 				AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 				
-				String nam = mGroups.get(info.position).getPhone();
-				nam = getHelper().getMain().decryptString(nam);
-				IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
-				if (c!=null) nam = c.getName();
+				String nam = getNameByIndex(info.position);
 				menu.setHeaderTitle(nam);
 			}
 		} catch (MyException e) {
@@ -253,27 +222,44 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	}
 	
 	private String getNameByIndex(int idx) throws MyException {
-		String nam = mGroups.get(idx).getPhone();
+		
+		int id = (int) mAdapter.getItemId(idx);
+		
+		IMSmsGroup group = getHelper().getLocator().createSmsGroup();
+		getHelper().getMain().DbReader().QuerySms().getGroupById(group,id);
+		
+		String nam = group.getPhone();
 		nam = getHelper().getMain().decryptString(nam);
 		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
-		String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
-		return msg;
+		return nam;
+	}
+	
+	private String getHashByIndex(int idx) throws MyException {
+		
+		int id = (int) mAdapter.getItemId(idx);
+		
+		IMSmsGroup group = getHelper().getLocator().createSmsGroup();
+		getHelper().getMain().DbReader().QuerySms().getGroupById(group,id);
+		
+		String hash = group.getHash();
+		return hash;
 	}
 	
 	AlertDialog ShowDelThreadDialog(int idx) throws MyException {
 	
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 		
-		dlg.setMessage( getNameByIndex(idx) );
-		
-		final String hash = mGroups.get(idx).getHash();
+		String nam = getNameByIndex(idx);
+		String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
+		dlg.setMessage( msg );
 		
 		dlg.setPositiveButton(getResources().getString(R.string.yes), new OnClickListener() {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
+					String hash = getHashByIndex(mThreadForDelId);
 					getHelper().getMain().DbWriter().SmsDeleteByHash( hash );
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
@@ -346,7 +332,9 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		try {
 			switch(id) {
 			case IDD_DELTHREAD:
-				((AlertDialog)dialog).setMessage( getNameByIndex(mThreadForDelId) );
+				String nam = getNameByIndex(mThreadForDelId);
+				String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
+				((AlertDialog)dialog).setMessage( msg );
 				break;
 			}
 		} catch (MyException e) {
@@ -356,6 +344,43 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		super.onPrepareDialog(id, dialog);
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		Log.d("!!!", "Main: onSaveInstanceState");
+		
+		if (mAdapter!=null) {
+			Map<Integer, String> map = mAdapter.getMap(); 
+			Iterator<Integer> i = map.keySet().iterator();
+			
+			int siz = map.size();
+			ArrayList<Integer> keys = new ArrayList<Integer>(siz);
+			ArrayList<String> vals = new ArrayList<String>(siz);
+			while (i.hasNext()) {
+				int key = i.next();
+				keys.add(key);
+				vals.add(map.get(key));
+			}
+			outState.putIntegerArrayList("mainKeys", keys);
+			outState.putStringArrayList("mainVals", vals);
+		}
+		
+		super.onSaveInstanceState(outState);
+	}	
 	
 	
+	@Override	
+	protected void onRestoreInstanceState(Bundle outState) {
+		Log.d("!!!", "Main: intRestoreInstanceState");
+		
+		ArrayList<Integer> keys = outState.getIntegerArrayList("mainKeys");
+		ArrayList<String> vals = outState.getStringArrayList("mainVals");
+		if (keys!=null && vals!=null) {
+			mSavedMap = new HashMap<Integer, String>();
+			for (int i=0; i<keys.size(); i++)
+				mSavedMap.put(keys.get(i), vals.get(i));
+		}	
+		
+		super.onRestoreInstanceState(outState);
+	}
+
 }

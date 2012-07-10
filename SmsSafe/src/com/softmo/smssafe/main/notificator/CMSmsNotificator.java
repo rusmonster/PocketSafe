@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.SmsMainActivity;
@@ -44,17 +45,26 @@ public class CMSmsNotificator implements IMSmsNotificator {
         mNotification.setLatestEventInfo(mContext, mTickerText, contentText, mNotificationPendingIntent);
         mNotifyMgr.cancel(TTypEvent.ESmsRecieved.getValue());
 		mNotifyMgr.notify(TTypEvent.ESmsRecieved.getValue(), mNotification);
+		
+		Log.d("!!!", "NOTIF Popup: "+contentText);
 	}
 
 	public void Update(int cnt_newsms) {
 		if (cnt_newsms==0) {
 			mNotifyMgr.cancel(TTypEvent.ESmsRecieved.getValue());
 			mNotification=null;
-		} else if (mNotification != null) {
+			Log.d("!!!", "NOTIF cancel");
+		} else {
+			int icon = R.drawable.notificator;
+			long when = System.currentTimeMillis();
+			mNotification = new Notification(icon, mTickerText, when);
 			CharSequence contentText=mContext.getResources().getText( R.string.sms_new_cnt )+Integer.toString(cnt_newsms);
 	        mNotification.setLatestEventInfo(mContext, mTickerText, contentText, mNotificationPendingIntent);
-		} else {
-			Popup(cnt_newsms);
+	        mNotification.defaults &= ~Notification.DEFAULT_SOUND;
+	        mNotification.defaults &= ~Notification.DEFAULT_VIBRATE;
+	        mNotifyMgr.notify(TTypEvent.ESmsRecieved.getValue(), mNotification);
+	        
+	        Log.d("!!!", "NOTIF update: "+contentText);
 		}
 	}
 

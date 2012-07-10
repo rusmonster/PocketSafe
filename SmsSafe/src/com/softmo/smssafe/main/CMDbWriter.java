@@ -33,6 +33,14 @@ public class CMDbWriter implements IMDbWriterInternal {
 		ev.setId(sms.getId());
 		mDispatcher.pushEvent(ev);
 	}
+	
+	public void SmsMarkAllRead() throws MyException {
+		mDbEngine.TableSms().markAllRead();
+		
+		IMEvent ev = mLocator.createEvent();
+		ev.setTyp(TTypEvent.ESmsUpdatedMany);
+		mDispatcher.pushEvent(ev);
+	}
 
 	public void SmsDelAll() throws MyException {
 		mDbEngine.TableSms().Clear();

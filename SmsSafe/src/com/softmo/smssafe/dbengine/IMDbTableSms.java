@@ -8,4 +8,6 @@ public interface IMDbTableSms extends IMDbQuerySms {
 	void Delete(int id) throws MyException;
 	void DeleteByHash(String hash) throws MyException;
 	void Clear() throws MyException;
+	void updateGroups() throws MyException;
+	void markAllRead() throws MyException;
 }

@@ -17,6 +17,7 @@ import com.softmo.smssafe.dbengine.TTypDirection;
 import com.softmo.smssafe.dbengine.TTypFolder;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.sec.IMSha256;
 import com.softmo.smssafe.utils.CMLocator;
 import com.softmo.smssafe.utils.IMLocator;
@@ -36,7 +37,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		mDbEngine = new CMDbEngine(mLocator);
 		
 		
-		mDbEngine.Open(getContext().getContentResolver());
+		mDbEngine.Open( getContext() );
 		mDbEngine.TableSms().Clear();
 		int cnt = mDbEngine.TableSms().getCount();
 		assertEquals(0, cnt);
@@ -93,6 +94,9 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		src.setIsNew(TTypIsNew.ENew);
 		src.setPhone("1234567");
 		src.setText("hellow world");
+		src.setHash("myHash");
+		src.setStatus(TTypStatus.ERecv);
+		src.setSmsId(-1);
 		
 		int id = mDbEngine.TableSms().Insert(src);
 		
@@ -106,6 +110,9 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		assertEquals(src.getIsNew(), dest.getIsNew());
 		assertEquals(src.getPhone(), dest.getPhone());
 		assertEquals(src.getText(), dest.getText());
+		assertEquals(src.getStatus(), dest.getStatus());
+		assertEquals(src.getSmsId(), dest.getSmsId());
+		assertEquals(src.getHash(), dest.getHash());
 	}
 	
 	public void testSmsGetFailed() {
@@ -306,7 +313,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		*/
 		//Log.v("!!!", "Checking...");
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 0, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 0, 3);
 		assertEquals(3,res.size());
 		
 		for (int i=0; i<3; i++) {
@@ -321,7 +328,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 3, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 3, 3);
 		assertEquals(2,res.size());
 		
 		for (int i=0; i<2; i++) {
@@ -335,7 +342,7 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 			assertEquals(src.getDate(), dest.getDate());
 		}
 		
-		mDbEngine.TableSms().QueryGroupByHashOrderByMaxDatDesc(res, 6, 3);
+		mDbEngine.TableSms().QueryGroupOrderByMaxDatDesc(res, 6, 3);
 		assertEquals(0,res.size());
 	}
 	
@@ -349,4 +356,31 @@ public class CMDbEngineTestLong extends AndroidTestCase {
 		int cnt = mDbEngine.QueryContact().getCount();
 		Log.d("!!!", "Contact.getCount = "+cnt);
 	}
+	
+	public void testSmsUpdateGroups() {
+		
+		Exception ex = null;
+		
+		try {
+			mDbEngine.TableSms().updateGroups();
+		} catch (Exception e) {
+			ex=e;
+		}
+		
+		assertNull(ex);
+	}
+	
+	
+	public void testSmsMarkAllRead() {
+		
+		Exception ex = null;
+		
+		try {
+			mDbEngine.TableSms().markAllRead();
+		} catch (Exception e) {
+			ex=e;
+		}
+		
+		assertNull(ex);
+	}	
 }

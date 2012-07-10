@@ -62,7 +62,14 @@ public class MyException extends Exception {
 		EDbErrGetCountSmsByHash(51),
 		EDbIdNotFoundGroup(52),
 		EDbErrInsertGroup(53),
-		EPassNotDigital(54)
+		EPassNotDigital(54), 
+		EImporterErrBusy(55), 
+		EImporterNullParam(56), 
+		EDbErrExecSQL(57), 
+		EImporterCancelled(58),
+		EImporterErrGeneral(59),
+		EErrBusy(60),
+		EDbErrGetCountGroup(61)
 		;
 		
 	    private final int mValue;
@@ -99,5 +106,9 @@ public class MyException extends Exception {
 	
 	public TTypMyException getId() {
 		return mId;
+	}
+	
+	public String toString() {
+		return new String("MyException: "+getId().toString());
 	}
 }

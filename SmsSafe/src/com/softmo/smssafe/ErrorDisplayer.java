@@ -67,6 +67,13 @@ public class ErrorDisplayer {
 		case EDbIdNotFoundGroup: return R.string.EDbIdNotFoundGroup;
 		case EDbErrInsertGroup: return R.string.EDbErrInsertGroup;
 		case EPassNotDigital: return R.string.EPassNotDigital;
+		case EImporterErrBusy: return R.string.EImporterErrBusy;
+		case EImporterNullParam: return R.string.EImporterNullParam;
+		case EDbErrExecSQL: return R.string.EDbErrExecSQL;
+		case EImporterCancelled: return R.string.EImporterCancelled;
+		case EImporterErrGeneral: return R.string.EImporterErrGeneral;
+		case EErrBusy: return R.string.EErrBusy;
+		case EDbErrGetCountGroup: return R.string.EDbErrGetCountGroup;
 		default:
 			return R.string.ErrUnknown;
 		}
