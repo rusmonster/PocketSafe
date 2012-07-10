@@ -385,7 +385,8 @@ public class CMDbTableSms implements IMDbTableSms {
 	public void markAllRead() throws MyException {
 		mDbp.exec("update "+CMSQLiteOnlineHelper.TABLE_SMS+" set "+CMSQLiteOnlineHelper.SMS_ISNEW+"="+TTypIsNew.EOld+
 				" where "+CMSQLiteOnlineHelper.SMS_FOLDER+"="+TTypFolder.EInbox);
-		updateGroups();
+		
+		mDbp.exec("update "+CMSQLiteOnlineHelper.TABLE_SMSGROUP+" set "+CMSQLiteOnlineHelper.SMSGROUP_COUNTNEW+"=0");
 	}
 
 	public int getCountGroup() throws MyException {

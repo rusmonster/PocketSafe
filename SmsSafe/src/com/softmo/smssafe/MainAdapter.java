@@ -12,6 +12,7 @@ import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -32,7 +33,7 @@ public class MainAdapter extends BaseAdapter {
 	private IMDbReader mDbReader;
 	private int mCount;
 	
-	private Map<Integer, String> mMap = new HashMap<Integer, String>();
+	private Map<Integer, String> mMap;
 
 	private static class MainAdapterView {
 		public LinearLayout mItem;
@@ -48,6 +49,8 @@ public class MainAdapter extends BaseAdapter {
 		mMain = main;
 		mDbReader = mMain.DbReader();
 		mCount = -1;
+		mMap = new HashMap<Integer, String>();
+		Log.d("!!!", "MAP created");
 	}
 	
 	public Map<Integer, String> getMap() {
@@ -55,8 +58,10 @@ public class MainAdapter extends BaseAdapter {
 	}
 	
 	public void setMap(Map<Integer,String> map) {
-		if (map!=null)
+		if (map!=null) {
 			mMap=map;
+			Log.d("!!!", "MAP setted");
+		}
 	}
 	
 	public int getCount() {
@@ -116,31 +121,24 @@ public class MainAdapter extends BaseAdapter {
 		@Override
 		protected String doInBackground(Void... params) {
 			
-			String text = null;
-			
+			String name = null;
 			try {
-				String name = null;
 				try {
 					name = mMain.decryptString(mGroup.getPhone());
 				}catch (MyException e){
-					name = "Error";
+					name = ErrorDisplayer.getErrStr(mActivity, e.getId().getValue());
 				}
 				
 				IMContact cont = mMain.DbReader().QueryContact().getByPhone(name);
 				if (cont != null)
 					name = cont.getName();
 				
-				if (mGroup.getCountNew()>0)
-					text = new String(name+" ("+mGroup.getCountNew()+"/"+mGroup.getCount()+")");
-				else
-					text = new String(name+" ("+mGroup.getCount()+")");
-				
 			} catch (Exception e1) {
 				e1.printStackTrace();
-				text = "Error";
+				name = ErrorDisplayer.getErrStr(mActivity, TTypMyException.EErrUnknown.getValue());
 			}
 			
-			return text;
+			return name;
 		}
 		
 		@Override
@@ -189,6 +187,11 @@ public class MainAdapter extends BaseAdapter {
 	}
 	
 	private void FillView(MainAdapterView mav, IMSmsGroup group, String text) {
+		if (group.getCountNew()>0)
+			text = new String(text+" ("+group.getCountNew()+"/"+group.getCount()+")");
+		else
+			text = new String(text+" ("+group.getCount()+")");
+				
 		mav.mText.setText(text);
 		mav.mItem.setVisibility(View.VISIBLE);
 		mav.mLoading.setVisibility(View.INVISIBLE);
@@ -234,9 +237,10 @@ public class MainAdapter extends BaseAdapter {
 		String text = mMap.get(group.getId());
 		
 		if (text != null) {
-			Log.d("!!!", "MainAdapter: text cached: "+position);
+			Log.w("!!!", "MainAdapter: text cached: "+position);
 			FillView(mav, group, text);
 		} else {
+			Log.w("!!!", "MainAdapter: text NOT cached: "+position);
 			mav.mItem.setVisibility(View.INVISIBLE);
 			mav.mLoading.setVisibility(View.VISIBLE);
 			mLoadQuery.add( new MainLoader(position, mav, group) );
