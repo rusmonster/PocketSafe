@@ -27,9 +27,12 @@ com.softmo.smssafe.bootreceiver.CMBootReceiver
 com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] values()
 com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting valueOf(java.lang.String)
 com.softmo.smssafe.dbengine.MyAppContext
-com.softmo.smssafe.dbengine.provider.CMDbProvider
+com.softmo.smssafe.main.IMMain$TMainState: com.softmo.smssafe.main.IMMain$TMainState[] values()
+com.softmo.smssafe.main.IMMain$TMainState: com.softmo.smssafe.main.IMMain$TMainState valueOf(java.lang.String)
 com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent[] values()
 com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent valueOf(java.lang.String)
+com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState[] values()
+com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState valueOf(java.lang.String)
 com.softmo.smssafe.safeservice.CMSafeService
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState[] values()
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState valueOf(java.lang.String)

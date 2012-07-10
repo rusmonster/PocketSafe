@@ -233,8 +233,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
 		if (c!=null) nam = c.getName();
 		
-		String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
-		return msg;
+		return nam;
 	}
 	
 	private String getHashByIndex(int idx) throws MyException {
@@ -252,14 +251,15 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 		
-		dlg.setMessage( getNameByIndex(idx) );
-		
-		final String hash = getHashByIndex(idx);
+		String nam = getNameByIndex(idx);
+		String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
+		dlg.setMessage( msg );
 		
 		dlg.setPositiveButton(getResources().getString(R.string.yes), new OnClickListener() {
 			
 			public void onClick(DialogInterface arg0, int arg1) {
 				try {
+					String hash = getHashByIndex(mThreadForDelId);
 					getHelper().getMain().DbWriter().SmsDeleteByHash( hash );
 				} catch (MyException e) {
 					ErrorDisplayer.displayError(SmsMainActivity.this, e.getId().getValue());
@@ -332,7 +332,9 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		try {
 			switch(id) {
 			case IDD_DELTHREAD:
-				((AlertDialog)dialog).setMessage( getNameByIndex(mThreadForDelId) );
+				String nam = getNameByIndex(mThreadForDelId);
+				String msg = getResources().getString(R.string.sms_delthreadconf, nam);	
+				((AlertDialog)dialog).setMessage( msg );
 				break;
 			}
 		} catch (MyException e) {
