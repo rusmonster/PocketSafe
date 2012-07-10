@@ -73,6 +73,7 @@ public class ErrorDisplayer {
 		case EImporterCancelled: return R.string.EImporterCancelled;
 		case EImporterErrGeneral: return R.string.EImporterErrGeneral;
 		case EErrBusy: return R.string.EErrBusy;
+		case EDbErrGetCountGroup: return R.string.EDbErrGetCountGroup;
 		default:
 			return R.string.ErrUnknown;
 		}

@@ -130,5 +130,6 @@
 	<string name="EImporterCancelled">Импорт отменен</string>
 	<string name="EImporterErrGeneral">Ошибка импорта</string>
 	<string name="EErrBusy">Система занята, попробуйте позже</string>
+	<string name="EDbErrGetCountGroup">Группа смс не найдена</string>
 
 </resources>

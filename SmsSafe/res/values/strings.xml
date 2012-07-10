@@ -130,4 +130,5 @@
 	<string name="EImporterCancelled">Import cancelled</string>
 	<string name="EImporterErrGeneral">Import error</string>
 	<string name="EErrBusy">System busy, try later</string>
+	<string name="EDbErrGetCountGroup">SmsGroup not found</string>
 </resources>
