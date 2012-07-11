@@ -24518,7 +24518,7 @@ Constant Pool (count = 113):
   + String [DROP TABLE IF EXISTS M__SMS]
   + String [DROP TABLE IF EXISTS M__SMSGROUP]
   + String [M__SETTING]
-  + String [UPDATE TABLE M__SMS SET SMSID = -1]
+  + String [UPDATE M__SMS SET SMSID = -1]
   + String [VAL]
   + String [_id]
   + String [soft-mo.db]
@@ -24588,7 +24588,7 @@ Constant Pool (count = 113):
   + Utf8 [DROP TABLE IF EXISTS M__SMSGROUP]
   + Utf8 [Lcom/softmo/smssafe/dbengine/o;]
   + Utf8 [M__SETTING]
-  + Utf8 [UPDATE TABLE M__SMS SET SMSID = -1]
+  + Utf8 [UPDATE M__SMS SET SMSID = -1]
   + Utf8 [VAL]
   + Utf8 [_id]
   + Utf8 [a]
@@ -24847,7 +24847,7 @@ Methods (count = 3):
         + Methodref [android/database/sqlite/SQLiteDatabase.execSQL (Ljava/lang/String;)V]
       [11] aload_1 v1
       [12] ldc #20
-        + String [UPDATE TABLE M__SMS SET SMSID = -1]
+        + String [UPDATE M__SMS SET SMSID = -1]
       [14] invokevirtual #39
         + Methodref [android/database/sqlite/SQLiteDatabase.execSQL (Ljava/lang/String;)V]
       [17] aload_1 v1
