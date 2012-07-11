@@ -136,7 +136,7 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 
 		if (oldVersion<2) {
 			db.execSQL("ALTER TABLE "+TABLE_SMS+" ADD "+SMS_SMSID+" INTEGER");
-			db.execSQL("UPDATE TABLE "+TABLE_SMS+" SET "+SMS_SMSID+" = -1");
+			db.execSQL("UPDATE "+TABLE_SMS+" SET "+SMS_SMSID+" = -1");
 			
 			db.execSQL("DROP INDEX IF EXISTS "+SMS_INDEX_SMSID);
 			db.execSQL("CREATE INDEX "+SMS_INDEX_SMSID+" ON "+TABLE_SMS+"("+SMS_SMSID+")");
