@@ -22,10 +22,9 @@ com.softmo.smssafe.MainAdapter:
 com.softmo.smssafe.OptionsActivity:
     private static final int IDD_PASSTIMOUT
     private static final int IDD_IMPORTCONF
+    private static final int IDD_SELECTNOTIFICATION
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT
-    private static final java.lang.String TITLE_KEY
-    private static final java.lang.String DESCRIPTION_KEY
 com.softmo.smssafe.R
 com.softmo.smssafe.R$array
 com.softmo.smssafe.R$attr
@@ -45,6 +44,7 @@ com.softmo.smssafe.SmsMainActivity:
     protected static final int NEW_SMS_RESULT
     private static final int IDD_DELTHREAD
     private static final int IDD_DELALL
+    private static final int IDD_PROGRAM_UPDATED
 com.softmo.smssafe.SmsNewActivity:
     private static final int IDD_SMS_SENDING
     protected static final int CONTACT_PICKER_RESULT
@@ -121,6 +121,10 @@ com.softmo.smssafe.dbengine.provider.CMSQLiteOnlineHelper:
 com.softmo.smssafe.main.TTypEventStrings
 com.softmo.smssafe.main.importer.CMImporter:
     private static final int PAGE_SIZE
+com.softmo.smssafe.main.notificator.IMNotificatorSound:
+    public abstract void Cancel()
+com.softmo.smssafe.main.notificator.TTypNotification:
+    20:20:public int getValue()
 com.softmo.smssafe.sec.CMBase64:
     private static final java.lang.String BASE64_STR
     private static final byte BASE64_ZERO

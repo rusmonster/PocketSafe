@@ -17,7 +17,7 @@
     <application
         android:icon="@drawable/appicon"
         android:label="@string/app_name"
-        android:debuggable="true"
+        android:debuggable="false"
         >
        <activity
             android:label="@string/app_name"
