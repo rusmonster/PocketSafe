@@ -21,6 +21,10 @@ public class CMSmsNotificator implements IMSmsNotificator {
 	private PendingIntent mNotificationPendingIntent;
 	private CharSequence mTickerText;
 	
+	protected Context getCotntext() {
+		return mContext;
+	}
+	
 	public void Init(Context context) {
 		mContext = context;
 		
