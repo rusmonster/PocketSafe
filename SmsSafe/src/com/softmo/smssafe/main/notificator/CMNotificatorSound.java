@@ -7,15 +7,22 @@ import android.net.Uri;
 public class CMNotificatorSound extends CMSmsNotificator implements
 		IMNotificatorSound {
 
-	private boolean mSoundOnly;
+	private TTypNotification mTyp = TTypNotification.ESoundAndIcon;
 	private int mCntNewSms=0;
 	
-	public void setSoundOnly(boolean soundonly) {
-		mSoundOnly = soundonly;
-		if (mSoundOnly)
-			Cancel();
-		else
+	
+	public void setType(TTypNotification typ) {
+		mTyp = typ;
+		switch (mTyp) {
+		case ESoundAndIcon:
+		case EIconOnly:
 			Update(mCntNewSms);
+			break;
+		case ESoundOnly:
+		case ENone:
+			Cancel();
+			break;
+		}
 	}
 
 	public void Cancel() {
@@ -34,19 +41,37 @@ public class CMNotificatorSound extends CMSmsNotificator implements
 	public void Popup(int cnt_newsms) {
 		mCntNewSms = cnt_newsms;
 		
-		if (mSoundOnly)
+		switch(mTyp)
+		{
+		case ESoundAndIcon:
+			super.Popup(mCntNewSms);
+			break;
+		case EIconOnly:
+			super.Update(mCntNewSms);
+			break;
+		case ESoundOnly:
 			playSound();
-		else
-			super.Popup(cnt_newsms);
+		case ENone:
+			//do nothing
+			break;
+		}
 	}
 
 	@Override
 	public void Update(int cnt_newsms) {
 		mCntNewSms = cnt_newsms;
 		
-		if (!mSoundOnly)
-			super.Update(cnt_newsms);
+		switch(mTyp)
+		{
+		case ESoundAndIcon:
+		case EIconOnly:
+			super.Update(mCntNewSms);
+			break;
+		case ESoundOnly:
+		case ENone:
+			//do nothing
+			break;
+		}
 	}
 
-	
 }

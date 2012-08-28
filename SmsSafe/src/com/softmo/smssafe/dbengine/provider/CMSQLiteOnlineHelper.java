@@ -94,6 +94,16 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
         values.put(SETTING_VAL, "");
         db.insert(TABLE_SETTING, SETTING_VAL, values);
         
+        values.clear();
+		values.put(_ID, +TTypSetting.ENotification.getValue());
+        values.put(SETTING_VAL, "0");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
+        values.clear();
+        values.put(_ID, +TTypSetting.EProgramUpdated.getValue());
+        values.put(SETTING_VAL, "0");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
+        
 		
 		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMS);
 		db.execSQL("CREATE TABLE "+TABLE_SMS+"("+
@@ -152,8 +162,18 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	        values.put(SETTING_VAL, "0");
 	        db.insert(TABLE_SETTING, SETTING_VAL, values);
 	        
+	        values.clear();
+			values.put(_ID, TTypSetting.EProgramUpdated.getValue());
+	        values.put(SETTING_VAL, "0");
+	        db.insert(TABLE_SETTING, SETTING_VAL, values);
+	        
+	        values.clear();
+	        values.put(SETTING_VAL, "1");
+	        db.update(TABLE_SETTING, values, _ID+"="+TTypSetting.EProgramUpdated.getValue(), null);
+	        
 	        oldVersion = 3;
 		}
+
 	}
 
 }

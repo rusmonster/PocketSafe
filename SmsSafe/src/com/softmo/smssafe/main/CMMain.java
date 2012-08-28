@@ -17,7 +17,8 @@ import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.main.importer.IMImporter;
 import com.softmo.smssafe.main.importer.IMImporterObserver;
-import com.softmo.smssafe.main.notificator.IMSmsNotificator;
+import com.softmo.smssafe.main.notificator.IMNotificatorSound;
+import com.softmo.smssafe.main.notificator.TTypNotification;
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
 import com.softmo.smssafe.sec.IMRsa;
@@ -37,7 +38,7 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 	private IMDbWriterInternal mDbWriter;
 	private IMDispatcherSender mDispatcher;
 	private IMSmsSender mSmsSender;
-	private IMSmsNotificator mSmsNotificator;
+	private IMNotificatorSound mSmsNotificator;
 	private Handler mHandler;
 	private IMRsa mRsa;
 	private IMSha256 mSha;
@@ -86,11 +87,13 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 		mSmsSender.SetContext(mContext);
 		mSmsSender.open();
 		
-		mSmsNotificator.Init(mContext /*getApplicationContext(); */);
-		
 		mDispatcher.addListener(this);
 		
 		IMSetting set = mLocator.createSetting();
+		
+		mSmsNotificator.Init(mContext /*getApplicationContext(); */);
+		mDbEngine.TableSetting().getById(set, TTypSetting.ENotification);
+		mSmsNotificator.setType(TTypNotification.from(set.getIntVal()));
 		
 		mDbEngine.TableSetting().getById(set, TTypSetting.EPassTimout);
 		long tim = set.getIntVal();
@@ -355,6 +358,9 @@ public class CMMain implements IMMain, IMSmsSenderObserver, IMListener, IMRsaObs
 			switch (typ) {
 			case EPassTimout:
 				mPassHolder.setInterval(set.getIntVal()*1000);
+				break;
+			case ENotification:
+				mSmsNotificator.setType(TTypNotification.from(set.getIntVal()));
 				break;
 			}
 		} catch (MyException e) {

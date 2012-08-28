@@ -3,10 +3,7 @@ package com.softmo.smssafe.testlong.notificator;
 import android.test.AndroidTestCase;
 
 import com.softmo.smssafe.main.notificator.CMNotificatorSound;
-import com.softmo.smssafe.main.notificator.CMSmsNotificator;
-import com.softmo.smssafe.main.notificator.IMSmsNotificator;
-
-import junit.framework.TestCase;
+import com.softmo.smssafe.main.notificator.TTypNotification;
 
 public class CMNotificatorTestLong extends AndroidTestCase {
 
@@ -29,7 +26,7 @@ public class CMNotificatorTestLong extends AndroidTestCase {
 	}
 
 	public void testSoundOnly() throws InterruptedException {
-		mNotificator.setSoundOnly(true);
+		mNotificator.setType(TTypNotification.ESoundOnly);
 		mNotificator.Popup(1);
 		Thread.sleep(5000);
 	}

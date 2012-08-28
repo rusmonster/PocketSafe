@@ -19,7 +19,7 @@ import com.softmo.smssafe.main.IMEventSimpleID;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.main.IMPassHolder;
 import com.softmo.smssafe.main.importer.IMImporter;
-import com.softmo.smssafe.main.notificator.IMSmsNotificator;
+import com.softmo.smssafe.main.notificator.IMNotificatorSound;
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
 import com.softmo.smssafe.sec.IMRsa;
@@ -42,7 +42,7 @@ public interface IMLocator {
 	IMEventErr createEventErr();
 	IMDbWriterInternal createDbWriter();
 	IMSmsSender createSmsSender();
-	IMSmsNotificator createSmsNotificator();
+	IMNotificatorSound createSmsNotificator();
 	IMBase64 createBase64();
 	IMRsa createRsa();
 	IMAes createAes();

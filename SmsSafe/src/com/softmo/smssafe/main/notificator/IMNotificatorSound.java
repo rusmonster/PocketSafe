@@ -1,6 +1,6 @@
 package com.softmo.smssafe.main.notificator;
 
-public interface IMNotificatorSound extends IMSmsNotificator{
-	void setSoundOnly(boolean soundonly);
+public interface IMNotificatorSound extends IMSmsNotificator {
+	void setType(TTypNotification typ);
 	void Cancel();
 }

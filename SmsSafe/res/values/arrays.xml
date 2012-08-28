@@ -26,4 +26,11 @@
 		<item>@string/opt_notif_nothing</item>
 	</string-array>
 
+	<string-array name="text_what_new">
+		<item>@string/what_new_1</item>
+		<item>@string/what_new_2</item>
+		<item>@string/what_new_3</item>
+		<item>@string/what_new_4</item>
+		<item>@string/what_new_5</item>
+	</string-array>
 </resources>

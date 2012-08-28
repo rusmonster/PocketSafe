@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.dbengine.IMContact;
+import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.utils.MyException;
@@ -36,7 +38,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	
 	private static final int IDD_DELTHREAD = 1001;
 	private static final int IDD_DELALL = 1002;
-
+	private static final int IDD_PROGRAM_UPDATED = 1003;
+	
 	private Button mBtNewSms;
 	private final android.os.Handler mHandler = new android.os.Handler();
 	
@@ -85,6 +88,15 @@ public class SmsMainActivity extends CMBaseListActivity  {
         registerForContextMenu(getListView());
     }
     
+    private void showUpdatedMessage() throws MyException {
+    	IMSetting set = getHelper().getLocator().createSetting();
+    	getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.EProgramUpdated);
+    	
+    	if (set.getIntVal()==0) return;
+    	getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.EProgramUpdated, String.valueOf(0));
+    	
+    	showDialog(IDD_PROGRAM_UPDATED);
+    }
 
     public void onMainBind() throws MyException {
         mAdapter = new MainAdapter(getHelper().getMain(), this);
@@ -92,6 +104,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
        	
        	Log.d("!!!", "Main: setting adapter...");
         setListAdapter(mAdapter);    	
+        
+        showUpdatedMessage();
     }
  
 
@@ -305,6 +319,31 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		
 		return dlg.create();
 	}
+	
+	AlertDialog ShowProgramUpdatedDialog() throws MyException {
+		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+		
+		dlg.setTitle( getResources().getString(R.string.what_new)+" "+getResources().getString(R.string.versionVal)+":" );
+		
+		String msg = "";
+		
+		String strs[] = getResources().getStringArray(R.array.text_what_new);
+		
+		for (int i=0; i<strs.length; i++) {
+			msg += strs[i];
+			msg += "\n";
+		}
+		dlg.setMessage(msg);
+		
+		dlg.setPositiveButton(getResources().getString(android.R.string.ok), new OnClickListener() {
+			
+			public void onClick(DialogInterface arg0, int arg1) {
+				//do nothing
+			}
+		});
+		
+		return dlg.create();
+	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -319,6 +358,9 @@ public class SmsMainActivity extends CMBaseListActivity  {
 				break;
 			case IDD_DELALL:
 				dlg = ShowDelAllDialog();
+				break;
+			case IDD_PROGRAM_UPDATED:
+				dlg = ShowProgramUpdatedDialog();
 				break;
 			}
 		} catch (MyException e) {

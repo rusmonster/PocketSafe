@@ -1,12 +1,6 @@
 package com.softmo.smssafe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.TTypEvent;
@@ -21,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class OptionsActivity extends CMBaseListActivity {
