@@ -15,6 +15,8 @@ com.softmo.smssafe.EnterPassActivity: void onClick8(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClick9(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClickDel(android.view.View)
 com.softmo.smssafe.OptionsActivity
+com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS[] values()
+com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS valueOf(java.lang.String)
 com.softmo.smssafe.SetPassActivity
 com.softmo.smssafe.SetPassActivity: void onOkClick(android.view.View)
 com.softmo.smssafe.SetPassActivity: void onCancelClick(android.view.View)
@@ -33,6 +35,8 @@ com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent[] values()
 com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent valueOf(java.lang.String)
 com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState[] values()
 com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState valueOf(java.lang.String)
+com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification[] values()
+com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification valueOf(java.lang.String)
 com.softmo.smssafe.safeservice.CMSafeService
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState[] values()
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState valueOf(java.lang.String)

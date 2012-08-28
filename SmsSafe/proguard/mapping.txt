@@ -38,11 +38,14 @@ com.softmo.smssafe.CMHelperBaseActivity -> com.softmo.smssafe.a:
     com.softmo.smssafe.CMHelperBaseActivity$KillReceiver mKillReceiver -> g
     boolean mKillReceived -> h
     android.content.ServiceConnection serviceConncetion -> i
-    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent -> j
+    android.os.Handler mHandler -> j
+    java.lang.Runnable mRunVisible -> k
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent -> l
     com.softmo.smssafe.utils.IMLocator getLocator() -> a
     com.softmo.smssafe.main.IMMain getMain() -> b
     boolean checkPassSet() -> l
     boolean checkPassActual() -> m
+    boolean internalMainBind() -> n
     void onMainBind() -> c
     void onCreate$79e5e33f() -> d
     void onDestroy() -> e
@@ -59,18 +62,21 @@ com.softmo.smssafe.CMHelperBaseActivity -> com.softmo.smssafe.a:
     void access$0(com.softmo.smssafe.CMHelperBaseActivity,com.softmo.smssafe.main.IMMain) -> a
     android.app.Activity access$1(com.softmo.smssafe.CMHelperBaseActivity) -> a
     void access$2$62d1cf62(com.softmo.smssafe.CMHelperBaseActivity) -> b
-    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> n
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> o
 com.softmo.smssafe.CMHelperBaseActivity$1 -> com.softmo.smssafe.b:
     com.softmo.smssafe.CMHelperBaseActivity this$0 -> a
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
 com.softmo.smssafe.CMHelperBaseActivity$2 -> com.softmo.smssafe.c:
     com.softmo.smssafe.CMHelperBaseActivity this$0 -> a
+    void run() -> run
+com.softmo.smssafe.CMHelperBaseActivity$3 -> com.softmo.smssafe.d:
+    com.softmo.smssafe.CMHelperBaseActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.CMHelperBaseActivity$KillReceiver -> com.softmo.smssafe.d:
+com.softmo.smssafe.CMHelperBaseActivity$KillReceiver -> com.softmo.smssafe.e:
     com.softmo.smssafe.CMHelperBaseActivity this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.softmo.smssafe.CSmsCounter -> com.softmo.smssafe.e:
+com.softmo.smssafe.CSmsCounter -> com.softmo.smssafe.f:
     java.lang.String mText -> a
     int mLen -> b
     int mLenOne -> c
@@ -102,23 +108,23 @@ com.softmo.smssafe.EnterPassActivity -> com.softmo.smssafe.EnterPassActivity:
     void onRestoreInstanceState(android.os.Bundle) -> onRestoreInstanceState
     void access$0(com.softmo.smssafe.EnterPassActivity,java.lang.String) -> a
     void access$1(com.softmo.smssafe.EnterPassActivity) -> a
-com.softmo.smssafe.EnterPassActivity$1 -> com.softmo.smssafe.f:
+com.softmo.smssafe.EnterPassActivity$1 -> com.softmo.smssafe.g:
     com.softmo.smssafe.EnterPassActivity this$0 -> a
     boolean onLongClick(android.view.View) -> onLongClick
-com.softmo.smssafe.ErrorDisplayer -> com.softmo.smssafe.g:
+com.softmo.smssafe.ErrorDisplayer -> com.softmo.smssafe.h:
     int[] $SWITCH_TABLE$com$softmo$smssafe$utils$MyException$TTypMyException -> a
     java.lang.String getErrStr(android.content.Context,int) -> a
     void displayError(android.content.Context,int) -> b
     void displayError(android.content.Context,com.softmo.smssafe.utils.MyException) -> a
     int[] $SWITCH_TABLE$com$softmo$smssafe$utils$MyException$TTypMyException() -> a
-com.softmo.smssafe.IMBaseActivity -> com.softmo.smssafe.h:
+com.softmo.smssafe.IMBaseActivity -> com.softmo.smssafe.i:
     com.softmo.smssafe.utils.IMLocator getLocator() -> a
     com.softmo.smssafe.main.IMMain getMain() -> b
     void lockNow() -> j
     void importSms() -> k
-com.softmo.smssafe.IMHelperBaseActivityObserver -> com.softmo.smssafe.i:
+com.softmo.smssafe.IMHelperBaseActivityObserver -> com.softmo.smssafe.j:
     void onMainBind() -> a
-com.softmo.smssafe.MainAdapter -> com.softmo.smssafe.j:
+com.softmo.smssafe.MainAdapter -> com.softmo.smssafe.k:
     android.app.Activity mActivity -> a
     com.softmo.smssafe.main.IMMain mMain -> b
     com.softmo.smssafe.dbengine.IMDbReader mDbReader -> c
@@ -141,12 +147,12 @@ com.softmo.smssafe.MainAdapter -> com.softmo.smssafe.j:
     void access$4(com.softmo.smssafe.MainAdapter,int) -> a
     java.util.Map access$5(com.softmo.smssafe.MainAdapter) -> d
     void access$6$3611a98a(com.softmo.smssafe.MainAdapter$MainAdapterView,com.softmo.smssafe.dbengine.IMSmsGroup,java.lang.String) -> a
-com.softmo.smssafe.MainAdapter$MainAdapterView -> com.softmo.smssafe.k:
+com.softmo.smssafe.MainAdapter$MainAdapterView -> com.softmo.smssafe.l:
     android.widget.LinearLayout mItem -> a
     android.widget.TextView mText -> b
     android.widget.TextView mLoading -> c
     int mPos -> d
-com.softmo.smssafe.MainAdapter$MainLoader -> com.softmo.smssafe.l:
+com.softmo.smssafe.MainAdapter$MainLoader -> com.softmo.smssafe.m:
     int mPosition -> b
     com.softmo.smssafe.MainAdapter$MainAdapterView mMav -> c
     com.softmo.smssafe.dbengine.IMSmsGroup mGroup -> d
@@ -159,10 +165,12 @@ com.softmo.smssafe.MainAdapter$MainLoader -> com.softmo.smssafe.l:
 com.softmo.smssafe.OptionsActivity -> com.softmo.smssafe.OptionsActivity:
     java.lang.String[] mTimout_labels -> a
     java.lang.String[] mTimout_vals -> b
-    java.lang.String mEnteredPass -> c
-    java.lang.String mNewPass -> d
-    android.app.Dialog mDlg -> e
-    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent -> f
+    java.lang.String[] mNotification_labels -> c
+    java.lang.String mEnteredPass -> d
+    java.lang.String mNewPass -> e
+    android.app.Dialog mDlg -> f
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent -> g
+    int[] $SWITCH_TABLE$com$softmo$smssafe$OptionsAdapter$ITEMS -> h
     void onCreate(android.os.Bundle) -> onCreate
     void onStart() -> onStart
     void createListAdapter() -> c
@@ -174,16 +182,36 @@ com.softmo.smssafe.OptionsActivity -> com.softmo.smssafe.OptionsActivity:
     void onPause() -> onPause
     void onPrepareDialog(int,android.app.Dialog) -> onPrepareDialog
     int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> d
-    java.lang.String[] access$1(com.softmo.smssafe.OptionsActivity) -> a
-com.softmo.smssafe.OptionsActivity$1 -> com.softmo.smssafe.m:
+    int[] $SWITCH_TABLE$com$softmo$smssafe$OptionsAdapter$ITEMS() -> e
+com.softmo.smssafe.OptionsActivity$1 -> com.softmo.smssafe.n:
     com.softmo.smssafe.OptionsActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.OptionsActivity$2 -> com.softmo.smssafe.n:
+com.softmo.smssafe.OptionsActivity$2 -> com.softmo.smssafe.o:
     com.softmo.smssafe.OptionsActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.OptionsActivity$3 -> com.softmo.smssafe.o:
+com.softmo.smssafe.OptionsActivity$3 -> com.softmo.smssafe.p:
     com.softmo.smssafe.OptionsActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
+com.softmo.smssafe.OptionsActivity$4 -> com.softmo.smssafe.q:
+    com.softmo.smssafe.OptionsActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.softmo.smssafe.OptionsAdapter -> com.softmo.smssafe.r:
+    com.softmo.smssafe.OptionsActivity mActivity -> a
+    int[] $SWITCH_TABLE$com$softmo$smssafe$OptionsAdapter$ITEMS -> b
+    int getCount() -> getCount
+    long getItemId(int) -> getItemId
+    java.lang.Object getItem(int) -> getItem
+    android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
+    int[] $SWITCH_TABLE$com$softmo$smssafe$OptionsAdapter$ITEMS() -> a
+com.softmo.smssafe.OptionsAdapter$ITEMS -> com.softmo.smssafe.s:
+    com.softmo.smssafe.OptionsAdapter$ITEMS EChangePass -> a
+    com.softmo.smssafe.OptionsAdapter$ITEMS EPassTimeout -> b
+    com.softmo.smssafe.OptionsAdapter$ITEMS ENotification -> c
+    com.softmo.smssafe.OptionsAdapter$ITEMS EImport -> d
+    com.softmo.smssafe.OptionsAdapter$ITEMS ELockNow -> e
+    com.softmo.smssafe.OptionsAdapter$ITEMS[] ENUM$VALUES -> f
+    com.softmo.smssafe.OptionsAdapter$ITEMS[] values() -> values
+    com.softmo.smssafe.OptionsAdapter$ITEMS valueOf(java.lang.String) -> valueOf
 com.softmo.smssafe.SetPassActivity -> com.softmo.smssafe.SetPassActivity:
     android.widget.EditText mPass1 -> a
     android.widget.EditText mPass2 -> b
@@ -193,13 +221,13 @@ com.softmo.smssafe.SetPassActivity -> com.softmo.smssafe.SetPassActivity:
     void onCancelClick(android.view.View) -> onCancelClick
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     void onRestoreInstanceState(android.os.Bundle) -> onRestoreInstanceState
-com.softmo.smssafe.SetPassActivity$TMode -> com.softmo.smssafe.p:
+com.softmo.smssafe.SetPassActivity$TMode -> com.softmo.smssafe.t:
     com.softmo.smssafe.SetPassActivity$TMode ESetPass -> a
     com.softmo.smssafe.SetPassActivity$TMode EChangePass -> b
     com.softmo.smssafe.SetPassActivity$TMode[] ENUM$VALUES -> c
     com.softmo.smssafe.SetPassActivity$TMode[] values() -> values
     com.softmo.smssafe.SetPassActivity$TMode valueOf(java.lang.String) -> valueOf
-com.softmo.smssafe.SmsAdapter -> com.softmo.smssafe.q:
+com.softmo.smssafe.SmsAdapter -> com.softmo.smssafe.u:
     com.softmo.smssafe.main.IMMain mMain -> a
     com.softmo.smssafe.dbengine.IMDbReader mDbReader -> b
     android.app.Activity mActivity -> c
@@ -231,14 +259,14 @@ com.softmo.smssafe.SmsAdapter -> com.softmo.smssafe.q:
     void access$4(com.softmo.smssafe.SmsAdapter,int) -> a
     java.util.Map access$5(com.softmo.smssafe.SmsAdapter) -> d
     void access$6(com.softmo.smssafe.SmsAdapter,com.softmo.smssafe.SmsAdapter$SmsAdapterView,com.softmo.smssafe.dbengine.IMSms,java.lang.String) -> a
-com.softmo.smssafe.SmsAdapter$SmsAdapterView -> com.softmo.smssafe.r:
+com.softmo.smssafe.SmsAdapter$SmsAdapterView -> com.softmo.smssafe.v:
     android.widget.LinearLayout mItem -> a
     android.widget.TextView mCap -> b
     android.widget.ImageView mImgStatus -> c
     android.widget.TextView mText -> d
     android.widget.TextView mSmsLoading -> e
     int mPos -> f
-com.softmo.smssafe.SmsAdapter$SmsLoader -> com.softmo.smssafe.s:
+com.softmo.smssafe.SmsAdapter$SmsLoader -> com.softmo.smssafe.w:
     int mPosition -> b
     com.softmo.smssafe.SmsAdapter$SmsAdapterView mSav -> c
     com.softmo.smssafe.dbengine.IMSms mSms -> d
@@ -269,30 +297,34 @@ com.softmo.smssafe.SmsMainActivity -> com.softmo.smssafe.SmsMainActivity:
     boolean onContextItemSelected(android.view.MenuItem) -> onContextItemSelected
     java.lang.String getNameByIndex(int) -> b
     java.lang.String getHashByIndex(int) -> c
+    android.app.AlertDialog ShowProgramUpdatedDialog() -> d
     android.app.Dialog onCreateDialog(int) -> onCreateDialog
     void onPrepareDialog(int,android.app.Dialog) -> onPrepareDialog
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     void onRestoreInstanceState(android.os.Bundle) -> onRestoreInstanceState
     com.softmo.smssafe.MainAdapter access$0(com.softmo.smssafe.SmsMainActivity) -> a
-    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> d
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> e
     int access$2(com.softmo.smssafe.SmsMainActivity) -> b
     java.lang.String access$3(com.softmo.smssafe.SmsMainActivity,int) -> a
-com.softmo.smssafe.SmsMainActivity$1 -> com.softmo.smssafe.t:
+com.softmo.smssafe.SmsMainActivity$1 -> com.softmo.smssafe.x:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void run() -> run
-com.softmo.smssafe.SmsMainActivity$2 -> com.softmo.smssafe.u:
+com.softmo.smssafe.SmsMainActivity$2 -> com.softmo.smssafe.y:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-com.softmo.smssafe.SmsMainActivity$3 -> com.softmo.smssafe.v:
+com.softmo.smssafe.SmsMainActivity$3 -> com.softmo.smssafe.z:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsMainActivity$4 -> com.softmo.smssafe.w:
+com.softmo.smssafe.SmsMainActivity$4 -> com.softmo.smssafe.aa:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsMainActivity$5 -> com.softmo.smssafe.x:
+com.softmo.smssafe.SmsMainActivity$5 -> com.softmo.smssafe.ab:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsMainActivity$6 -> com.softmo.smssafe.y:
+com.softmo.smssafe.SmsMainActivity$6 -> com.softmo.smssafe.ac:
+    com.softmo.smssafe.SmsMainActivity this$0 -> a
+    void onClick(android.content.DialogInterface,int) -> onClick
+com.softmo.smssafe.SmsMainActivity$7 -> com.softmo.smssafe.ad:
     com.softmo.smssafe.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.softmo.smssafe.SmsNewActivity -> com.softmo.smssafe.SmsNewActivity:
@@ -326,18 +358,18 @@ com.softmo.smssafe.SmsNewActivity -> com.softmo.smssafe.SmsNewActivity:
     void access$4(com.softmo.smssafe.SmsNewActivity) -> d
     void access$5(com.softmo.smssafe.SmsNewActivity) -> e
     int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> d
-com.softmo.smssafe.SmsNewActivity$1 -> com.softmo.smssafe.z:
+com.softmo.smssafe.SmsNewActivity$1 -> com.softmo.smssafe.ae:
     com.softmo.smssafe.SmsNewActivity this$0 -> a
     void onFocusChange(android.view.View,boolean) -> onFocusChange
-com.softmo.smssafe.SmsNewActivity$2 -> com.softmo.smssafe.aa:
+com.softmo.smssafe.SmsNewActivity$2 -> com.softmo.smssafe.af:
     com.softmo.smssafe.SmsNewActivity this$0 -> a
     void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
     void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
     void afterTextChanged(android.text.Editable) -> afterTextChanged
-com.softmo.smssafe.SmsNewActivity$3 -> com.softmo.smssafe.ab:
+com.softmo.smssafe.SmsNewActivity$3 -> com.softmo.smssafe.ag:
     com.softmo.smssafe.SmsNewActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-com.softmo.smssafe.SmsNewActivity$4 -> com.softmo.smssafe.ac:
+com.softmo.smssafe.SmsNewActivity$4 -> com.softmo.smssafe.ah:
     com.softmo.smssafe.SmsNewActivity this$0 -> a
     void onClick(android.view.View) -> onClick
 com.softmo.smssafe.SmsViewerActivity -> com.softmo.smssafe.SmsViewerActivity:
@@ -381,27 +413,27 @@ com.softmo.smssafe.SmsViewerActivity -> com.softmo.smssafe.SmsViewerActivity:
     int access$6(com.softmo.smssafe.SmsViewerActivity) -> f
     java.lang.String access$7(com.softmo.smssafe.SmsViewerActivity) -> g
     void access$8(com.softmo.smssafe.SmsViewerActivity) -> h
-com.softmo.smssafe.SmsViewerActivity$1 -> com.softmo.smssafe.ad:
+com.softmo.smssafe.SmsViewerActivity$1 -> com.softmo.smssafe.ai:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void run() -> run
-com.softmo.smssafe.SmsViewerActivity$2 -> com.softmo.smssafe.ae:
+com.softmo.smssafe.SmsViewerActivity$2 -> com.softmo.smssafe.aj:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
     void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
     void afterTextChanged(android.text.Editable) -> afterTextChanged
-com.softmo.smssafe.SmsViewerActivity$3 -> com.softmo.smssafe.af:
+com.softmo.smssafe.SmsViewerActivity$3 -> com.softmo.smssafe.ak:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-com.softmo.smssafe.SmsViewerActivity$4 -> com.softmo.smssafe.ag:
+com.softmo.smssafe.SmsViewerActivity$4 -> com.softmo.smssafe.al:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsViewerActivity$5 -> com.softmo.smssafe.ah:
+com.softmo.smssafe.SmsViewerActivity$5 -> com.softmo.smssafe.am:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsViewerActivity$6 -> com.softmo.smssafe.ai:
+com.softmo.smssafe.SmsViewerActivity$6 -> com.softmo.smssafe.an:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.SmsViewerActivity$7 -> com.softmo.smssafe.aj:
+com.softmo.smssafe.SmsViewerActivity$7 -> com.softmo.smssafe.ao:
     com.softmo.smssafe.SmsViewerActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
 com.softmo.smssafe.bootreceiver.CMBootReceiver -> com.softmo.smssafe.bootreceiver.CMBootReceiver:
@@ -551,9 +583,11 @@ com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting -> com.softmo.smssafe.d
     com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting EPassTimout -> c
     com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting ERsaPub -> d
     com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting ERsaPriv -> e
-    int mValue -> f
-    java.util.Map _map -> g
-    com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] ENUM$VALUES -> h
+    com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting ENotification -> f
+    com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting EProgramUpdated -> g
+    int mValue -> h
+    java.util.Map _map -> i
+    com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] ENUM$VALUES -> j
     int getValue() -> a
     com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting from(int) -> a
     com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] values() -> values
@@ -677,7 +711,7 @@ com.softmo.smssafe.main.CMMain -> com.softmo.smssafe.a.f:
     com.softmo.smssafe.main.IMDbWriterInternal mDbWriter -> d
     com.softmo.smssafe.main.IMDispatcherSender mDispatcher -> e
     com.softmo.smssafe.smssender.IMSmsSender mSmsSender -> f
-    com.softmo.smssafe.main.notificator.IMSmsNotificator mSmsNotificator -> g
+    com.softmo.smssafe.main.notificator.IMNotificatorSound mSmsNotificator -> g
     android.os.Handler mHandler -> h
     com.softmo.smssafe.sec.IMRsa mRsa -> i
     com.softmo.smssafe.sec.IMSha256 mSha -> j
@@ -719,7 +753,7 @@ com.softmo.smssafe.main.CMMain -> com.softmo.smssafe.a.f:
     void importerFinish() -> m
     void importerError(int) -> g
     void importSmsCancel() -> n
-    com.softmo.smssafe.main.notificator.IMSmsNotificator access$0(com.softmo.smssafe.main.CMMain) -> a
+    com.softmo.smssafe.main.notificator.IMNotificatorSound access$0(com.softmo.smssafe.main.CMMain) -> a
     int access$1(com.softmo.smssafe.main.CMMain) -> b
     int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent() -> q
     int[] $SWITCH_TABLE$com$softmo$smssafe$dbengine$IMDbQuerySetting$TTypSetting() -> r
@@ -882,20 +916,42 @@ com.softmo.smssafe.main.importer.IMImporterObserver -> com.softmo.smssafe.a.a.d:
     void importerProgress(int) -> f
     void importerFinish() -> m
     void importerError(int) -> g
-com.softmo.smssafe.main.notificator.CMSmsNotificator -> com.softmo.smssafe.a.b.a:
+com.softmo.smssafe.main.notificator.CMNotificatorSound -> com.softmo.smssafe.a.b.a:
+    com.softmo.smssafe.main.notificator.TTypNotification mTyp -> a
+    int mCntNewSms -> b
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$notificator$TTypNotification -> c
+    void setType(com.softmo.smssafe.main.notificator.TTypNotification) -> a
+    void Popup(int) -> a
+    void Update(int) -> b
+    int[] $SWITCH_TABLE$com$softmo$smssafe$main$notificator$TTypNotification() -> b
+com.softmo.smssafe.main.notificator.CMSmsNotificator -> com.softmo.smssafe.a.b.b:
     android.content.Context mContext -> a
     android.app.NotificationManager mNotifyMgr -> b
     android.app.Notification mNotification -> c
     android.content.Intent mNotificationIntent -> d
     android.app.PendingIntent mNotificationPendingIntent -> e
     java.lang.CharSequence mTickerText -> f
+    android.content.Context getCotntext() -> a
     void Init(android.content.Context) -> a
     void Popup(int) -> a
     void Update(int) -> b
-com.softmo.smssafe.main.notificator.IMSmsNotificator -> com.softmo.smssafe.a.b.b:
+com.softmo.smssafe.main.notificator.IMNotificatorSound -> com.softmo.smssafe.a.b.c:
+    void setType(com.softmo.smssafe.main.notificator.TTypNotification) -> a
+com.softmo.smssafe.main.notificator.IMSmsNotificator -> com.softmo.smssafe.a.b.d:
     void Init(android.content.Context) -> a
     void Popup(int) -> a
     void Update(int) -> b
+com.softmo.smssafe.main.notificator.TTypNotification -> com.softmo.smssafe.a.b.e:
+    com.softmo.smssafe.main.notificator.TTypNotification ESoundAndIcon -> a
+    com.softmo.smssafe.main.notificator.TTypNotification EIconOnly -> b
+    com.softmo.smssafe.main.notificator.TTypNotification ESoundOnly -> c
+    com.softmo.smssafe.main.notificator.TTypNotification ENone -> d
+    int mValue -> e
+    java.util.Map _map -> f
+    com.softmo.smssafe.main.notificator.TTypNotification[] ENUM$VALUES -> g
+    com.softmo.smssafe.main.notificator.TTypNotification from(int) -> a
+    com.softmo.smssafe.main.notificator.TTypNotification[] values() -> values
+    com.softmo.smssafe.main.notificator.TTypNotification valueOf(java.lang.String) -> valueOf
 com.softmo.smssafe.safeservice.CMSafeService -> com.softmo.smssafe.safeservice.CMSafeService:
     android.os.IBinder binder -> a
     com.softmo.smssafe.utils.IMLocator mLocator -> b
@@ -1036,7 +1092,7 @@ com.softmo.smssafe.utils.CMLocator -> com.softmo.smssafe.utils.a:
     com.softmo.smssafe.smssender.IMSmsSender createSmsSender() -> m
     com.softmo.smssafe.main.IMEvent createEvent() -> n
     com.softmo.smssafe.main.IMEventErr createEventErr() -> o
-    com.softmo.smssafe.main.notificator.IMSmsNotificator createSmsNotificator() -> p
+    com.softmo.smssafe.main.notificator.IMNotificatorSound createSmsNotificator() -> p
     com.softmo.smssafe.sec.IMBase64 createBase64() -> q
     com.softmo.smssafe.sec.IMRsa createRsa() -> r
     com.softmo.smssafe.sec.IMAes createAes() -> s
@@ -1078,7 +1134,7 @@ com.softmo.smssafe.utils.IMLocator -> com.softmo.smssafe.utils.c:
     com.softmo.smssafe.main.IMEventErr createEventErr() -> o
     com.softmo.smssafe.main.IMDbWriterInternal createDbWriter() -> l
     com.softmo.smssafe.smssender.IMSmsSender createSmsSender() -> m
-    com.softmo.smssafe.main.notificator.IMSmsNotificator createSmsNotificator() -> p
+    com.softmo.smssafe.main.notificator.IMNotificatorSound createSmsNotificator() -> p
     com.softmo.smssafe.sec.IMBase64 createBase64() -> q
     com.softmo.smssafe.sec.IMRsa createRsa() -> r
     com.softmo.smssafe.sec.IMAes createAes() -> s

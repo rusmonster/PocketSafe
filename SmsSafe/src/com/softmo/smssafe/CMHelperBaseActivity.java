@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -152,6 +153,19 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		return false;			
 	}
 	
+	private Handler mHandler = new Handler();
+	private Runnable mRunVisible = new Runnable() {
+		
+		public void run() {
+			try {
+				mOwner.setVisible(true);
+			} catch(Exception e) {
+				Log.e("!!!", "Error in mRunVisible: "+e.getMessage());
+				e.printStackTrace();
+			}
+			
+		}
+	};
 	private boolean internalMainBind() throws MyException {
 		if (mKillReceived) {
 			mKillReceived = false;
@@ -165,7 +179,15 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 			return false;
 		
 		getMain().guiResume();
-		mOwner.setVisible(true);
+		
+		/*********************try fix NullPointerException bug********************************/
+		try {
+			mOwner.setVisible(true);
+		} catch (Exception e) {
+			Log.e("!!!", "Error in mOwner.setVisible(true): "+e.getMessage());
+			mHandler.postDelayed(mRunVisible, 1000);
+		}
+		/*************************************************************************************/
 		
 		if (getMain().getState()==TMainState.EImport) {
 			mOwner.showDialog(IDD_IMPORT);
