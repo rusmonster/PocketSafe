@@ -36,8 +36,8 @@ import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.main.IMPassHolder;
 import com.softmo.smssafe.main.importer.CMImporter;
 import com.softmo.smssafe.main.importer.IMImporter;
-import com.softmo.smssafe.main.notificator.CMSmsNotificator;
-import com.softmo.smssafe.main.notificator.IMSmsNotificator;
+import com.softmo.smssafe.main.notificator.CMNotificatorSound;
+import com.softmo.smssafe.main.notificator.IMNotificatorSound;
 import com.softmo.smssafe.sec.CMAes;
 import com.softmo.smssafe.sec.CMBase64;
 import com.softmo.smssafe.sec.CMRsa;
@@ -111,8 +111,8 @@ public class CMLocator implements IMLocator {
 		return new CMEventErr();
 	}
 
-	public IMSmsNotificator createSmsNotificator() {
-		return new CMSmsNotificator();
+	public IMNotificatorSound createSmsNotificator() {
+		return new CMNotificatorSound();
 	}
 
 	public IMBase64 createBase64() {

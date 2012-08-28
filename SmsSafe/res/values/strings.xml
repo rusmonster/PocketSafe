@@ -40,6 +40,13 @@
     <string name="rsa_generate">Generating keys...</string>
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
+
+    <string name="opt_notificator_title">On new sms:</string>
+    <string name="opt_notif_sound_and_icon">Icon and sound</string>
+    <string name="opt_notif_icon_only">Icon only</string>
+    <string name="opt_notif_sound_only">Sound only</string>
+    <string name="opt_notif_nothing">Nothing</string>
+        
     <string name="opt_locknow">Lock now</string>
     <string name="opt_import">Import sms</string> 
     <string name="locknow">Lock now</string>
@@ -59,7 +66,7 @@
 	<string name="program">Program:</string>
 	<string name="site">WEB:</string>
 	<string name="version">Version:</string>
-	<string name="versionVal">1.11</string>
+	<string name="versionVal">1.2</string>
 	<string name="author">Author:</string>
 	<string name="authorVal">Dmitry Kalita</string>
 	<string name="mail">Mail:</string>
@@ -68,6 +75,13 @@
 	<string name="confimport">Import all SMS from android?</string>
 	<string name="dlg_import">Importing...</string>
 	<string name="importfinish">Import complete. Now you can delete sms from android</string>
+
+	<string name="what_new">What new in version</string>
+	<string name="what_new_1">Add notification selection:\n</string>
+	<string name="what_new_2">    - Icon and sound</string>
+	<string name="what_new_3">    - Icon only</string>
+	<string name="what_new_4">    - Sound only</string>
+	<string name="what_new_5">    - Nothing</string>
 
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>

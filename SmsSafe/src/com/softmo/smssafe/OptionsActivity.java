@@ -1,12 +1,6 @@
 package com.softmo.smssafe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.TTypEvent;
@@ -21,22 +15,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class OptionsActivity extends CMBaseListActivity {
 
 	private static final int IDD_PASSTIMOUT = 1001;
 	private static final int IDD_IMPORTCONF = 1002;
+	private static final int IDD_SELECTNOTIFICATION = 1003;
 	
 	private static final int SET_PASS_RESULT = 1010;
 	private static final int ENTER_PASS_RESULT = 1011;	
 
-	private final static String TITLE_KEY = "title";
-    private final static String DESCRIPTION_KEY = "description";	
-	
-    private String[] mTimout_labels;
-    private String[] mTimout_vals;
+    public String[] mTimout_labels;
+    public String[] mTimout_vals;
+    public String[] mNotification_labels;
     
     private String mEnteredPass;
     private String mNewPass;
@@ -53,53 +45,13 @@ public class OptionsActivity extends CMBaseListActivity {
 	protected void onStart() {
 		mTimout_labels = getResources().getStringArray(R.array.text_passtimout);
 		mTimout_vals = getResources().getStringArray(R.array.text_passtimout_vals);
+		mNotification_labels = getResources().getStringArray(R.array.text_opt_notif);
 		
 		super.onStart();
 	}
 
-	private void createListAdapter() throws MyException {
-      
-        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-
-        IMSetting set = getHelper().getLocator().createSetting();
-        getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.EPassTimout);
-        String val = set.getStrVal();
-        
-        for (int i=0; i<mTimout_vals.length; i++)
-        	if (mTimout_vals[i].equals(val)) {
-        		val = mTimout_labels[i];
-        		break;
-        	}
-
-        
-        
-		String str = getResources().getString(R.string.opt_changepass);
-		
-        HashMap<String, String> item = new HashMap<String, String>();
-        item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_KEY, "");
-        data.add(item);
-        
-        str = getResources().getString(R.string.opt_passtimeout);
-        item = new HashMap<String, String>();
-        item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_KEY, val);
-        data.add(item);
-        
-        str = getResources().getString(R.string.opt_import);
-        item = new HashMap<String, String>();
-        item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_KEY, "");
-        data.add(item);       
-        
-        str = getResources().getString(R.string.opt_locknow);
-        item = new HashMap<String, String>();
-        item.put(TITLE_KEY, str);
-        item.put(DESCRIPTION_KEY, "");
-        data.add(item);            
-
-        setListAdapter(new SimpleAdapter(this, data, R.layout.listbaseitem, 
-        		new String[] { TITLE_KEY, DESCRIPTION_KEY }, new int[] { R.id.text1, R.id.text2 }));    
+	private void createListAdapter() {
+        setListAdapter(new OptionsAdapter(this));    
 	}
 		
 	public void onMainBind() throws MyException {
@@ -132,17 +84,20 @@ public class OptionsActivity extends CMBaseListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		
-		switch (position) {
-		case 0:
+		switch (OptionsAdapter.ITEMS.values()[position]) {
+		case EChangePass:
 			changePass();
 			break;
-		case 1:
+		case EPassTimeout:
 			passTimout();
 			break;
-		case 2:
+		case ENotification:
+			selectNotification();
+			break;
+		case EImport:
 			showDialog(IDD_IMPORTCONF);
 			break;
-		case 3:
+		case ELockNow:
 			getHelper().lockNow();
 			break;
 		}
@@ -155,6 +110,10 @@ public class OptionsActivity extends CMBaseListActivity {
 	
 	private void passTimout() {
 		showDialog(IDD_PASSTIMOUT);
+	}
+
+	private void selectNotification() {
+		showDialog(IDD_SELECTNOTIFICATION);
 	}
 	
 	@Override
@@ -187,6 +146,27 @@ public class OptionsActivity extends CMBaseListActivity {
 			dlg =  builder.create();
 			}
 			break;
+		case IDD_SELECTNOTIFICATION:
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.opt_notificator_title);
+			
+			
+			builder.setItems(mNotification_labels, new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					try {
+						getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.ENotification, String.valueOf(which));
+					} catch (MyException e) {
+						e.printStackTrace();
+						ErrorDisplayer.displayError(OptionsActivity.this, e);
+					}
+				}
+			});
+			
+			dlg =  builder.create();
+		}
+		break;
 		case IDD_IMPORTCONF:
 			{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
