@@ -40,6 +40,13 @@
     <string name="rsa_generate">Generating keys...</string>
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
+
+    <string name="opt_notificator_title">On new sms:</string>
+    <string name="opt_notif_sound_and_icon">Icon and sound</string>
+    <string name="opt_notif_icon_only">Icon only</string>
+    <string name="opt_notif_sound_only">Sound only</string>
+    <string name="opt_notif_nothing">Nothing</string>
+        
     <string name="opt_locknow">Lock now</string>
     <string name="opt_import">Import sms</string> 
     <string name="locknow">Lock now</string>

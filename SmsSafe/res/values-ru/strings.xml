@@ -40,6 +40,13 @@
     <string name="rsa_generate">Генерация ключей...</string>
     <string name="opt_changepass">Сменить пароль</string>
     <string name="opt_passtimeout">Помнить пароль</string>
+    
+    <string name="opt_notificator_title">Способ уведомления:</string>
+    <string name="opt_notif_sound_and_icon">Иконка и звук</string>
+    <string name="opt_notif_icon_only">Только иконка</string>
+    <string name="opt_notif_sound_only">Только звук</string>
+    <string name="opt_notif_nothing">Ничего</string>
+        
     <string name="opt_locknow">Заблокировать сейчас</string>
     <string name="opt_import">Импортировать смс</string>
     <string name="locknow">Заблокировать</string>
