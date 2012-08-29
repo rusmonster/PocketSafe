@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
@@ -298,6 +299,12 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			case R.id.mnuSmsViewerNewSms:
 		        startActivityForResult(new Intent(this, SmsNewActivity.class), NEW_SMS_RESULT);
 				break;
+			case R.id.mnuSmsViewerCall:
+				phoneCall();
+				break;
+			case R.id.mnuSmsViewerCopyPhone:
+				copyPhone();
+				break;
 			case R.id.mnuSmsViewerDelThread:
 				showDialog(IDD_DELTHREAD);
 				break;
@@ -311,6 +318,28 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void phoneCall() {
+		try {
+			Log.d("!!!", "phoneCall: "+mPhone);
+	        Intent callIntent = new Intent(Intent.ACTION_CALL);
+	        callIntent.setData(Uri.parse("tel:"+mPhone));
+	        startActivity(callIntent);
+	    } catch (Exception e) {
+	         Log.e("!!!","call failed", e);
+	    }
+	}
+	
+	private void copyPhone() {
+		try{
+	        Log.d("!!!","copy phone: "+mPhone);
+			ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+			clipboard.setText(mPhone);
+			Toast.makeText(this, R.string.phone_copied, Toast.LENGTH_SHORT).show();
+	
+	    } catch (Exception e) {
+	         Log.e("!!!","copy failed", e);
+	    }
+	}
 	private void GotoMain() {
 		Intent i = new Intent(this, SmsMainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -351,10 +380,10 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 				ForwardMessage(id);
 				break;
 			case IDM_COPYMESSAGE:
-				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 				IMSms sms = getHelper().getLocator().createSms(); 
 				getHelper().getMain().DbReader().QuerySms().getById(sms, id);
 				String txt = getHelper().getMain().decryptString(sms.getText());
+				ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 				clipboard.setText(txt);
 				Toast.makeText(this, R.string.copied, Toast.LENGTH_SHORT).show();
 				break;

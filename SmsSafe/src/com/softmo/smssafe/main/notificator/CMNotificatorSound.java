@@ -7,7 +7,7 @@ import android.net.Uri;
 public class CMNotificatorSound extends CMSmsNotificator implements
 		IMNotificatorSound {
 
-	private TTypNotification mTyp = TTypNotification.ESoundAndIcon;
+	private TTypNotification mTyp = TTypNotification.ENone;
 	private int mCntNewSms=0;
 	
 	

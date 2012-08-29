@@ -31,6 +31,7 @@
     <string name="enter_text">Text:</string>
 
     <string name="copied">Text copyed to clipboard</string>
+    <string name="phone_copied">Phone copyed to clipboard</string>
 
     <string name="enter_pass">Enter password:</string>
     <string name="enter_new_pass">Enter new password:</string>
@@ -66,7 +67,7 @@
 	<string name="program">Program:</string>
 	<string name="site">WEB:</string>
 	<string name="version">Version:</string>
-	<string name="versionVal">1.2</string>
+	<string name="versionVal">1.3</string>
 	<string name="author">Author:</string>
 	<string name="authorVal">Dmitry Kalita</string>
 	<string name="mail">Mail:</string>
@@ -76,13 +77,23 @@
 	<string name="dlg_import">Importing...</string>
 	<string name="importfinish">Import complete. Now you can delete sms from android</string>
 
-	<string name="what_new">What new in version</string>
-	<string name="what_new_1">Add notification selection:\n</string>
-	<string name="what_new_2">    - Icon and sound</string>
+	<string name="what_new">What new</string>
+	<string name="what_new_10">v.1.3</string>
+	<string name="what_new_9">Add phone call feature</string>
+	<string name="what_new_8"></string>
+	<string name="what_new_7">v.1.2</string>
+	<string name="what_new_6">Add notification selection:</string>
+	<string name="what_new_5"></string>
+	<string name="what_new_4">    - Icon and sound</string>
 	<string name="what_new_3">    - Icon only</string>
-	<string name="what_new_4">    - Sound only</string>
-	<string name="what_new_5">    - Nothing</string>
+	<string name="what_new_2">    - Sound only</string>
+	<string name="what_new_1">    - Nothing</string>
 
+	<string name="call2phone">Call</string>
+	<string name="sms_copy_phone">Copy phone</string>
+
+	<string name="feedback">Post comment</string>
+	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
 	<string name="EInvalidDbId">Invalid database ID</string>

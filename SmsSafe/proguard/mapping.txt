@@ -2,6 +2,7 @@ com.softmo.smssafe.AboutActivity -> com.softmo.smssafe.AboutActivity:
     void onCreate(android.os.Bundle) -> onCreate
     void onMainBind() -> a
     void listenerEvent(com.softmo.smssafe.main.IMEvent) -> a
+    void feedbackClick(android.view.View) -> feedbackClick
 com.softmo.smssafe.CMBaseActivity -> com.softmo.smssafe.CMBaseActivity:
     com.softmo.smssafe.CMHelperBaseActivity mHelper -> a
     void onCreate(android.os.Bundle) -> onCreate
@@ -284,7 +285,6 @@ com.softmo.smssafe.SmsMainActivity -> com.softmo.smssafe.SmsMainActivity:
     java.lang.Runnable mRunReload -> e
     int mThreadForDelId -> f
     int[] $SWITCH_TABLE$com$softmo$smssafe$main$TTypEvent -> g
-    void GotoGroup(int) -> a
     void onListItemClick(android.widget.ListView,android.view.View,int,long) -> onListItemClick
     void GotoNewSms() -> c
     void onCreate(android.os.Bundle) -> onCreate
@@ -295,8 +295,8 @@ com.softmo.smssafe.SmsMainActivity -> com.softmo.smssafe.SmsMainActivity:
     boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void onCreateContextMenu(android.view.ContextMenu,android.view.View,android.view.ContextMenu$ContextMenuInfo) -> onCreateContextMenu
     boolean onContextItemSelected(android.view.MenuItem) -> onContextItemSelected
-    java.lang.String getNameByIndex(int) -> b
-    java.lang.String getHashByIndex(int) -> c
+    java.lang.String getNameByIndex(int) -> a
+    java.lang.String getHashByIndex(int) -> b
     android.app.AlertDialog ShowProgramUpdatedDialog() -> d
     android.app.Dialog onCreateDialog(int) -> onCreateDialog
     void onPrepareDialog(int,android.app.Dialog) -> onPrepareDialog

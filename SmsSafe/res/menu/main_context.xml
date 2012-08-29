@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnuMainView" android:title="@string/sms_view_thread"></item>
+    <item android:id="@+id/mnuMainCall" android:title="@string/call2phone"></item>
+    <item android:id="@+id/mnuMainCopyPhone" android:title="@string/sms_copy_phone"></item>
     <item android:id="@+id/mnuMainDelThread" android:title="@string/sms_del_thread"></item>
 </menu>
