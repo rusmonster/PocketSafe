@@ -1,7 +1,12 @@
 com.softmo.smssafe.AboutActivity
+com.softmo.smssafe.AboutActivity: AboutActivity()
+com.softmo.smssafe.AboutActivity: void feedbackClick(android.view.View)
 com.softmo.smssafe.CMBaseActivity
+com.softmo.smssafe.CMBaseActivity: CMBaseActivity()
 com.softmo.smssafe.CMBaseListActivity
+com.softmo.smssafe.CMBaseListActivity: CMBaseListActivity()
 com.softmo.smssafe.EnterPassActivity
+com.softmo.smssafe.EnterPassActivity: EnterPassActivity()
 com.softmo.smssafe.EnterPassActivity: void onOkClick(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClick0(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClick1(android.view.View)
@@ -15,17 +20,23 @@ com.softmo.smssafe.EnterPassActivity: void onClick8(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClick9(android.view.View)
 com.softmo.smssafe.EnterPassActivity: void onClickDel(android.view.View)
 com.softmo.smssafe.OptionsActivity
+com.softmo.smssafe.OptionsActivity: OptionsActivity()
 com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS[] values()
 com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS valueOf(java.lang.String)
 com.softmo.smssafe.SetPassActivity
+com.softmo.smssafe.SetPassActivity: SetPassActivity()
 com.softmo.smssafe.SetPassActivity: void onOkClick(android.view.View)
 com.softmo.smssafe.SetPassActivity: void onCancelClick(android.view.View)
 com.softmo.smssafe.SetPassActivity$TMode: com.softmo.smssafe.SetPassActivity$TMode[] values()
 com.softmo.smssafe.SetPassActivity$TMode: com.softmo.smssafe.SetPassActivity$TMode valueOf(java.lang.String)
 com.softmo.smssafe.SmsMainActivity
+com.softmo.smssafe.SmsMainActivity: SmsMainActivity()
 com.softmo.smssafe.SmsNewActivity
+com.softmo.smssafe.SmsNewActivity: SmsNewActivity()
 com.softmo.smssafe.SmsViewerActivity
+com.softmo.smssafe.SmsViewerActivity: SmsViewerActivity()
 com.softmo.smssafe.bootreceiver.CMBootReceiver
+com.softmo.smssafe.bootreceiver.CMBootReceiver: CMBootReceiver()
 com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] values()
 com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting valueOf(java.lang.String)
 com.softmo.smssafe.dbengine.MyAppContext
@@ -38,9 +49,11 @@ com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.m
 com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification[] values()
 com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification valueOf(java.lang.String)
 com.softmo.smssafe.safeservice.CMSafeService
+com.softmo.smssafe.safeservice.CMSafeService: CMSafeService()
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState[] values()
 com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState valueOf(java.lang.String)
 com.softmo.smssafe.smsreceiver.CMSmsMonitor
+com.softmo.smssafe.smsreceiver.CMSmsMonitor: CMSmsMonitor()
 com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState: com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState[] values()
 com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState: com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState valueOf(java.lang.String)
 com.softmo.smssafe.utils.CMTimer$TTimerState: com.softmo.smssafe.utils.CMTimer$TTimerState[] values()
