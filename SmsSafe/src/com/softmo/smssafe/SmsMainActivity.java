@@ -16,10 +16,13 @@ import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -219,16 +222,17 @@ public class SmsMainActivity extends CMBaseListActivity  {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			int idx = info.position;
 			switch(item.getItemId()) {
-			case R.id.mnuMainView:
-				GotoGroup(idx);
+			case R.id.mnuMainCall:
+				phoneCall(idx);
+				break;
+			case R.id.mnuMainCopyPhone:
+				copyPhone(idx);
 				break;
 			case R.id.mnuMainDelThread:
 				mThreadForDelId = idx;
 				showDialog(IDD_DELTHREAD);
 				break;
 			}
-		}catch (MyException e) {
-			ErrorDisplayer.displayError(this, e);
 		}catch(Exception e) {
 			ErrorDisplayer.displayError(this, TTypMyException.EErrUnknown.getValue());
 		}
@@ -292,6 +296,44 @@ public class SmsMainActivity extends CMBaseListActivity  {
 		return dlg.create();
 	}
 	
+	private void phoneCall(int idx) {
+	    try {
+			int id = (int) mAdapter.getItemId(idx);
+			
+			IMSmsGroup group = getHelper().getLocator().createSmsGroup();
+			getHelper().getMain().DbReader().QuerySms().getGroupById(group,id);
+			
+			String phone = group.getPhone();
+			phone = getHelper().getMain().decryptString(phone);
+			Log.d("!!!", "phoneCall: "+phone);
+			
+	        Intent callIntent = new Intent(Intent.ACTION_CALL);
+	        callIntent.setData(Uri.parse("tel:"+phone));
+	        startActivity(callIntent);
+	    } catch (Exception e) {
+	         Log.e("!!!","call failed", e);
+	    }
+	}
+	
+	private void copyPhone(int idx) {
+	    try {
+			int id = (int) mAdapter.getItemId(idx);
+			
+			IMSmsGroup group = getHelper().getLocator().createSmsGroup();
+			getHelper().getMain().DbReader().QuerySms().getGroupById(group,id);
+			
+			String phone = group.getPhone();
+			phone = getHelper().getMain().decryptString(phone);
+			Log.d("!!!", "copyPhone: "+phone);
+			
+			ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+			clipboard.setText(phone);
+			Toast.makeText(this, R.string.phone_copied, Toast.LENGTH_SHORT).show();
+
+	    } catch (Exception e) {
+	         Log.e("!!!","copy failed", e);
+	    }
+	}	
 	AlertDialog ShowDelAllDialog() throws MyException {
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 		

@@ -8,6 +8,14 @@
         android:title="@string/sms_newsms"
         android:icon="@android:drawable/ic_menu_edit">
     </item>
+    <item android:id="@+id/mnuSmsViewerCall" 
+        android:title="@string/call2phone"
+        android:icon="@android:drawable/ic_menu_call">
+    </item>
+    <item android:id="@+id/mnuSmsViewerCopyPhone" 
+        android:title="@string/sms_copy_phone"
+        android:icon="@drawable/copy2">
+    </item>
     <item android:id="@+id/mnuSmsViewerDelThread" 
         android:title="@string/sms_del_thread" 
         android:icon="@android:drawable/ic_menu_delete">

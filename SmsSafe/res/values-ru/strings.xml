@@ -31,6 +31,7 @@
     <string name="enter_text">Текст:</string>
 
     <string name="copied">Текст скопирован в буфер</string>
+    <string name="phone_copied">Телефон скопирован в буфер</string>
 
     <string name="enter_pass">Введите пароль:</string>
     <string name="enter_new_pass">Задайте новый пароль:</string>
@@ -82,6 +83,9 @@
 	<string name="what_new_3">    - Только иконка</string>
 	<string name="what_new_4">    - Только звук</string>
 	<string name="what_new_5">    - Ничего</string>
+	
+	<string name="call2phone">Позвонить</string>
+	<string name="sms_copy_phone">Копировать телефон</string>
 	
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>

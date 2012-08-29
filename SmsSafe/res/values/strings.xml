@@ -31,6 +31,7 @@
     <string name="enter_text">Text:</string>
 
     <string name="copied">Text copyed to clipboard</string>
+    <string name="phone_copied">Phone copyed to clipboard</string>
 
     <string name="enter_pass">Enter password:</string>
     <string name="enter_new_pass">Enter new password:</string>
@@ -82,6 +83,9 @@
 	<string name="what_new_3">    - Icon only</string>
 	<string name="what_new_4">    - Sound only</string>
 	<string name="what_new_5">    - Nothing</string>
+
+	<string name="call2phone">Call</string>
+	<string name="sms_copy_phone">Copy phone</string>
 
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
