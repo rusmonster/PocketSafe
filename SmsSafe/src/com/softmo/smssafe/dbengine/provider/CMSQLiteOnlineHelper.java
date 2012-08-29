@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 3;
+	public static final int DB_VERSION = 4;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
@@ -172,6 +172,16 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 	        db.update(TABLE_SETTING, values, _ID+"="+TTypSetting.EProgramUpdated.getValue(), null);
 	        
 	        oldVersion = 3;
+		}
+
+		if (oldVersion<4) {
+			
+			ContentValues values = new ContentValues();
+			
+			values.put(SETTING_VAL, "1");
+			db.update(TABLE_SETTING, values, _ID+"="+TTypSetting.EProgramUpdated.getValue(), null);
+			
+			oldVersion = 4;
 		}
 
 	}

@@ -1,3 +1,6 @@
+android.annotation.SuppressLint
+android.annotation.TargetApi
+com.softmo.smssafe.BuildConfig
 com.softmo.smssafe.CMHelperBaseActivity:
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT

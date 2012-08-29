@@ -67,7 +67,7 @@
 	<string name="program">Приложение:</string>
 	<string name="site">Сайт:</string>
 	<string name="version">Версия:</string>
-	<string name="versionVal">1.2</string>
+	<string name="versionVal">1.3</string>
 	<string name="author">Автор:</string>
 	<string name="authorVal">Дмитрий Калита</string>
 	<string name="mail">Mail:</string>
@@ -77,15 +77,22 @@
 	<string name="dlg_import">Импорт...</string>
 	<string name="importfinish">Импорт завершен. Вы можете удалить смс из андроид.</string>
 
-	<string name="what_new">Что нового в версии</string>
-	<string name="what_new_1">Добавлен выбор способа уведомления:\n</string>
-	<string name="what_new_2">    - Иконка и звук</string>
+	<string name="what_new">Что нового</string>
+	<string name="what_new_10">v.1.3</string>
+	<string name="what_new_9">Добавлена функция звонка</string>
+	<string name="what_new_8"></string>
+	<string name="what_new_7">v.1.2</string>
+	<string name="what_new_6">Добавлен выбор способа уведомления:</string>
+	<string name="what_new_5"></string>
+	<string name="what_new_4">    - Иконка и звук</string>
 	<string name="what_new_3">    - Только иконка</string>
-	<string name="what_new_4">    - Только звук</string>
-	<string name="what_new_5">    - Ничего</string>
+	<string name="what_new_2">    - Только звук</string>
+	<string name="what_new_1">    - Ничего</string>
 	
 	<string name="call2phone">Позвонить</string>
 	<string name="sms_copy_phone">Копировать телефон</string>
+
+	<string name="feedback">Оставить отзыв</string>
 	
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
