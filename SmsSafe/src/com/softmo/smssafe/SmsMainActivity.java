@@ -365,7 +365,7 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	AlertDialog ShowProgramUpdatedDialog() throws MyException {
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 		
-		dlg.setTitle( getResources().getString(R.string.what_new)+" "+getResources().getString(R.string.versionVal)+":" );
+		dlg.setTitle( getResources().getString(R.string.what_new) );
 		
 		String msg = "";
 		
