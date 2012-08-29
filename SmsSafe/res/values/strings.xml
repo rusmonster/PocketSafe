@@ -92,6 +92,8 @@
 	<string name="call2phone">Call</string>
 	<string name="sms_copy_phone">Copy phone</string>
 
+	<string name="feedback">Post comment</string>
+	
 	<string name="ErrUnknown">Unknown error</string>
 	<string name="ENoError">No Error</string>
 	<string name="EInvalidDbId">Invalid database ID</string>

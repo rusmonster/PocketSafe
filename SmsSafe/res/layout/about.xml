@@ -146,6 +146,7 @@
 
 	</LinearLayout>	           
 
+		   
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
@@ -153,6 +154,15 @@
         android:src="@drawable/avatar" 
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
 
+	<Button
+        android:layout_margin="2dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback"
+        android:onClick="feedbackClick" 
+        />
+		
 </LinearLayout>

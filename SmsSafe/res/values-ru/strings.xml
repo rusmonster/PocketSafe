@@ -79,7 +79,7 @@
 
 	<string name="what_new">Что нового</string>
 	<string name="what_new_10">v.1.3</string>
-	<string name="what_new_9">Добавлена возможность звонка</string>
+	<string name="what_new_9">Добавлена функция звонка</string>
 	<string name="what_new_8"></string>
 	<string name="what_new_7">v.1.2</string>
 	<string name="what_new_6">Добавлен выбор способа уведомления:</string>
@@ -91,6 +91,8 @@
 	
 	<string name="call2phone">Позвонить</string>
 	<string name="sms_copy_phone">Копировать телефон</string>
+
+	<string name="feedback">Оставить отзыв</string>
 	
 	<string name="ErrUnknown">Неизвестная ошибка</string>
 	<string name="ENoError">Нет ошибки</string>
