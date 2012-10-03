@@ -1,86 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/smswrapper"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    >
+    >    
     
-    <LinearLayout
-        android:id="@+id/smswrapper"
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dip"
-        android:background="@drawable/bubble_yellow"
+	<RelativeLayout 
+    	android:id="@+id/smsbubble"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+       	android:layout_gravity="center"
+       	android:layout_margin="5dip"
+   	    android:background="@drawable/bubble_yellow"
         android:paddingLeft="10dip"
-         >
-            
-		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="wrap_content"
-		    android:layout_height="fill_parent"
-		    >
-		
-		   	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-			    		android:id="@+id/smsItem"
+	    >
+	
+	   	<LinearLayout  
+		    		android:id="@+id/smsItem"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical"
+			        android:layout_alignParentTop="true" 
+			        android:visibility="invisible"
+			        >
+			         		
+			<LinearLayout  
 				        android:layout_width="wrap_content"
-				        android:layout_height="fill_parent"
-				        android:orientation="vertical"
-				        android:layout_alignParentTop="true" 
-				        android:visibility="invisible"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal"
 				        >
-				         		
-				<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-					        android:orientation="horizontal"
-					        >
-					        
-					<ImageView
-				        android:id="@+id/msg_icon"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_margin="2dip"
-				        android:src="@drawable/msg_list" 
-				        />
-					
-					<TextView
-						    android:id="@+id/smsCap"
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:layout_weight="1"
-						    android:textStyle="bold"
-						    android:layout_marginLeft="8dip"
-						    android:text="cap"
-						    />
-					
-					<ImageView
-				        android:id="@+id/msg_status"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_margin="2dip"
-				        android:src="@drawable/msg_err" 
-				        />
-					
-				</LinearLayout>	 
-			    
+				        
+				<ImageView
+			        android:id="@+id/msg_icon"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_margin="2dip"
+			        android:src="@drawable/msg_list" 
+			        />
+				
 				<TextView
-					    android:id="@+id/smsText"
+					    android:id="@+id/smsCap"
 					    android:layout_width="wrap_content"
 					    android:layout_height="wrap_content"
-					    android:textColor="@color/black"
-					    android:text="text" 
+					    android:layout_weight="1"
+					    android:textStyle="bold"
+					    android:layout_marginLeft="8dip"
+					    android:text="cap"
 					    />
-			</LinearLayout>
-			
+				
+				<ImageView
+			        android:id="@+id/msg_status"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_margin="2dip"
+			        android:src="@drawable/msg_err" 
+			        />
+				
+			</LinearLayout>	 
+		    
 			<TextView
-			    android:id="@+id/Loading"
-			    android:layout_width="wrap_content"
-			    android:layout_height="fill_parent"
-			    android:gravity="center"
-			    android:layout_alignTop="@+id/smsItem"
-			    android:layout_alignBottom="@+id/smsItem"
-			    android:text="@string/Loading" 
-			    />	
-		</RelativeLayout>
-	</LinearLayout>
+				    android:id="@+id/smsText"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:textColor="@color/black"
+				    android:text="text" 
+				    />
+		</LinearLayout>
+		
+		<TextView
+		    android:id="@+id/Loading"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:layout_alignTop="@+id/smsItem"
+		    android:layout_alignBottom="@+id/smsItem"
+		    android:text="@string/Loading" 
+		    />	
+	</RelativeLayout>
 </LinearLayout>

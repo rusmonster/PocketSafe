@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softmo.smssafe.dbengine.IMSms;
@@ -32,6 +33,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 		public TextView  mText;
 		public TextView	 mSmsLoading;
 		public LinearLayout mWrapper;
+		public RelativeLayout mBubble;
 		
 	}	
 	public SmsAdapterBubble(Activity activity, IMMain main, String nam,	String hash) {
@@ -57,13 +59,13 @@ public class SmsAdapterBubble extends SmsAdapter {
 		if (sms.getDirection() == TTypDirection.EIncoming) { 
 	    	cap = new String(mName);
 	    	sav.mCap.setTextColor(mColorRed);
-	    	sav.mWrapper.setBackgroundResource(R.drawable.bubble_yellow);
+	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_yellow);
 			sav.mWrapper.setGravity(Gravity.LEFT);	    	
 	    }
 	    else {
 	    	cap = new String(mMe);
 	    	sav.mCap.setTextColor(mColorBlue);
-	    	sav.mWrapper.setBackgroundResource(R.drawable.bubble_green);
+	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_green);
 			sav.mWrapper.setGravity(Gravity.RIGHT);	    	
 	    }
 	    
@@ -108,6 +110,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 			sav.mText		= (TextView)v.findViewById(R.id.smsText);
 			sav.mItem		= (LinearLayout)v.findViewById(R.id.smsItem);
 			sav.mWrapper	= (LinearLayout)v.findViewById(R.id.smswrapper);
+			sav.mBubble		= (RelativeLayout)v.findViewById(R.id.smsbubble);
 			
 			v.setTag(sav);
 		} else {
