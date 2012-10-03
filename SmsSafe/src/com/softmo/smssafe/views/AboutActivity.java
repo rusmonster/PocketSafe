@@ -1,6 +1,7 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.layout;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.utils.MyException;
 

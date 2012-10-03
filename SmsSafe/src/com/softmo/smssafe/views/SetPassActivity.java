@@ -1,8 +1,10 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import java.util.HashSet;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.id;
+import com.softmo.smssafe.R.layout;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 

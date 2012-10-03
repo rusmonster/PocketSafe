@@ -13,7 +13,8 @@ public interface IMDbQuerySetting extends IMDbDataSet {
 		ERsaPub(3),
 		ERsaPriv(4),
 		ENotification(5), 
-		EProgramUpdated(6);
+		EProgramUpdated(6),
+		ESmsListTyp(7);
 		
 	    private final int mValue;
 		 

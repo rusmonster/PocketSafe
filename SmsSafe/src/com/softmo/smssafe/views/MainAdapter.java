@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.id;
+import com.softmo.smssafe.R.layout;
+import com.softmo.smssafe.R.string;
 import com.softmo.smssafe.dbengine.IMContact;
 import com.softmo.smssafe.dbengine.IMDbReader;
 import com.softmo.smssafe.dbengine.IMSms;
@@ -150,12 +153,13 @@ public class MainAdapter extends BaseAdapter {
 			
 			if (result == null) return;
 			
+			mMap.put(mGroup.getId(), result);
+			
 			if (mMav.mPos != mPosition) {
 				Log.d("!!!", "onPostExecute: position changed");
 				return;
 			}
 			
-			mMap.put(mGroup.getId(), result);
 			FillView(mMav, mGroup, result);
 
 		}

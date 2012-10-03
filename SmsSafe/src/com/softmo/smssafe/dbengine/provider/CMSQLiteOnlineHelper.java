@@ -13,7 +13,7 @@ import android.provider.BaseColumns;
 public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumns {
 	
 	public static final String DB_NAME = "soft-mo.db";
-	public static final int DB_VERSION = 4;
+	public static final int DB_VERSION = 5;
 	
 	public static final String TABLE_SETTING = "M__SETTING";
 	public static final String SETTING_VAL = "VAL";
@@ -104,6 +104,10 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
         values.put(SETTING_VAL, "0");
         db.insert(TABLE_SETTING, SETTING_VAL, values);
         
+        values.clear();
+		values.put(_ID, +TTypSetting.ESmsListTyp.getValue());
+        values.put(SETTING_VAL, "1");
+        db.insert(TABLE_SETTING, SETTING_VAL, values);
 		
 		db.execSQL("DROP TABLE IF EXISTS "+TABLE_SMS);
 		db.execSQL("CREATE TABLE "+TABLE_SMS+"("+
@@ -182,6 +186,21 @@ public class CMSQLiteOnlineHelper extends SQLiteOpenHelper implements BaseColumn
 			db.update(TABLE_SETTING, values, _ID+"="+TTypSetting.EProgramUpdated.getValue(), null);
 			
 			oldVersion = 4;
+		}
+
+		if (oldVersion<5) {
+			
+			ContentValues values = new ContentValues();
+
+			values.put(_ID, +TTypSetting.ESmsListTyp.getValue());
+	        values.put(SETTING_VAL, "1");
+	        db.insert(TABLE_SETTING, SETTING_VAL, values);
+			
+	        values.clear();
+			values.put(SETTING_VAL, "1");
+			db.update(TABLE_SETTING, values, _ID+"="+TTypSetting.EProgramUpdated.getValue(), null);
+			
+			oldVersion = 5;
 		}
 
 	}

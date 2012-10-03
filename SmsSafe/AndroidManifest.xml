@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.softmo.smssafe"
-    android:versionCode="5"
-    android:versionName="1.3" >
+    android:versionCode="6"
+    android:versionName="@string/versionVal" >
 
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,7 +22,7 @@
         >
        <activity
             android:label="@string/app_name"
-            android:name=".SmsMainActivity" >
+            android:name=".views.SmsMainActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,7 +39,7 @@
 			</intent-filter>
 		</receiver>
 		
-		<activity android:name=".SmsNewActivity">
+		<activity android:name=".views.SmsNewActivity">
 		    <intent-filter>
 				<action android:name="android.intent.action.SENDTO" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -54,11 +54,11 @@
 		</activity>
 		
 		<service android:name=".safeservice.CMSafeService" />
-		<activity android:name=".SmsViewerActivity"></activity>
-		<activity android:name=".AboutActivity"></activity>
-		<activity android:name=".OptionsActivity"></activity>
-		<activity android:name=".SetPassActivity"	android:label="@string/set_pass" ></activity>
-		<activity android:name=".EnterPassActivity"></activity>
+		<activity android:name=".views.SmsViewerActivity"></activity>
+		<activity android:name=".views.AboutActivity"></activity>
+		<activity android:name=".views.OptionsActivity"></activity>
+		<activity android:name=".views.SetPassActivity"	android:label="@string/set_pass" ></activity>
+		<activity android:name=".views.EnterPassActivity"></activity>
     </application>
 
 </manifest>

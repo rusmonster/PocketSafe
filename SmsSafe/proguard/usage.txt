@@ -1,33 +1,6 @@
 android.annotation.SuppressLint
 android.annotation.TargetApi
 com.softmo.smssafe.BuildConfig
-com.softmo.smssafe.CMHelperBaseActivity:
-    private static final int SET_PASS_RESULT
-    private static final int ENTER_PASS_RESULT
-    private static final int IDD_GENERATE
-    private static final int IDD_IMPORT
-    public static final java.lang.String KILL_ACTION
-com.softmo.smssafe.CSmsCounter:
-    public static final int LEN_SMALL
-    public static final int LEN_LONG
-    47:47:public int getLen()
-    48:48:public int getLenOne()
-    49:49:public int getCount()
-    50:50:public int getOst()
-    51:51:public int getNextLimit()
-com.softmo.smssafe.EnterPassActivity:
-    public static final java.lang.String PASS
-com.softmo.smssafe.ErrorDisplayer:
-    11:11:public ErrorDisplayer()
-com.softmo.smssafe.MainAdapter:
-    private static final int LAYOUT
-    private static final int MAX_LOADERS
-com.softmo.smssafe.OptionsActivity:
-    private static final int IDD_PASSTIMOUT
-    private static final int IDD_IMPORTCONF
-    private static final int IDD_SELECTNOTIFICATION
-    private static final int SET_PASS_RESULT
-    private static final int ENTER_PASS_RESULT
 com.softmo.smssafe.R
 com.softmo.smssafe.R$array
 com.softmo.smssafe.R$attr
@@ -37,33 +10,6 @@ com.softmo.smssafe.R$id
 com.softmo.smssafe.R$layout
 com.softmo.smssafe.R$menu
 com.softmo.smssafe.R$string
-com.softmo.smssafe.SetPassActivity:
-    public static final java.lang.String MODE
-    public static final java.lang.String PASS
-com.softmo.smssafe.SmsAdapter:
-    private static final int LAYOUT
-    private static final int MAX_LOADERS
-com.softmo.smssafe.SmsMainActivity:
-    protected static final int NEW_SMS_RESULT
-    private static final int IDD_DELTHREAD
-    private static final int IDD_DELALL
-    private static final int IDD_PROGRAM_UPDATED
-com.softmo.smssafe.SmsNewActivity:
-    private static final int IDD_SMS_SENDING
-    protected static final int CONTACT_PICKER_RESULT
-    public static final java.lang.String TEXT
-com.softmo.smssafe.SmsViewerActivity:
-    public static final java.lang.String HASH
-    public static final java.lang.String SMS_ID
-    private static final int IDD_SMS_SENDING
-    private static final int IDM_FORWARD
-    private static final int IDM_DELMESSAGE
-    private static final int IDM_COPYMESSAGE
-    private static final int IDM_RESEND
-    private static final int NEW_SMS_RESULT
-    private static final int IDD_DELTHREAD
-    private static final int IDD_DELMESSAGE
-com.softmo.smssafe.TStruct
 com.softmo.smssafe.bootreceiver.CMBootReceiver:
     private static final java.lang.String ACTION
 com.softmo.smssafe.dbengine.CMDbTableContact:
@@ -149,3 +95,63 @@ com.softmo.smssafe.utils.CMTimer2$2
 com.softmo.smssafe.utils.CMTimer2$TTimer2State
 com.softmo.smssafe.utils.IMLocator:
     public abstract com.softmo.smssafe.utils.IMTimer createTimer()
+com.softmo.smssafe.views.CMHelperBaseActivity:
+    private static final int SET_PASS_RESULT
+    private static final int ENTER_PASS_RESULT
+    private static final int IDD_GENERATE
+    private static final int IDD_IMPORT
+    public static final java.lang.String KILL_ACTION
+com.softmo.smssafe.views.CSmsCounter:
+    public static final int LEN_SMALL
+    public static final int LEN_LONG
+    47:47:public int getLen()
+    48:48:public int getLenOne()
+    49:49:public int getCount()
+    50:50:public int getOst()
+    51:51:public int getNextLimit()
+com.softmo.smssafe.views.EnterPassActivity:
+    public static final java.lang.String PASS
+com.softmo.smssafe.views.ErrorDisplayer:
+    12:12:public ErrorDisplayer()
+com.softmo.smssafe.views.MainAdapter:
+    private static final int LAYOUT
+    private static final int MAX_LOADERS
+com.softmo.smssafe.views.OptionsActivity:
+    private static final int IDD_PASSTIMOUT
+    private static final int IDD_IMPORTCONF
+    private static final int IDD_SELECTNOTIFICATION
+    private static final int IDD_SELECTSMSLIST
+    private static final int SET_PASS_RESULT
+    private static final int ENTER_PASS_RESULT
+com.softmo.smssafe.views.SetPassActivity:
+    public static final java.lang.String MODE
+    public static final java.lang.String PASS
+com.softmo.smssafe.views.SmsMainActivity:
+    protected static final int NEW_SMS_RESULT
+    private static final int IDD_DELTHREAD
+    private static final int IDD_DELALL
+    private static final int IDD_PROGRAM_UPDATED
+com.softmo.smssafe.views.SmsNewActivity:
+    private static final int IDD_SMS_SENDING
+    protected static final int CONTACT_PICKER_RESULT
+    public static final java.lang.String TEXT
+com.softmo.smssafe.views.SmsViewerActivity:
+    public static final java.lang.String HASH
+    public static final java.lang.String SMS_ID
+    private static final int IDD_SMS_SENDING
+    private static final int IDM_FORWARD
+    private static final int IDM_DELMESSAGE
+    private static final int IDM_COPYMESSAGE
+    private static final int IDM_RESEND
+    private static final int NEW_SMS_RESULT
+    private static final int IDD_DELTHREAD
+    private static final int IDD_DELMESSAGE
+com.softmo.smssafe.views.TStruct
+com.softmo.smssafe.views.smsadapter.SmsAdapter:
+    private static final int MAX_LOADERS
+com.softmo.smssafe.views.smsadapter.SmsAdapterBubble:
+    private static final int LAYOUT
+com.softmo.smssafe.views.smsadapter.SmsAdapterSimple:
+    private static final int LAYOUT
+com.softmo.smssafe.views.smsadapter.TTypSmsList:
+    18:18:public int getValue()

@@ -42,7 +42,7 @@
     <string name="opt_changepass">Сменить пароль</string>
     <string name="opt_passtimeout">Помнить пароль</string>
     
-    <string name="opt_notificator_title">Способ уведомления:</string>
+    <string name="opt_notificator_title">Способ уведомления</string>
     <string name="opt_notif_sound_and_icon">Иконка и звук</string>
     <string name="opt_notif_icon_only">Только иконка</string>
     <string name="opt_notif_sound_only">Только звук</string>
@@ -51,6 +51,11 @@
     <string name="opt_locknow">Заблокировать сейчас</string>
     <string name="opt_import">Импортировать смс</string>
     <string name="locknow">Заблокировать</string>
+    
+    <string name="opt_sms_list">Вид списка смс</string>
+    <string name="opt_sms_list_flat">Плоский</string>
+    <string name="opt_sms_list_chat">Чат</string>
+    
     <string name="pass_changed">Пароль успешно изменен</string>
     <string name="pair_generated">Новые смс будут отображаться тут</string>
 
@@ -67,7 +72,6 @@
 	<string name="program">Приложение:</string>
 	<string name="site">Сайт:</string>
 	<string name="version">Версия:</string>
-	<string name="versionVal">1.3</string>
 	<string name="author">Автор:</string>
 	<string name="authorVal">Дмитрий Калита</string>
 	<string name="mail">Mail:</string>
@@ -78,6 +82,12 @@
 	<string name="importfinish">Импорт завершен. Вы можете удалить смс из андроид.</string>
 
 	<string name="what_new">Что нового</string>
+	<string name="what_new_16">v.1.4</string>
+	<string name="what_new_15">Добавлен выбор способа отображения списка смс:</string>
+	<string name="what_new_14"></string>
+	<string name="what_new_13">    - Плоский вид</string>
+	<string name="what_new_12">    - В виде чата</string>
+	<string name="what_new_11"></string>
 	<string name="what_new_10">v.1.3</string>
 	<string name="what_new_9">Добавлена функция звонка</string>
 	<string name="what_new_8"></string>

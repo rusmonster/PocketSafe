@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import android.app.Activity;
 import android.app.Dialog;
