@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.util.Log;
 
 public class CMTimerWakeup extends BroadcastReceiver implements IMTimerWakeup {
@@ -42,7 +43,7 @@ public class CMTimerWakeup extends BroadcastReceiver implements IMTimerWakeup {
 		AlarmManager am=(AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(ACTION);
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, i, 0);
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ms, pi);
+        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+ms, pi);
         
 		mState = TTimerWakeupState.EBusy;
 		Log.d("!!!", "CMTimerWakeup setted: "+ms+"; mObserver: "+mObserver);

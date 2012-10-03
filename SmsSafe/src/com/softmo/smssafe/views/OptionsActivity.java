@@ -1,6 +1,9 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.array;
+import com.softmo.smssafe.R.layout;
+import com.softmo.smssafe.R.string;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.TTypEvent;
@@ -22,6 +25,7 @@ public class OptionsActivity extends CMBaseListActivity {
 	private static final int IDD_PASSTIMOUT = 1001;
 	private static final int IDD_IMPORTCONF = 1002;
 	private static final int IDD_SELECTNOTIFICATION = 1003;
+	private static final int IDD_SELECTSMSLIST = 1004;
 	
 	private static final int SET_PASS_RESULT = 1010;
 	private static final int ENTER_PASS_RESULT = 1011;	
@@ -29,6 +33,7 @@ public class OptionsActivity extends CMBaseListActivity {
     public String[] mTimout_labels;
     public String[] mTimout_vals;
     public String[] mNotification_labels;
+    public String[] mSmsListTyp_labels;
     
     private String mEnteredPass;
     private String mNewPass;
@@ -46,6 +51,7 @@ public class OptionsActivity extends CMBaseListActivity {
 		mTimout_labels = getResources().getStringArray(R.array.text_passtimout);
 		mTimout_vals = getResources().getStringArray(R.array.text_passtimout_vals);
 		mNotification_labels = getResources().getStringArray(R.array.text_opt_notif);
+		mSmsListTyp_labels = getResources().getStringArray(R.array.text_opt_sms_list);
 		
 		super.onStart();
 	}
@@ -94,6 +100,9 @@ public class OptionsActivity extends CMBaseListActivity {
 		case ENotification:
 			selectNotification();
 			break;
+		case ESmsListType:
+			selectSmsListTyp();
+			break;
 		case EImport:
 			showDialog(IDD_IMPORTCONF);
 			break;
@@ -114,6 +123,10 @@ public class OptionsActivity extends CMBaseListActivity {
 
 	private void selectNotification() {
 		showDialog(IDD_SELECTNOTIFICATION);
+	}
+
+	private void selectSmsListTyp() {
+		showDialog(IDD_SELECTSMSLIST);
 	}
 	
 	@Override
@@ -157,6 +170,27 @@ public class OptionsActivity extends CMBaseListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					try {
 						getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.ENotification, String.valueOf(which));
+					} catch (MyException e) {
+						e.printStackTrace();
+						ErrorDisplayer.displayError(OptionsActivity.this, e);
+					}
+				}
+			});
+			
+			dlg =  builder.create();
+		}
+		break;
+		case IDD_SELECTSMSLIST:
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.opt_sms_list);
+			
+			
+			builder.setItems(mSmsListTyp_labels, new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					try {
+						getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.ESmsListTyp, String.valueOf(which));
 					} catch (MyException e) {
 						e.printStackTrace();
 						ErrorDisplayer.displayError(OptionsActivity.this, e);

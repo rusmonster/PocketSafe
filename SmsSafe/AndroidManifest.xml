@@ -22,7 +22,7 @@
         >
        <activity
             android:label="@string/app_name"
-            android:name=".SmsMainActivity" >
+            android:name=".views.SmsMainActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,7 +39,7 @@
 			</intent-filter>
 		</receiver>
 		
-		<activity android:name=".SmsNewActivity">
+		<activity android:name=".views.SmsNewActivity">
 		    <intent-filter>
 				<action android:name="android.intent.action.SENDTO" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -54,11 +54,11 @@
 		</activity>
 		
 		<service android:name=".safeservice.CMSafeService" />
-		<activity android:name=".SmsViewerActivity"></activity>
-		<activity android:name=".AboutActivity"></activity>
-		<activity android:name=".OptionsActivity"></activity>
-		<activity android:name=".SetPassActivity"	android:label="@string/set_pass" ></activity>
-		<activity android:name=".EnterPassActivity"></activity>
+		<activity android:name=".views.SmsViewerActivity"></activity>
+		<activity android:name=".views.AboutActivity"></activity>
+		<activity android:name=".views.OptionsActivity"></activity>
+		<activity android:name=".views.SetPassActivity"	android:label="@string/set_pass" ></activity>
+		<activity android:name=".views.EnterPassActivity"></activity>
     </application>
 
 </manifest>

@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.softmo.smssafe.R;
-import com.softmo.smssafe.SmsMainActivity;
 import com.softmo.smssafe.main.TTypEvent;
 import com.softmo.smssafe.main.TTypEventStrings;
+import com.softmo.smssafe.views.SmsMainActivity;
 
 public class CMSmsNotificator implements IMSmsNotificator {
 	
