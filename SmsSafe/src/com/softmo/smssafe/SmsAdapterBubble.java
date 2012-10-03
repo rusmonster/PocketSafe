@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +30,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 	private static class SmsAdapterBubbleView extends SmsAdapterView {
 		public LinearLayout mWrapper;
 		public RelativeLayout mBubble;
-		public LinearLayout	 mSmsLoading;
-		public TextView  mSmsLoadingText;
+		public TextView	 mSmsStub;
 		public LinearLayout mItem;
 		public TextView  mCap;
 		public ImageView mImgStatus;
@@ -84,7 +85,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 	    	sav.mImgStatus.setVisibility(View.INVISIBLE);
 	    
 	    sav.mItem.setVisibility(View.VISIBLE);
-	    sav.mSmsLoading.setVisibility(View.INVISIBLE);		
+	    sav.mSmsStub.setVisibility(View.INVISIBLE);		
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -98,10 +99,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 			v = inflater.inflate(LAYOUT, null, true);
 			
 			sav = new SmsAdapterBubbleView();
-			sav.mSmsLoading = (LinearLayout)v.findViewById(R.id.Loading);
-			sav.mSmsLoadingText = (TextView)v.findViewById(R.id.LoadingText);
-			
-			//sav.mImgMsg = (ImageView)v.findViewById(R.id.msg_icon);
+			sav.mSmsStub = (TextView)v.findViewById(R.id.SmsStub);
 			sav.mCap	= (TextView)v.findViewById(R.id.smsCap);
 			sav.mImgStatus 	= (ImageView)v.findViewById(R.id.msg_status);
 			sav.mText		= (TextView)v.findViewById(R.id.smsText);
@@ -125,12 +123,12 @@ public class SmsAdapterBubble extends SmsAdapter {
 		}
 		
 		if (dest.size()==0) {
-			sav.mSmsLoadingText.setText(err);
+			sav.mSmsStub.setText(err);
 			return null;
 		}
 		
 		IMSms sms = dest.get(0);
-		
+
 		if (sms.getDirection() == TTypDirection.EIncoming) { 
 	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_yellow);
 			sav.mWrapper.setGravity(Gravity.LEFT);	    	
@@ -146,7 +144,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 			Log.d("!!!", "SmsAdapter: text cached: "+position);
 			FillView(sav, sms, text);
 		} else {
-			sav.mSmsLoadingText.setText(R.string.Loading);
+			sav.mSmsStub.setText(R.string.Loading);
 			showStub(sav);
 			mLoadQuery.add( new SmsLoader(position, sav, sms) );
 			doLoadQuery();
@@ -158,7 +156,7 @@ public class SmsAdapterBubble extends SmsAdapter {
 	private void showStub(SmsAdapterBubbleView sav) {
 		sav.mCap.setText(""); 
 		sav.mText.setText("");
-		sav.mSmsLoading.setVisibility(View.VISIBLE);
+		sav.mSmsStub.setVisibility(View.VISIBLE);
 		sav.mItem.setVisibility(View.INVISIBLE);
 		
 	}
