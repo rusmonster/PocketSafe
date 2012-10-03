@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import com.softmo.smssafe.main.IMListener;
 

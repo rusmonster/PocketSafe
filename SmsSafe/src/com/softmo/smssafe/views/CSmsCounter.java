@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 public class CSmsCounter {
 	public static final int LEN_SMALL = 70;

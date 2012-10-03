@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.array;
+import com.softmo.smssafe.R.id;
+import com.softmo.smssafe.R.layout;
+import com.softmo.smssafe.R.menu;
+import com.softmo.smssafe.R.string;
 import com.softmo.smssafe.dbengine.IMContact;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.dbengine.IMSetting;

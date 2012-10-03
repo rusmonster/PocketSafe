@@ -26,7 +26,18 @@
 		<item>@string/opt_notif_nothing</item>
 	</string-array>
 
+	<string-array name="text_opt_sms_list">
+		<item>@string/opt_sms_list_flat</item>
+		<item>@string/opt_sms_list_chat</item>
+	</string-array>
+
 	<string-array name="text_what_new">
+		<item>@string/what_new_16</item>
+		<item>@string/what_new_15</item>
+		<item>@string/what_new_14</item>
+		<item>@string/what_new_13</item>
+		<item>@string/what_new_12</item>
+		<item>@string/what_new_11</item>
 		<item>@string/what_new_10</item>
 		<item>@string/what_new_9</item>
 		<item>@string/what_new_8</item>

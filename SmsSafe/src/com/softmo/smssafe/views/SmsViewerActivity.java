@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,11 +7,15 @@ import java.util.Map;
 
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.dbengine.IMContact;
+import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.IMEventErr;
 import com.softmo.smssafe.main.IMListener;
+import com.softmo.smssafe.views.smsadapter.SmsAdapter;
+import com.softmo.smssafe.views.smsadapter.TTypSmsList;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
@@ -447,10 +451,13 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			setTitle(mName);
 		}
 
-        mAdapter = new SmsAdapterBubble(this, getHelper().getMain(), mName, mHash);
+		IMSetting set = getHelper().getLocator().createSetting();
+		getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.ESmsListTyp);
+		
+		TTypSmsList typ = TTypSmsList.from(set.getIntVal());
+		mAdapter = SmsAdapter.Factory(typ, this, getHelper().getMain(), mName, mHash);
        	mAdapter.setMap(mSavedMap);
-        setListAdapter(mAdapter);	
-
+        setListAdapter(mAdapter);
         try {
 			if (mSmsId != -1) {
 				IMSms sms = getHelper().getLocator().createSms();

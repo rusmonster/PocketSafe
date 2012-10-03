@@ -1,12 +1,10 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views.smsadapter;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.Activity;
-import android.content.res.Resources;
+import android.app.ListActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.softmo.smssafe.R;
 import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.dbengine.TTypDirection;
 import com.softmo.smssafe.dbengine.TTypIsNew;
 import com.softmo.smssafe.dbengine.TTypStatus;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.views.ErrorDisplayer;
 
 public class SmsAdapterBubble extends SmsAdapter {
 
@@ -37,8 +37,9 @@ public class SmsAdapterBubble extends SmsAdapter {
 		public TextView  mText;
 		
 	}	
-	public SmsAdapterBubble(Activity activity, IMMain main, String nam,	String hash) {
+	public SmsAdapterBubble(ListActivity activity, IMMain main, String nam,	String hash) {
 		super(activity, main, nam, hash);
+		activity.getListView().setDivider(null);
 	}
 
 	@Override

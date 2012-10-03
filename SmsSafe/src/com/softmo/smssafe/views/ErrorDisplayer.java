@@ -1,10 +1,11 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.string;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 

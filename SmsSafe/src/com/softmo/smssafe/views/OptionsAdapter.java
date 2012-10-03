@@ -1,6 +1,9 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views;
 
 import com.softmo.smssafe.R;
+import com.softmo.smssafe.R.id;
+import com.softmo.smssafe.R.layout;
+import com.softmo.smssafe.R.string;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.utils.MyException;
@@ -17,6 +20,7 @@ public class OptionsAdapter extends BaseAdapter {
 		EChangePass,
 		EPassTimeout,
 		ENotification,
+		ESmsListType,
 		EImport,
 		ELockNow
 	}
@@ -71,6 +75,7 @@ public class OptionsAdapter extends BaseAdapter {
 			break;
 			
 		case ENotification:
+			{
 			v = inflater.inflate(R.layout.listbaseitem, null, true);
 			((TextView)v.findViewById(R.id.text1)).setText(mActivity.getResources().getString(R.string.opt_notificator_title));
 			int val=0;
@@ -86,8 +91,28 @@ public class OptionsAdapter extends BaseAdapter {
 	        String text = mActivity.mNotification_labels[k];
 	        
 	        ((TextView)v.findViewById(R.id.text2)).setText(text);
+			}
 			break;
+		case ESmsListType:
+			{
+			v = inflater.inflate(R.layout.listbaseitem, null, true);
+			((TextView)v.findViewById(R.id.text1)).setText(mActivity.getResources().getString(R.string.opt_sms_list));
+			int val=0;
+	        try {
+		        IMSetting set = mActivity.getHelper().getLocator().createSetting();
+				mActivity.getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.ESmsListTyp);
+		        val = set.getIntVal();
 
+			} catch (MyException e) {}
+	        
+	        int k=0;
+	        if (val>=0 && val<mActivity.mSmsListTyp_labels.length) k = val;
+	        String text = mActivity.mSmsListTyp_labels[k];
+	        
+	        ((TextView)v.findViewById(R.id.text2)).setText(text);
+			}
+			break;
+			
 		case EImport:
 			v = inflater.inflate(R.layout.listbaseitem, null, true);
 			((TextView)v.findViewById(R.id.text1)).setText(mActivity.getResources().getString(R.string.opt_import));

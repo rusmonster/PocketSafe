@@ -42,7 +42,7 @@
     <string name="opt_changepass">Change password</string>
     <string name="opt_passtimeout">Password timeout</string>
 
-    <string name="opt_notificator_title">On new sms:</string>
+    <string name="opt_notificator_title">On new sms</string>
     <string name="opt_notif_sound_and_icon">Icon and sound</string>
     <string name="opt_notif_icon_only">Icon only</string>
     <string name="opt_notif_sound_only">Sound only</string>
@@ -51,6 +51,10 @@
     <string name="opt_locknow">Lock now</string>
     <string name="opt_import">Import sms</string> 
     <string name="locknow">Lock now</string>
+    <string name="opt_sms_list">Sms list type</string>
+    <string name="opt_sms_list_flat">Flat</string>
+    <string name="opt_sms_list_chat">Chat</string>
+    
     <string name="pass_changed">Password changed succesfully</string>
     <string name="pair_generated">All new sms will be shown here</string>
 
@@ -78,6 +82,12 @@
 	<string name="importfinish">Import complete. Now you can delete sms from android</string>
 
 	<string name="what_new">What new</string>
+	<string name="what_new_16">v.1.4</string>
+	<string name="what_new_15">Add sms list type selection:</string>
+	<string name="what_new_14"></string>
+	<string name="what_new_13">    - Flat view</string>
+	<string name="what_new_12">    - Chat view</string>
+	<string name="what_new_11"></string>	
 	<string name="what_new_10">v.1.3</string>
 	<string name="what_new_9">Add phone call feature</string>
 	<string name="what_new_8"></string>

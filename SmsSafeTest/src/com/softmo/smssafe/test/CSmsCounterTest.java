@@ -1,6 +1,6 @@
 package com.softmo.smssafe.test;
 
-import com.softmo.smssafe.CSmsCounter;
+import com.softmo.smssafe.views.CSmsCounter;
 
 import junit.framework.TestCase;
 

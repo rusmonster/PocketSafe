@@ -1,4 +1,4 @@
-package com.softmo.smssafe;
+package com.softmo.smssafe.views.smsadapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,8 +11,10 @@ import com.softmo.smssafe.dbengine.IMDbReader;
 import com.softmo.smssafe.dbengine.IMSms;
 import com.softmo.smssafe.main.IMMain;
 import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.views.ErrorDisplayer;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
@@ -42,8 +44,20 @@ public abstract class SmsAdapter extends BaseAdapter {
 		public int mPos;
 	}
 
+	public static SmsAdapter Factory(TTypSmsList typ, ListActivity activity, IMMain main, String nam, String hash) {
+		switch (typ) {
+		case EFlat:
+			return new SmsAdapterSimple(activity, main, nam, hash);
+		case EChat:
+			return new SmsAdapterBubble(activity, main, nam, hash);
+			
+		default:
+			return new SmsAdapterSimple(activity, main, nam, hash);
+		}
+		
+	}
 	
-	public SmsAdapter(Activity activity, IMMain main, String nam, String hash) {
+	public SmsAdapter(ListActivity activity, IMMain main, String nam, String hash) {
 		super();
 		
 		mActivity = activity;
