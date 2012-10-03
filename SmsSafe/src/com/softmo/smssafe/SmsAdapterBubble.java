@@ -26,14 +26,14 @@ public class SmsAdapterBubble extends SmsAdapter {
 	private static final int LAYOUT = R.layout.smsadapterbubble;
 
 	private static class SmsAdapterBubbleView extends SmsAdapterView {
+		public LinearLayout mWrapper;
+		public RelativeLayout mBubble;
+		public LinearLayout	 mSmsLoading;
+		public TextView  mSmsLoadingText;
 		public LinearLayout mItem;
-		//public ImageView mImgMsg;
 		public TextView  mCap;
 		public ImageView mImgStatus;
 		public TextView  mText;
-		public TextView	 mSmsLoading;
-		public LinearLayout mWrapper;
-		public RelativeLayout mBubble;
 		
 	}	
 	public SmsAdapterBubble(Activity activity, IMMain main, String nam,	String hash) {
@@ -59,14 +59,10 @@ public class SmsAdapterBubble extends SmsAdapter {
 		if (sms.getDirection() == TTypDirection.EIncoming) { 
 	    	cap = new String(mName);
 	    	sav.mCap.setTextColor(mColorRed);
-	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_yellow);
-			sav.mWrapper.setGravity(Gravity.LEFT);	    	
 	    }
 	    else {
 	    	cap = new String(mMe);
 	    	sav.mCap.setTextColor(mColorBlue);
-	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_green);
-			sav.mWrapper.setGravity(Gravity.RIGHT);	    	
 	    }
 	    
 	    String strDat = mDateFormatDate.format(sms.getDate());
@@ -102,7 +98,8 @@ public class SmsAdapterBubble extends SmsAdapter {
 			v = inflater.inflate(LAYOUT, null, true);
 			
 			sav = new SmsAdapterBubbleView();
-			sav.mSmsLoading = (TextView)v.findViewById(R.id.Loading);
+			sav.mSmsLoading = (LinearLayout)v.findViewById(R.id.Loading);
+			sav.mSmsLoadingText = (TextView)v.findViewById(R.id.LoadingText);
 			
 			//sav.mImgMsg = (ImageView)v.findViewById(R.id.msg_icon);
 			sav.mCap	= (TextView)v.findViewById(R.id.smsCap);
@@ -128,21 +125,29 @@ public class SmsAdapterBubble extends SmsAdapter {
 		}
 		
 		if (dest.size()==0) {
-			sav.mSmsLoading.setText(err);
-			sav.mItem.setVisibility(View.INVISIBLE);
-			sav.mSmsLoading.setVisibility(View.VISIBLE);
+			sav.mSmsLoadingText.setText(err);
 			return null;
 		}
 		
 		IMSms sms = dest.get(0);
+		
+		if (sms.getDirection() == TTypDirection.EIncoming) { 
+	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_yellow);
+			sav.mWrapper.setGravity(Gravity.LEFT);	    	
+	    }
+	    else {
+	    	sav.mBubble.setBackgroundResource(R.drawable.bubble_green);
+			sav.mWrapper.setGravity(Gravity.RIGHT);	    	
+	    }
+		
 		String text = mMap.get(sms.getId());
 		
 		if (text != null) {
 			Log.d("!!!", "SmsAdapter: text cached: "+position);
 			FillView(sav, sms, text);
 		} else {
-			sav.mItem.setVisibility(View.INVISIBLE);
-			sav.mSmsLoading.setVisibility(View.VISIBLE);
+			sav.mSmsLoadingText.setText(R.string.Loading);
+			showStub(sav);
 			mLoadQuery.add( new SmsLoader(position, sav, sms) );
 			doLoadQuery();
 		}
@@ -150,5 +155,11 @@ public class SmsAdapterBubble extends SmsAdapter {
 		return v;		
 	}
 	
-
+	private void showStub(SmsAdapterBubbleView sav) {
+		sav.mCap.setText(""); 
+		sav.mText.setText("");
+		sav.mSmsLoading.setVisibility(View.VISIBLE);
+		sav.mItem.setVisibility(View.INVISIBLE);
+		
+	}
 }

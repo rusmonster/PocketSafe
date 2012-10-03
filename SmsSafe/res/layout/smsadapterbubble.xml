@@ -3,7 +3,6 @@
     android:id="@+id/smswrapper"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     >    
     
 	<RelativeLayout 
@@ -68,14 +67,21 @@
 				    />
 		</LinearLayout>
 		
-		<TextView
+ 		<LinearLayout  
 		    android:id="@+id/Loading"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:gravity="center"
-		    android:layout_alignTop="@+id/smsItem"
-		    android:layout_alignBottom="@+id/smsItem"
-		    android:text="@string/Loading" 
-		    />	
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:layout_alignParentTop="true" 
+	        android:background="#0000FF"
+	        >
+			<TextView
+			    android:id="@+id/LoadingText"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:gravity="center"
+			    android:text="@string/Loading" 
+			    />	
+		</LinearLayout>
 	</RelativeLayout>
 </LinearLayout>
