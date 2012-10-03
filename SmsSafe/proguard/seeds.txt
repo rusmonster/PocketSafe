@@ -1,40 +1,3 @@
-com.softmo.smssafe.AboutActivity
-com.softmo.smssafe.AboutActivity: AboutActivity()
-com.softmo.smssafe.AboutActivity: void feedbackClick(android.view.View)
-com.softmo.smssafe.CMBaseActivity
-com.softmo.smssafe.CMBaseActivity: CMBaseActivity()
-com.softmo.smssafe.CMBaseListActivity
-com.softmo.smssafe.CMBaseListActivity: CMBaseListActivity()
-com.softmo.smssafe.EnterPassActivity
-com.softmo.smssafe.EnterPassActivity: EnterPassActivity()
-com.softmo.smssafe.EnterPassActivity: void onOkClick(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick0(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick1(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick2(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick3(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick4(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick5(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick6(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick7(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick8(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClick9(android.view.View)
-com.softmo.smssafe.EnterPassActivity: void onClickDel(android.view.View)
-com.softmo.smssafe.OptionsActivity
-com.softmo.smssafe.OptionsActivity: OptionsActivity()
-com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS[] values()
-com.softmo.smssafe.OptionsAdapter$ITEMS: com.softmo.smssafe.OptionsAdapter$ITEMS valueOf(java.lang.String)
-com.softmo.smssafe.SetPassActivity
-com.softmo.smssafe.SetPassActivity: SetPassActivity()
-com.softmo.smssafe.SetPassActivity: void onOkClick(android.view.View)
-com.softmo.smssafe.SetPassActivity: void onCancelClick(android.view.View)
-com.softmo.smssafe.SetPassActivity$TMode: com.softmo.smssafe.SetPassActivity$TMode[] values()
-com.softmo.smssafe.SetPassActivity$TMode: com.softmo.smssafe.SetPassActivity$TMode valueOf(java.lang.String)
-com.softmo.smssafe.SmsMainActivity
-com.softmo.smssafe.SmsMainActivity: SmsMainActivity()
-com.softmo.smssafe.SmsNewActivity
-com.softmo.smssafe.SmsNewActivity: SmsNewActivity()
-com.softmo.smssafe.SmsViewerActivity
-com.softmo.smssafe.SmsViewerActivity: SmsViewerActivity()
 com.softmo.smssafe.bootreceiver.CMBootReceiver
 com.softmo.smssafe.bootreceiver.CMBootReceiver: CMBootReceiver()
 com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] values()
@@ -65,3 +28,42 @@ com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState: com.softmo.smssafe.uti
 com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState: com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState valueOf(java.lang.String)
 com.softmo.smssafe.utils.MyException$TTypMyException: com.softmo.smssafe.utils.MyException$TTypMyException[] values()
 com.softmo.smssafe.utils.MyException$TTypMyException: com.softmo.smssafe.utils.MyException$TTypMyException valueOf(java.lang.String)
+com.softmo.smssafe.views.AboutActivity
+com.softmo.smssafe.views.AboutActivity: AboutActivity()
+com.softmo.smssafe.views.AboutActivity: void feedbackClick(android.view.View)
+com.softmo.smssafe.views.CMBaseActivity
+com.softmo.smssafe.views.CMBaseActivity: CMBaseActivity()
+com.softmo.smssafe.views.CMBaseListActivity
+com.softmo.smssafe.views.CMBaseListActivity: CMBaseListActivity()
+com.softmo.smssafe.views.EnterPassActivity
+com.softmo.smssafe.views.EnterPassActivity: EnterPassActivity()
+com.softmo.smssafe.views.EnterPassActivity: void onOkClick(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick0(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick1(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick2(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick3(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick4(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick5(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick6(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick7(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick8(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClick9(android.view.View)
+com.softmo.smssafe.views.EnterPassActivity: void onClickDel(android.view.View)
+com.softmo.smssafe.views.OptionsActivity
+com.softmo.smssafe.views.OptionsActivity: OptionsActivity()
+com.softmo.smssafe.views.OptionsAdapter$ITEMS: com.softmo.smssafe.views.OptionsAdapter$ITEMS[] values()
+com.softmo.smssafe.views.OptionsAdapter$ITEMS: com.softmo.smssafe.views.OptionsAdapter$ITEMS valueOf(java.lang.String)
+com.softmo.smssafe.views.SetPassActivity
+com.softmo.smssafe.views.SetPassActivity: SetPassActivity()
+com.softmo.smssafe.views.SetPassActivity: void onOkClick(android.view.View)
+com.softmo.smssafe.views.SetPassActivity: void onCancelClick(android.view.View)
+com.softmo.smssafe.views.SetPassActivity$TMode: com.softmo.smssafe.views.SetPassActivity$TMode[] values()
+com.softmo.smssafe.views.SetPassActivity$TMode: com.softmo.smssafe.views.SetPassActivity$TMode valueOf(java.lang.String)
+com.softmo.smssafe.views.SmsMainActivity
+com.softmo.smssafe.views.SmsMainActivity: SmsMainActivity()
+com.softmo.smssafe.views.SmsNewActivity
+com.softmo.smssafe.views.SmsNewActivity: SmsNewActivity()
+com.softmo.smssafe.views.SmsViewerActivity
+com.softmo.smssafe.views.SmsViewerActivity: SmsViewerActivity()
+com.softmo.smssafe.views.smsadapter.TTypSmsList: com.softmo.smssafe.views.smsadapter.TTypSmsList[] values()
+com.softmo.smssafe.views.smsadapter.TTypSmsList: com.softmo.smssafe.views.smsadapter.TTypSmsList valueOf(java.lang.String)
