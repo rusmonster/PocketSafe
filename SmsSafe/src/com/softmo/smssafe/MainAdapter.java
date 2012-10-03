@@ -150,12 +150,13 @@ public class MainAdapter extends BaseAdapter {
 			
 			if (result == null) return;
 			
+			mMap.put(mGroup.getId(), result);
+			
 			if (mMav.mPos != mPosition) {
 				Log.d("!!!", "onPostExecute: position changed");
 				return;
 			}
 			
-			mMap.put(mGroup.getId(), result);
 			FillView(mMav, mGroup, result);
 
 		}

@@ -447,7 +447,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			setTitle(mName);
 		}
 
-        mAdapter = new SmsAdapter(this, getHelper().getMain(), mName, mHash);
+        mAdapter = new SmsAdapterBubble(this, getHelper().getMain(), mName, mHash);
        	mAdapter.setMap(mSavedMap);
         setListAdapter(mAdapter);	
 
