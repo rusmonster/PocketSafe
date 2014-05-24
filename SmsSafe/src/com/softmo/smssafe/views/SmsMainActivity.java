@@ -1,24 +1,5 @@
 package com.softmo.smssafe.views;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.softmo.smssafe.R;
-import com.softmo.smssafe.R.array;
-import com.softmo.smssafe.R.id;
-import com.softmo.smssafe.R.layout;
-import com.softmo.smssafe.R.menu;
-import com.softmo.smssafe.R.string;
-import com.softmo.smssafe.dbengine.IMContact;
-import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.dbengine.IMSetting;
-import com.softmo.smssafe.dbengine.IMSmsGroup;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -39,6 +20,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.softmo.smssafe.R;
+import com.softmo.smssafe.dbengine.IMContact;
+import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.IMSetting;
+import com.softmo.smssafe.dbengine.IMSmsGroup;
+import com.softmo.smssafe.main.IMEvent;
+import com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder;
+import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class SmsMainActivity extends CMBaseListActivity  {
 	
@@ -111,9 +106,11 @@ public class SmsMainActivity extends CMBaseListActivity  {
        	mAdapter.setMap(mSavedMap);
        	
        	Log.d("!!!", "Main: setting adapter...");
-        setListAdapter(mAdapter);    	
-        
-        showUpdatedMessage();
+        setListAdapter(mAdapter);
+
+		if (!CMDefaultAppReminder.getInstance().showIfNeeded(this)) {
+			showUpdatedMessage();
+		}
     }
  
 
