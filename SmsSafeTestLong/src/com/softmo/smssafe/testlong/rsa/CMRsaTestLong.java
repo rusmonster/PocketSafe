@@ -1,13 +1,6 @@
 package com.softmo.smssafe.testlong.rsa;
 
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.Random;
-
-import android.os.AsyncTask;
-import android.os.Looper;
 import android.util.Log;
-
 import com.softmo.smssafe.sec.CMRsa;
 import com.softmo.smssafe.sec.IMRsa;
 import com.softmo.smssafe.sec.IMRsaObserver;
@@ -15,8 +8,14 @@ import com.softmo.smssafe.testlong.utils.CMTestThread;
 import com.softmo.smssafe.utils.CMLocator;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
-
 import junit.framework.TestCase;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CMRsaTestLong extends TestCase {
 
@@ -207,71 +206,53 @@ public class CMRsaTestLong extends TestCase {
 	}
 
 
-	private int mThreadOk;
-	private int mThreadRunning;
-	
-	private class EncDecThread extends AsyncTask<Void, Void, Boolean> {
+	private AtomicInteger mThreadOk = new AtomicInteger(0);
 
-		private int mId;
-		private byte[] mData;
-		
-		public EncDecThread(byte[] data, int id) {
-			mData = data;
-			mId = id;
-		}
-		
-		@Override
-		protected Boolean doInBackground(Void... arg0) {
-			Boolean res = Boolean.FALSE;
-			Log.d("!!!", "Thread: "+mId+"; mId: "+mId);
-			
-			try {
-				Log.i("!!!", "encript start" + mId);
-				byte[] enc = mRsa.EncryptBuffer(mData);
-				Log.i("!!!", "encrypt finish" + mId);
-				
-				Log.i("!!!", "decrypt start" + mId);
-				byte[] dec = mRsa.DecryptBuffer(mKey, enc);
-				Log.i("!!!", "decrypt finish" + mId);
-				
-				if (mData.length != dec.length)
-					throw new RuntimeException("threadId: "+mId+": Assert len failed");
-				
-				for (int i=0; i<mData.length; i++)
-					if (mData[i] != dec[i])
-						throw new RuntimeException("threadId: "+mId+": Assert data failed i="+i);
-				
-				res = Boolean.TRUE;
-				Log.i("!!!", "task finish" + mId);
-			} catch (MyException e) {
-				Log.e("!!!", "Thread: "+mId+"; MyException: "+e.getId());
-			} catch (Exception e) {
-				Log.e("!!!", "Thread: "+mId+"; Exception: "+e.getMessage());
-			}
-			
-			Log.i("!!!", "task return" + mId);
-			return res;
-		}
-	
-	
-		@Override
-		protected void onPostExecute(Boolean result) {
-			super.onPostExecute(result);
-			
-			if (result)
-				mThreadOk++;
-			
-			mThreadRunning--;
-			if (mThreadRunning==0)
-				Looper.myLooper().quit();
-			
-			Log.i("!!!", "task onPostExecute: " + mId+"; mThreadRunning: "+mThreadRunning);
-		}
-		
-	}
+	private class ThreadRunnable implements Runnable {
 
+        private int mId;
+        private byte[] mData;
 
-	
+        public ThreadRunnable(byte[] data, int id) {
+            mData = data;
+            mId = id;
+        }
+
+        @Override
+        public void run() {
+            Boolean res = Boolean.FALSE;
+            Log.d("!!!", "Thread: "+mId+"; mId: "+mId);
+
+            try {
+                Log.i("!!!", "encript start" + mId);
+                byte[] enc = mRsa.EncryptBuffer(mData);
+                Log.i("!!!", "encrypt finish" + mId);
+
+                Log.i("!!!", "decrypt start" + mId);
+                byte[] dec = mRsa.DecryptBuffer(mKey, enc);
+                Log.i("!!!", "decrypt finish" + mId);
+
+                if (mData.length != dec.length)
+                    throw new RuntimeException("threadId: "+mId+": Assert len failed");
+
+                for (int i=0; i<mData.length; i++)
+                    if (mData[i] != dec[i])
+                        throw new RuntimeException("threadId: "+mId+": Assert data failed i="+i);
+
+                res = Boolean.TRUE;
+                Log.i("!!!", "task finish" + mId);
+            } catch (MyException e) {
+                Log.e("!!!", "Thread: "+mId+"; MyException: "+e.getId());
+            } catch (Exception e) {
+                Log.e("!!!", "Thread: "+mId+"; Exception: "+e.getMessage());
+            }
+
+            Log.i("!!!", "task return" + mId);
+            if (res)
+                mThreadOk.incrementAndGet();
+        }
+    };
+
 	public void testEncDec100Thread() throws Exception {
 		Log.i("!!!", "generate start");
 		testGenerateKeyPair();
@@ -279,12 +260,13 @@ public class CMRsaTestLong extends TestCase {
 		
 		int cnt=100;
 		
-		mThreadRunning = cnt;
-		mThreadOk = 0;
+		mThreadOk.set(0);
 		
 		Date dat = new Date();
 		Random random = new Random( dat.getTime() );
-		
+
+        List<Thread> threads = new ArrayList<Thread>(cnt);
+
 		for (int i=0; i<cnt; i++) {
 			int rnd = Math.abs(random.nextInt())%1000;
 			Log.i("!!!", "rnd="+rnd);
@@ -293,15 +275,18 @@ public class CMRsaTestLong extends TestCase {
 			for (int j=0; j<rnd; j++)
 				data[j] = (byte) (random.nextInt() & 0xFF);
 			
-			(new EncDecThread(data, i)).execute();
+			Thread thread = new Thread(new ThreadRunnable(data, i));
+            threads.add(thread);
+            thread.start();
 		}
 
-		Looper.loop();
+        for (Thread thread : threads) {
+            thread.join();
+        }
 		
 		Log.d("!!!", "after loop: ");
-		
-		assertEquals(0, mThreadRunning);
-		assertEquals(cnt, mThreadOk);
+
+		assertEquals(cnt, mThreadOk.get());
 	}
 
 }

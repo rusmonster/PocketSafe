@@ -3,6 +3,7 @@ package com.softmo.smssafe.testlong.smssender;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import android.util.Xml;
 import com.softmo.smssafe.smssender.CMSmsSender;
 import com.softmo.smssafe.smssender.IMSmsSender;
 import com.softmo.smssafe.smssender.IMSmsSenderObserver;
@@ -12,12 +13,18 @@ import com.softmo.smssafe.utils.MyException;
 
 public class CMSmsSenderTestLong extends AndroidTestCase implements IMSmsSenderObserver {
 	
-	private static String PHONE = "+7915"+"104"+"2215"; 
+	private static final String PHONE;
 	//private static String PHONE = "5556";
 	
 	private IMSmsSender mSmsSender;
 	private boolean mSentOk;
 	private boolean mDelivOk;
+
+    static
+    {
+        byte[] p = new byte[] { '+', 0x37, 0x39, 0x32, 0x36, 0x31, 0x33, 0x36, 0x31, 0x30, 0x34, 0x30 };
+        PHONE = new String(p);
+    }
 
 	protected void setUp() throws Exception {
 		super.setUp();

@@ -7,12 +7,16 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import android.os.Build;
+import android.util.Log;
 import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
 public class CMAes implements IMAes {
-	
+	private static final String TAG = "CMAes";
+	private static final int JELLY_BEAN_4_2 = 17;
+
 	private IMLocator mLocator;
 	
 	public CMAes(IMLocator _locator) {
@@ -31,6 +35,7 @@ public class CMAes implements IMAes {
 	}
 	
 	public String decrypt(String seed, String encrypted) throws MyException {
+
 		try {
 	        byte[] rawKey = getRawKey(seed.getBytes());
 	        byte[] enc = mLocator.createBase64().decode(encrypted.getBytes());
@@ -43,8 +48,13 @@ public class CMAes implements IMAes {
 	
 	private static byte[] getRawKey(byte[] seed) throws Exception {
 	    KeyGenerator kgen = KeyGenerator.getInstance("AES");
-	    SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-	    sr.setSeed(seed);
+		SecureRandom sr;
+		if (android.os.Build.VERSION.SDK_INT >= JELLY_BEAN_4_2) {
+			sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+		} else {
+			sr = SecureRandom.getInstance("SHA1PRNG");
+		}
+		sr.setSeed(seed);
 	    kgen.init(256, sr); // 192 and 256 bits may not be available
 	    SecretKey skey = kgen.generateKey();
 	    byte[] raw = skey.getEncoded();

@@ -48,7 +48,7 @@ public class CMDbTableContact implements IMDbTableContact {
 	}
 
 	public int getCount() throws MyException {
-		Cursor c = mCr.query(ContactsContract.Contacts.CONTENT_URI, new String[] {"count(*) as cnt"}, null, null, null);
+		Cursor c = mCr.query(ContactsContract.Contacts.CONTENT_URI, new String[] {ContactsContract.Contacts._COUNT}, null, null, null);
 		try {
 			if (c.moveToFirst()) 
 				return c.getInt(0);
