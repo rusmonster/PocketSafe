@@ -1,7 +1,10 @@
 package com.softmo.smssafe.views;
 
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 
+import android.telephony.TelephonyManager;
+import android.widget.ShareActionProvider;
 import com.softmo.smssafe.R;
 import com.softmo.smssafe.R.id;
 import com.softmo.smssafe.R.layout;
@@ -155,14 +158,18 @@ public class SmsNewActivity extends CMBaseActivity {
 			Intent intent = getIntent();
 			if (savedInstanceState == null && intent != null && intent.getAction()!=null) {
 	
-			    if (intent.getAction().equals(Intent.ACTION_SEND)) {
-			    	String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+			    if (intent.getAction().equals(Intent.ACTION_SEND)
+						|| intent.getAction().equals(Intent.ACTION_SENDTO)) {
+					String message = intent.getStringExtra(Intent.EXTRA_TEXT);
 			    	mEdText.setText(message);
-			    }
-	
-			    if (intent.getAction().equals(Intent.ACTION_SENDTO)) {
-					mIntentPhone = URLDecoder.decode(intent.getDataString())
-						.replaceAll("[^0-9\\+]*", "");
+
+					String data = intent.getDataString();
+					if (data != null) {
+						mIntentPhone = URLDecoder.decode(data, "UTF-8")
+							.replaceAll("[^0-9\\+]*", "");
+					}
+
+					Log.d("!!!", "mIntentPhone: " + mIntentPhone + "; message: " + message);
 			    }
 			}
 	    } catch(Exception e) {}

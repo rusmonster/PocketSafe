@@ -28,11 +28,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".smsreceiver.CMSmsMonitor">
+
+        <receiver android:name=".smsreceiver.CMSmsMonitor"
+				android:permission="android.permission.BROADCAST_SMS">
+
 			<intent-filter android:priority="2147483647">
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
+				<action android:name="android.provider.Telephony.SMS_DELIVER" />
 			</intent-filter>
 		</receiver>
+
+		<!--We don't work with MMS, but is is needed to be "Default SMS App" in KitKat+-->
+		<receiver android:name=".smsreceiver.CMSmsMonitor"
+				  android:permission="android.permission.BROADCAST_WAP_PUSH">
+			<intent-filter>
+				<action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+				<data android:mimeType="application/vnd.wap.mms-message" />
+			</intent-filter>
+		</receiver>
+
 		<receiver android:name=".bootreceiver.CMBootReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -52,8 +66,18 @@
 				<data android:mimeType="text/plain" />
 			</intent-filter>
 		</activity>
-		
-		<service android:name=".safeservice.CMSafeService" />
+
+		<service android:name=".safeservice.CMSafeService"
+				 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
+				 android:exported="true" >
+
+			<intent-filter>
+				<action android:name="android.intent.action.RESPOND_VIA_MESSAGE"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:scheme="sms"/>
+				<data android:scheme="smsto"/>
+			</intent-filter>
+		</service>
 		<activity android:name=".views.SmsViewerActivity"></activity>
 		<activity android:name=".views.AboutActivity"></activity>
 		<activity android:name=".views.OptionsActivity"></activity>
