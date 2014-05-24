@@ -2,6 +2,9 @@ package com.softmo.smssafe.smsreceiver;
 
 import java.util.Date;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
 import com.softmo.smssafe.dbengine.IMDbEngine;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSms;
@@ -80,7 +83,7 @@ public class CMSmsMonitor extends BroadcastReceiver {
 					messages[i] = SmsMessage.createFromPdu((byte[])pduArray [i]);
 					smstext += messages[i].getMessageBody();
 				}
-				
+
 				if (messages.length>0)
 					smsfrom = messages[0].getOriginatingAddress();
 				
@@ -90,13 +93,84 @@ public class CMSmsMonitor extends BroadcastReceiver {
 				if (ProcessMessage(context, smsfrom, smstext)) {
 					Log.d("!!!", "SMS stored ");
 					abortBroadcast();
+					deleteMessageFromAndroidDb(context, messages);
 				}
-	
 			}
 		} catch (Exception e) {
 			Log.e("!!!", "Error in CMSmsMonitor.onReceive: ");
 			e.printStackTrace();
 		}
+	}
+
+	private void deleteMessageFromAndroidDb(Context context, SmsMessage[] messages) {
+		if (messages.length == 0) {
+			return;
+		}
+
+		SmsMessage message = messages[0];
+		Log.d("!!!", "getIndexOnIcc: " + message.getIndexOnIcc());
+		Log.d("!!!", "getIndexOnSim: " + message.getIndexOnSim());
+		Log.d("!!!", "getTimestampMillis: " + message.getTimestampMillis());
+
+		ContentResolver cr = context.getContentResolver();
+		StringBuilder where = new StringBuilder();
+		where.append("date_sent=" + message.getTimestampMillis());
+		where.append(" and address='" + message.getOriginatingAddress() + "'");
+		where.append(" and type=1");
+
+		String selection = where.toString();
+		Cursor cursor = cr.query(Uri.parse("content://sms"), null ,null, null, "date DESC LIMIT 10");
+
+		if (!cursor.moveToFirst())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+
+		String[] names = cursor.getColumnNames();
+		do {
+			for (String name : names) {
+				int col = cursor.getColumnIndex(name);
+				String val  = cursor.getString(col);
+
+				sb.append(name);
+				sb.append(": ");
+				sb.append(val);
+				sb.append("; ");
+			}
+
+			sb.append('\n');
+		} while (cursor.moveToNext());
+		cursor.close();
+
+		Log.d("!!!", "LAST 10:\n" + sb.toString());
+
+		Log.d("!!!", "selection: " + selection);
+		cursor = cr.query(Uri.parse("content://sms"), null ,selection, null, "date DESC LIMIT 10");
+
+		if (!cursor.moveToFirst())
+			return;
+
+		sb = new StringBuilder();
+
+		names = cursor.getColumnNames();
+		do {
+			for (String name : names) {
+				int col = cursor.getColumnIndex(name);
+				String val  = cursor.getString(col);
+
+				sb.append(name);
+				sb.append(": ");
+				sb.append(val);
+				sb.append("; ");
+			}
+
+			sb.append('\n');
+		} while (cursor.moveToNext());
+		cursor.close();
+
+		Log.d("!!!", "before delete");
+		cr.delete(Uri.parse("content://sms"), selection, null);
+		Log.d("!!!", "after delete");
 	}
 };
 
