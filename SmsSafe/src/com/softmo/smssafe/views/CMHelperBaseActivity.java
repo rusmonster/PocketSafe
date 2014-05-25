@@ -93,7 +93,7 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 		}
 		return mMain;
 	}
-    
+
 	private boolean checkPassSet() throws MyException {
 		IMSetting set = mLocator.createSetting();
 		getMain().DbReader().QuerySetting().getById(set, TTypSetting.ERsaPub);

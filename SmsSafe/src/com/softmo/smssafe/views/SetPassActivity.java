@@ -1,19 +1,17 @@
 package com.softmo.smssafe.views;
 
-import java.util.HashSet;
-
-import com.softmo.smssafe.R;
-import com.softmo.smssafe.R.id;
-import com.softmo.smssafe.R.layout;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import com.softmo.smssafe.R;
+import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder;
+
+import java.util.HashSet;
 
 public class SetPassActivity extends Activity {
 
@@ -44,6 +42,18 @@ public class SetPassActivity extends Activity {
 	    mPass2 = (EditText) findViewById(R.id.edPass2);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case CMDefaultAppReminder.REQUEST_CODE:
+			close();
+			break;
+
+		default:
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+
 	public void onOkClick(View v) {
 		try {
 			String pass1 = mPass1.getText().toString();
@@ -61,12 +71,9 @@ public class SetPassActivity extends Activity {
 					throw new MyException(TTypMyException.EPassNotDigital);
 			}
 
-				
-			Intent intent = new Intent();
-	        intent.putExtra(PASS, pass1); 
-	        
-	        setResult(RESULT_OK, intent);
-	        finish();	
+			if (!CMDefaultAppReminder.getInstance().showIfNeeded(this)) {
+				close();
+			}
 		} catch(MyException e) {
 			ErrorDisplayer.displayError(this, e);
 		}
@@ -92,5 +99,13 @@ public class SetPassActivity extends Activity {
 		mPass2.setText(outState.getString("pass2"));
 
 		super.onRestoreInstanceState(outState);
-	}	
+	}
+
+	private void close() {
+		Intent intent = new Intent();
+		intent.putExtra(PASS, mPass1.getText().toString());
+
+		setResult(RESULT_OK, intent);
+		super.finish();
+	}
 }

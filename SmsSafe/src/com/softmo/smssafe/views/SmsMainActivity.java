@@ -108,9 +108,11 @@ public class SmsMainActivity extends CMBaseListActivity  {
        	Log.d("!!!", "Main: setting adapter...");
         setListAdapter(mAdapter);
 
-		if (!CMDefaultAppReminder.getInstance().showIfNeeded(this)) {
-			showUpdatedMessage();
+		if (CMDefaultAppReminder.getInstance().showIfNeeded(this)) {
+			return;
 		}
+
+		showUpdatedMessage();
     }
  
 

@@ -1,12 +1,14 @@
 package com.softmo.smssafe.views.defaultappreminder;
 
 import android.annotation.TargetApi;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.Telephony;
 
 public class CMDefaultAppReminder implements IMDefaultAppReminder {
+	public static final int REQUEST_CODE = 2001;
+
 	private static IMDefaultAppReminder sInstance;
 
 	private boolean sNeedRemind = true;
@@ -21,7 +23,7 @@ public class CMDefaultAppReminder implements IMDefaultAppReminder {
 		} else {
 			sInstance = new IMDefaultAppReminder() {
 				@Override
-				public boolean showIfNeeded(Context context) {
+				public boolean showIfNeeded(Activity activity) {
 					return false;
 				}
 			};
@@ -36,20 +38,20 @@ public class CMDefaultAppReminder implements IMDefaultAppReminder {
 
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	@Override
-	public boolean showIfNeeded(final Context context) {
+	public boolean showIfNeeded(final Activity activity) {
 		if (!sNeedRemind) {
 			return false;
 		}
 		sNeedRemind = false;
 
-		final String myPackageName = context.getPackageName();
-		if (Telephony.Sms.getDefaultSmsPackage(context).equals(myPackageName)) {
+		final String myPackageName = activity.getPackageName();
+		if (Telephony.Sms.getDefaultSmsPackage(activity).equals(myPackageName)) {
 			return false;
 		}
 
 		Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
 		intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, myPackageName);
-		context.startActivity(intent);
+		activity.startActivityForResult(intent, REQUEST_CODE);
 
 		return true;
 	}
