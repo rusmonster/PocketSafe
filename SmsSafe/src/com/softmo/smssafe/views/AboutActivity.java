@@ -29,7 +29,8 @@ public class AboutActivity extends CMBaseActivity {
 	
 	public void feedbackClick(View v) {
 		try {
-			Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.softmo.smssafe"));
+			String packageName = getPackageName();
+			Intent browseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
 			startActivity(browseIntent);
 		}catch(Exception e) {
 			Log.e("!!!", "Error starting browseIntent");
