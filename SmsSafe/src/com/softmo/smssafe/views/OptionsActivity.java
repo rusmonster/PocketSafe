@@ -1,14 +1,5 @@
 package com.softmo.smssafe.views;
 
-import com.softmo.smssafe.R;
-import com.softmo.smssafe.R.array;
-import com.softmo.smssafe.R.layout;
-import com.softmo.smssafe.R.string;
-import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.main.TTypEvent;
-import com.softmo.smssafe.utils.MyException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,6 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.softmo.smssafe.R;
+import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.main.IMEvent;
+import com.softmo.smssafe.main.TTypEvent;
+import com.softmo.smssafe.utils.MyException;
 
 public class OptionsActivity extends CMBaseListActivity {
 
@@ -44,6 +40,7 @@ public class OptionsActivity extends CMBaseListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.listbase);
+//		getActionBar().setDisplayShowHomeEnabled(true);
 	}
 
 	@Override

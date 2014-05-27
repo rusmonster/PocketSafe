@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnuSmsNewLock" 
-        android:title="@string/locknow" 
-        android:icon="@android:drawable/ic_lock_lock">
-    </item>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+			android:id="@+id/mnuSmsNewLock"
+			android:title="@string/locknow"
+			android:icon="@android:drawable/ic_lock_lock"
+			android:showAsAction="always"/>
 </menu>

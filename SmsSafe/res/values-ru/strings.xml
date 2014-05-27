@@ -27,15 +27,15 @@
 	<string name="sms_resend">Отправить заново</string>
     <string name="options">Настройка</string>
     
-    <string name="enter_phone">Телефон:</string>
-    <string name="enter_text">Текст:</string>
+    <string name="enter_phone">Телефон</string>
+    <string name="enter_text">Текст</string>
 
     <string name="copied">Текст скопирован в буфер</string>
     <string name="phone_copied">Телефон скопирован в буфер</string>
 
-    <string name="enter_pass">Введите пароль:</string>
-    <string name="enter_new_pass">Задайте новый пароль:</string>
-    <string name="repeat_pass">Повторите пароль:</string>
+    <string name="enter_pass">Введите пароль</string>
+    <string name="enter_new_pass">Задайте новый пароль</string>
+    <string name="repeat_pass">Повторите пароль</string>
     <string name="old_pass">Введите Ваш пароль</string>
     <string name="set_pass">Установка пароля</string>
     <string name="rsa_generate">Генерация ключей...</string>

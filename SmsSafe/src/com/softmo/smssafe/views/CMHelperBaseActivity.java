@@ -299,7 +299,6 @@ public class CMHelperBaseActivity implements IMBaseActivity, IMListener {
 				break;
 			case ERsaKeyPairGenerated:
 				if (mDlg!=null) mDlg.dismiss(); mDlg = null;
-				Toast.makeText(mOwner, R.string.pair_generated, Toast.LENGTH_LONG).show();
 				break;
 			case ERsaKeyPairGenerateError:
 				IMEventErr evErr = (IMEventErr)event;

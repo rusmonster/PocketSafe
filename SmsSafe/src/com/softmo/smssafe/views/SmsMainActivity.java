@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.softmo.smssafe.R;
@@ -26,9 +25,9 @@ import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
 import com.softmo.smssafe.dbengine.IMSetting;
 import com.softmo.smssafe.dbengine.IMSmsGroup;
 import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class SmsMainActivity extends CMBaseListActivity  {
 	private static final int IDD_DELALL = 1002;
 	private static final int IDD_PROGRAM_UPDATED = 1003;
 	
-	private Button mBtNewSms;
 	private final android.os.Handler mHandler = new android.os.Handler();
 	
 	private MainAdapter mAdapter;
@@ -79,15 +77,8 @@ public class SmsMainActivity extends CMBaseListActivity  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        mBtNewSms = (Button) findViewById(R.id.btNewSms);
-        mBtNewSms.setOnClickListener( new View.OnClickListener() {
-			
-			public void onClick(View v) {
-		        GotoNewSms();
-			}
-		});
-        
+
+		getListView().setEmptyView(findViewById(R.id.text_empty));
         registerForContextMenu(getListView());
     }
     

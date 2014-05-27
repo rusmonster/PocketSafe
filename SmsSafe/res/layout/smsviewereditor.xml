@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" 
-    >
 
-    <EditText
-        android:id="@+id/edSms"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:inputType="textMultiLine"
-        android:layout_weight="1" >
-    </EditText>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/linearLayout1"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<EditText
+		android:id="@+id/edSms"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:layout_gravity="bottom"
+		android:inputType="textMultiLine" />
 
 	<LinearLayout
-		        android:id="@+id/linearLayout2"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:orientation="vertical"  >
+		android:id="@+id/linearLayout2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_gravity="bottom">
+
 		<TextView
-			    android:id="@+id/tvCounter"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:textColor="@color/black"
-			    android:text="160/160" />
-	    <Button
-	        android:id="@+id/btSendSms"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Send" /> 
-	</LinearLayout>	        
+			android:id="@+id/tvCounter"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="160/160" />
+
+		<ImageButton
+			android:id="@+id/btSendSms"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@android:drawable/ic_menu_send" />
+
+	</LinearLayout>
 
 </LinearLayout>
