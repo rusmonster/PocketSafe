@@ -496,6 +496,8 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			outState.putIntegerArrayList("keys", keys);
 			outState.putStringArrayList("vals", vals);
 		}
+		outState.putInt("viewerMessageForDel", mMessageForDel);
+
 		super.onSaveInstanceState(outState);
 	}
 
@@ -512,6 +514,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			for (int i = 0; i < keys.size(); i++)
 				mSavedMap.put(keys.get(i), vals.get(i));
 		}
+
+		mMessageForDel = outState.getInt("viewerMessageForDel");
+
 		super.onRestoreInstanceState(outState);
 	}
 
