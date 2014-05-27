@@ -85,7 +85,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.smsviewer);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mEditorView = getLayoutInflater().inflate(R.layout.smsviewereditor, null);
 		getListView().addFooterView(mEditorView);

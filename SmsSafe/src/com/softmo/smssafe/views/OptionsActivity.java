@@ -43,6 +43,7 @@ public class OptionsActivity extends CMBaseListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.listbase);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
