@@ -48,7 +48,6 @@
     <string name="opt_notif_sound_only">Только звук</string>
     <string name="opt_notif_nothing">Ничего</string>
         
-    <string name="opt_locknow">Заблокировать сейчас</string>
     <string name="opt_import">Импортировать смс</string>
     <string name="locknow">Заблокировать</string>
     

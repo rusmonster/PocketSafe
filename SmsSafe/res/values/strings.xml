@@ -48,8 +48,7 @@
     <string name="opt_notif_sound_only">Sound only</string>
     <string name="opt_notif_nothing">Nothing</string>
         
-    <string name="opt_locknow">Lock now</string>
-    <string name="opt_import">Import sms</string> 
+    <string name="opt_import">Import sms</string>
     <string name="locknow">Lock now</string>
     <string name="opt_sms_list">Sms list type</string>
     <string name="opt_sms_list_flat">Flat</string>
