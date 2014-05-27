@@ -236,14 +236,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	}
 
 	private Dialog ShowDelThreadDlg() throws MyException {
-		final String phone = mPhone;
-		String nam = new String(phone);
-		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
-		if (c != null) nam = c.getName();
-
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
 
-		String msg = getResources().getString(R.string.sms_delthreadconf, nam);
+		String msg = getResources().getString(R.string.sms_delthreadconf, mName);
 		dlg.setMessage(msg);
 
 		dlg.setPositiveButton(getResources().getString(R.string.yes), new OnClickListener() {
@@ -472,9 +467,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		} catch (Exception e) {
 			Log.e("!!!", "Error in SmsViewerActivity onMainBind: " + e.getMessage());
 		}
-
 	}
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -497,6 +490,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			outState.putStringArrayList("vals", vals);
 		}
 		outState.putInt("viewerMessageForDel", mMessageForDel);
+		outState.putString("viewerName", mName);
 
 		super.onSaveInstanceState(outState);
 	}
@@ -516,6 +510,7 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 		}
 
 		mMessageForDel = outState.getInt("viewerMessageForDel");
+		mName = outState.getString("viewerName");
 
 		super.onRestoreInstanceState(outState);
 	}
