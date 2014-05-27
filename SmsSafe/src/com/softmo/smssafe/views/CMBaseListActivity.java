@@ -1,5 +1,6 @@
 package com.softmo.smssafe.views;
 
+import android.view.MenuItem;
 import com.softmo.smssafe.main.IMListener;
 
 import android.app.Dialog;
@@ -59,7 +60,16 @@ public abstract class CMBaseListActivity extends ListActivity implements IMHelpe
 		mHelper.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mHelper.onOptionsItemSelected(item)) {
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Log.d("!!!", "onCreateDialog: "+this);

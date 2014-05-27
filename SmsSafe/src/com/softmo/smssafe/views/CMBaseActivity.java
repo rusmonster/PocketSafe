@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.MenuItem;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.main.IMListener;
 import com.softmo.smssafe.utils.MyException;
@@ -59,6 +60,15 @@ public abstract class CMBaseActivity extends Activity implements IMHelperBaseAct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		mHelper.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (mHelper.onOptionsItemSelected(item)) {
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void listenerEvent(IMEvent event) throws Exception {

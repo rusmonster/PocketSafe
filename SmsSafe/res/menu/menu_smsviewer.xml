@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnuSmsViewerShowAll" 
-        android:title="@string/sms_allsms" 
-        android:icon="@android:drawable/ic_menu_agenda">
-    </item>
-    <item android:id="@+id/mnuSmsViewerNewSms" 
-        android:title="@string/sms_newsms"
-        android:icon="@android:drawable/ic_menu_edit">
-    </item>
-    <item android:id="@+id/mnuSmsViewerCall" 
-        android:title="@string/call2phone"
-        android:icon="@android:drawable/ic_menu_call">
-    </item>
-    <item android:id="@+id/mnuSmsViewerCopyPhone" 
-        android:title="@string/sms_copy_phone"
-        android:icon="@drawable/copy2">
-    </item>
-    <item android:id="@+id/mnuSmsViewerDelThread" 
-        android:title="@string/sms_del_thread" 
-        android:icon="@android:drawable/ic_menu_delete">
-    </item>
-    <item android:id="@+id/mnuSmsViewerLock" 
-        android:title="@string/locknow" 
-        android:icon="@android:drawable/ic_lock_lock">
-    </item>
+
+    <item
+			android:id="@+id/mnuSmsViewerCall"
+			android:title="@string/call2phone"
+			android:icon="@android:drawable/ic_menu_call"
+			android:showAsAction="always" />
+
+    <item
+			android:id="@+id/mnuSmsViewerLock"
+			android:title="@string/locknow"
+			android:icon="@android:drawable/ic_lock_lock"
+			android:showAsAction="always" />
+
+    <item
+			android:id="@+id/mnuSmsViewerNewSms"
+			android:title="@string/sms_newsms"
+			android:icon="@android:drawable/ic_menu_edit" />
+
+    <item
+			android:id="@+id/mnuSmsViewerCopyPhone"
+			android:title="@string/sms_copy_phone"
+			android:icon="@drawable/copy2" />
+
+    <item
+			android:id="@+id/mnuSmsViewerDelThread"
+			android:title="@string/sms_del_thread"
+			android:icon="@android:drawable/ic_menu_delete" />
+
 </menu>

@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mnuMainNewSms" 
-        android:title="@string/sms_newsms" 
-        android:icon="@android:drawable/ic_menu_edit">
-    </item>
-    <item android:id="@+id/mnuMainDelAll" 
-        android:title="@string/sms_delall"
-        android:icon="@android:drawable/ic_menu_delete">
-    </item>
-    <item android:id="@+id/mnuMainSettings" 
-        android:title="@string/options" 
-        android:icon="@android:drawable/ic_menu_preferences">
-    </item>
-        <item android:id="@+id/mnuMainLock" 
-        android:title="@string/locknow" 
-        android:icon="@android:drawable/ic_lock_lock">
-    </item>
-        <item android:id="@+id/mnuMainRead" 
-        android:title="@string/mark_all_read" 
-        android:icon="@android:drawable/ic_menu_agenda">
-    </item>
-    <item android:id="@+id/mnuMainAbout" 
-        android:title="@string/about" 
-        android:icon="@android:drawable/ic_menu_info_details">
-    </item>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+			android:id="@+id/mnuMainNewSms"
+			android:title="@string/sms_newsms"
+			android:icon="@android:drawable/ic_menu_edit"
+			android:showAsAction="always"/>
+	<item
+			android:id="@+id/mnuMainLock"
+			android:title="@string/locknow"
+			android:icon="@android:drawable/ic_lock_lock"
+			android:showAsAction="always"/>
+	<item
+			android:id="@+id/mnuMainRead"
+			android:title="@string/mark_all_read"
+			android:icon="@android:drawable/ic_menu_agenda"
+			android:showAsAction="never"/>
+	<item
+			android:id="@+id/mnuMainDelAll"
+			android:title="@string/sms_delall"
+			android:icon="@android:drawable/ic_menu_delete"
+			android:showAsAction="never"/>
+	<item
+			android:id="@+id/mnuMainSettings"
+			android:title="@string/options"
+			android:icon="@android:drawable/ic_menu_preferences"
+			android:showAsAction="never"/>
+	<item
+			android:id="@+id/mnuMainAbout"
+			android:title="@string/about"
+			android:icon="@android:drawable/ic_menu_info_details"
+			android:showAsAction="never"/>
 </menu>

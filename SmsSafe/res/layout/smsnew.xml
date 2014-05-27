@@ -1,86 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@color/white"
-    >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    <TextView
-    android:id="@+id/textView1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/enter_phone"
-    android:textAppearance="?android:attr/textAppearanceLarge" 
-    android:textColor="@color/black"
-    />
+	<RelativeLayout
+		android:id="@+id/linearLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+		<ImageButton
+			android:id="@+id/btSmsNewBook"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/ic_action_add_person"
+			android:text="Book" />
 
-        <EditText
-            android:id="@+id/edSmsNewPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="phone"
-            android:textColor="@color/black"
-            >
+		<EditText
+			android:id="@+id/edSmsNewPhone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignBottom="@+id/btSmsNewBook"
+			android:layout_toLeftOf="@+id/btSmsNewBook"
+			android:layout_weight="1"
+			android:inputType="phone"
+			android:hint="@string/enter_phone">
 
-            <requestFocus />
+			<requestFocus />
 
-        </EditText>
+		</EditText>
 
-        <Button
-            android:id="@+id/btSmsNewBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Book" />
+	</RelativeLayout>
 
-    </LinearLayout>
+	<LinearLayout
+		android:id="@+id/linearLayout1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp">
 
-    
-    <TextView
-    android:id="@+id/tvSmsNewText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/enter_text"
-    android:textAppearance="?android:attr/textAppearanceLarge" 
-    android:textColor="@color/black"
-    />
+		<EditText
+			android:id="@+id/edSmsNewText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_gravity="bottom"
+			android:inputType="textMultiLine"
+			android:hint="@string/enter_text" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-	    <EditText
-	        android:id="@+id/edSmsNewText"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:inputType="textMultiLine"
-	        android:layout_weight="1"
-	        android:textColor="@color/black"
-	         />
-	
-	    <LinearLayout
-	        android:id="@+id/linearLayout2"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical"  >
-	        <TextView
-			    android:id="@+id/tvCounter"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:text="160/160" 
-			    android:textColor="@color/black"
-			    />
-		    <Button
-		        android:id="@+id/btSmsNewSend"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Send" />
-	    </LinearLayout>
+		<LinearLayout
+			android:id="@+id/linearLayout2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_gravity="bottom">
+
+			<TextView
+				android:id="@+id/tvCounter"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="160/160" />
+
+			<ImageButton
+				android:id="@+id/btSmsNewSend"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@android:drawable/ic_menu_send" />
+
+		</LinearLayout>
+
 	</LinearLayout>
+
 </LinearLayout>

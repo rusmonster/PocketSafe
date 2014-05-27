@@ -27,15 +27,15 @@
     <string name="sms_resend">Resend</string>
     <string name="options">Settings</string>
     
-    <string name="enter_phone">Phone:</string>
-    <string name="enter_text">Text:</string>
+    <string name="enter_phone">Phone</string>
+    <string name="enter_text">Text</string>
 
     <string name="copied">Text copyed to clipboard</string>
     <string name="phone_copied">Phone copyed to clipboard</string>
 
-    <string name="enter_pass">Enter password:</string>
-    <string name="enter_new_pass">Enter new password:</string>
-    <string name="repeat_pass">Repeat password:</string>
+    <string name="enter_pass">Enter password</string>
+    <string name="enter_new_pass">Enter new password</string>
+    <string name="repeat_pass">Repeat password</string>
     <string name="old_pass">Enter current password</string>
     <string name="set_pass">Password setup</string>
     <string name="rsa_generate">Generating keys...</string>
@@ -48,8 +48,7 @@
     <string name="opt_notif_sound_only">Sound only</string>
     <string name="opt_notif_nothing">Nothing</string>
         
-    <string name="opt_locknow">Lock now</string>
-    <string name="opt_import">Import sms</string> 
+    <string name="opt_import">Import sms</string>
     <string name="locknow">Lock now</string>
     <string name="opt_sms_list">Sms list type</string>
     <string name="opt_sms_list_flat">Flat</string>
