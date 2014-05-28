@@ -82,6 +82,8 @@
 	<string name="importfinish">Импорт завершен. Вы можете удалить смс из андроид.</string>
 
 	<string name="what_new">Что нового</string>
+    <string name="what_new_18">v.1.4.1</string>
+    <string name="what_new_17">Исправлена проблема отклонения правильного пароля для андроид 4.2+</string>
 	<string name="what_new_16">v.1.4</string>
 	<string name="what_new_15">Добавлен выбор способа отображения списка смс:</string>
 	<string name="what_new_14"></string>
