@@ -1,24 +1,5 @@
 package com.softmo.smssafe.views;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.softmo.smssafe.R;
-import com.softmo.smssafe.dbengine.IMContact;
-import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
-import com.softmo.smssafe.dbengine.IMSetting;
-import com.softmo.smssafe.dbengine.IMSms;
-import com.softmo.smssafe.dbengine.TTypStatus;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.main.IMEventErr;
-import com.softmo.smssafe.main.IMListener;
-import com.softmo.smssafe.views.smsadapter.SmsAdapter;
-import com.softmo.smssafe.views.smsadapter.TTypSmsList;
-import com.softmo.smssafe.utils.MyException;
-import com.softmo.smssafe.utils.MyException.TTypMyException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -46,6 +27,24 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.softmo.smssafe.R;
+import com.softmo.smssafe.dbengine.IMContact;
+import com.softmo.smssafe.dbengine.IMDbQuerySetting.TTypSetting;
+import com.softmo.smssafe.dbengine.IMSetting;
+import com.softmo.smssafe.dbengine.IMSms;
+import com.softmo.smssafe.dbengine.TTypStatus;
+import com.softmo.smssafe.main.IMEvent;
+import com.softmo.smssafe.main.IMEventErr;
+import com.softmo.smssafe.main.IMListener;
+import com.softmo.smssafe.utils.MyException;
+import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.smssafe.views.smsadapter.SmsAdapter;
+import com.softmo.smssafe.views.smsadapter.TTypSmsList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class SmsViewerActivity extends CMBaseListActivity implements IMListener {
 	
@@ -233,14 +232,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 	}
 
 	private Dialog ShowDelThreadDlg() throws MyException {
-		final String phone = mPhone;
-		String nam = new String( phone );
-		IMContact c = getHelper().getMain().DbReader().QueryContact().getByPhone(nam);
-		if (c!=null) nam = c.getName();
-		
 		AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-		
-		String msg = getResources().getString(R.string.sms_delthreadconf, nam);
+
+		String msg = getResources().getString(R.string.sms_delthreadconf, mName);
 		dlg.setMessage(msg);
 		
 		dlg.setPositiveButton(getResources().getString(R.string.yes), new OnClickListener() {
@@ -473,8 +467,6 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
         
 	}
 
-
-
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		Log.d("!!!", "Sms: onSaveInstanceState");
@@ -495,6 +487,9 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			outState.putIntegerArrayList("keys", keys);
 			outState.putStringArrayList("vals", vals);
 		}
+		outState.putInt("viewerMessageForDel", mMessageForDel);
+		outState.putString("viewerName", mName);
+
 		super.onSaveInstanceState(outState);
 	}
 
@@ -511,6 +506,10 @@ public class SmsViewerActivity extends CMBaseListActivity implements IMListener 
 			for (int i=0; i<keys.size(); i++)
 				mSavedMap.put(keys.get(i), vals.get(i));
 		}
+
+		mMessageForDel = outState.getInt("viewerMessageForDel");
+		mName = outState.getString("viewerName");
+
 		super.onRestoreInstanceState(outState);
 	}
 
