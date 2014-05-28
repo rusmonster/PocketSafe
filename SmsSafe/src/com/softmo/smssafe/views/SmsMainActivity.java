@@ -8,6 +8,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -42,7 +43,7 @@ public class SmsMainActivity extends CMBaseListActivity {
 	private static final int IDD_DELALL = 1002;
 	private static final int IDD_PROGRAM_UPDATED = 1003;
 
-	private final android.os.Handler mHandler = new android.os.Handler();
+	private final Handler mHandler = new Handler();
 
 	private MainAdapter mAdapter;
 	private Map<Integer, String> mSavedMap;
@@ -108,7 +109,6 @@ public class SmsMainActivity extends CMBaseListActivity {
 
 		showUpdatedMessage();
 	}
-
 
 	private final Runnable mRunReload = new Runnable() {
 
