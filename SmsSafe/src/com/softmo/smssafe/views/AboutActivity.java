@@ -1,15 +1,13 @@
 package com.softmo.smssafe.views;
 
-import com.softmo.smssafe.R;
-import com.softmo.smssafe.R.layout;
-import com.softmo.smssafe.main.IMEvent;
-import com.softmo.smssafe.utils.MyException;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import com.softmo.smssafe.R;
+import com.softmo.smssafe.main.IMEvent;
+import com.softmo.smssafe.utils.MyException;
 
 public class AboutActivity extends CMBaseActivity {
 
@@ -18,6 +16,7 @@ public class AboutActivity extends CMBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.about);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public void onMainBind() throws MyException {

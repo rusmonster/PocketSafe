@@ -258,11 +258,14 @@ android.support.v4.app.LoaderManagerImpl:
 android.support.v4.app.LoaderManagerImpl$LoaderInfo:
     228:232:public LoaderManagerImpl$LoaderInfo(android.support.v4.app.LoaderManagerImpl,int,android.os.Bundle,android.support.v4.app.LoaderManager$LoaderCallbacks)
     362:415:public void onLoadComplete(android.support.v4.content.Loader,java.lang.Object)
-android.support.v4.app.NavUtils
-android.support.v4.app.NavUtils$NavUtilsImpl
-android.support.v4.app.NavUtils$NavUtilsImplBase
-android.support.v4.app.NavUtils$NavUtilsImplJB
-android.support.v4.app.NavUtilsJB
+android.support.v4.app.NavUtils:
+    private static final java.lang.String TAG
+    public static final java.lang.String PARENT_ACTIVITY
+    174:185:public static void navigateUpFromSameTask(android.app.Activity)
+    230:240:public static android.content.Intent getParentActivityIntent(android.content.Context,java.lang.Class)
+    304:305:private NavUtils()
+android.support.v4.app.NavUtilsJB:
+    23:23:NavUtilsJB()
 android.support.v4.app.NotificationCompat
 android.support.v4.app.NotificationCompat$Action
 android.support.v4.app.NotificationCompat$BigPictureStyle
@@ -290,20 +293,47 @@ android.support.v4.app.ShareCompat$ShareCompatImplICS
 android.support.v4.app.ShareCompat$ShareCompatImplJB
 android.support.v4.app.ShareCompatICS
 android.support.v4.app.ShareCompatJB
-android.support.v4.app.TaskStackBuilder
+android.support.v4.app.TaskStackBuilder:
+    private static final java.lang.String TAG
+    150:150:public static android.support.v4.app.TaskStackBuilder from(android.content.Context)
+    197:215:public android.support.v4.app.TaskStackBuilder addParentStack(android.app.Activity)
+    226:226:public android.support.v4.app.TaskStackBuilder addParentStack(java.lang.Class)
+    256:256:public int getIntentCount()
+    270:270:public android.content.Intent getIntent(int)
+    282:282:public android.content.Intent editIntentAt(int)
+    344:344:public android.app.PendingIntent getPendingIntent(int,int)
+    361:371:public android.app.PendingIntent getPendingIntent(int,int,android.os.Bundle)
+    382:391:public android.content.Intent[] getIntents()
 android.support.v4.app.TaskStackBuilder$SupportParentable
-android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl
-android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase
-android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl:
+    public abstract android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle)
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase:
+    84:86:public android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle)
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb:
+    93:96:public android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle)
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplJellybean
 android.support.v4.app.TaskStackBuilderHoneycomb
 android.support.v4.app.TaskStackBuilderJellybean
 android.support.v4.content.AsyncTaskLoader
 android.support.v4.content.AsyncTaskLoader$LoadTask
-android.support.v4.content.ContextCompat
+android.support.v4.content.ContextCompat:
+    private static final java.lang.String DIR_ANDROID
+    private static final java.lang.String DIR_DATA
+    private static final java.lang.String DIR_OBB
+    private static final java.lang.String DIR_FILES
+    private static final java.lang.String DIR_CACHE
+    33:33:public ContextCompat()
+    67:67:public static boolean startActivities(android.content.Context,android.content.Intent[])
+    154:165:public static java.io.File[] getObbDirs(android.content.Context)
+    214:225:public static java.io.File[] getExternalFilesDirs(android.content.Context,java.lang.String)
+    274:285:public static java.io.File[] getExternalCacheDirs(android.content.Context)
+    290:298:private static varargs java.io.File buildPath(java.io.File,java.lang.String[])
 android.support.v4.content.ContextCompatFroyo
-android.support.v4.content.ContextCompatHoneycomb
-android.support.v4.content.ContextCompatJellybean
+android.support.v4.content.ContextCompatHoneycomb:
+    27:27:ContextCompatHoneycomb()
+    34:34:public static java.io.File getObbDir(android.content.Context)
+android.support.v4.content.ContextCompatJellybean:
+    23:23:ContextCompatJellybean()
 android.support.v4.content.ContextCompatKitKat
 android.support.v4.content.CursorLoader
 android.support.v4.content.FileProvider:
@@ -319,12 +349,30 @@ android.support.v4.content.FileProvider$PathStrategy:
     public abstract android.net.Uri getUriForFile(java.io.File)
 android.support.v4.content.FileProvider$SimplePathStrategy:
     662:692:public android.net.Uri getUriForFile(java.io.File)
-android.support.v4.content.IntentCompat
-android.support.v4.content.IntentCompat$IntentCompatImpl
-android.support.v4.content.IntentCompat$IntentCompatImplBase
-android.support.v4.content.IntentCompat$IntentCompatImplHC
-android.support.v4.content.IntentCompat$IntentCompatImplIcsMr1
-android.support.v4.content.IntentCompatHoneycomb
+android.support.v4.content.IntentCompat:
+    public static final java.lang.String ACTION_EXTERNAL_APPLICATIONS_AVAILABLE
+    public static final java.lang.String ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE
+    public static final java.lang.String EXTRA_CHANGED_PACKAGE_LIST
+    public static final java.lang.String EXTRA_CHANGED_UID_LIST
+    public static final java.lang.String EXTRA_HTML_TEXT
+    public static final int FLAG_ACTIVITY_TASK_ON_HOME
+    public static final int FLAG_ACTIVITY_CLEAR_TASK
+    95:97:private IntentCompat()
+    249:249:public static android.content.Intent makeMainSelectorActivity(java.lang.String,java.lang.String)
+    266:266:public static android.content.Intent makeRestartActivityTask(android.content.ComponentName)
+android.support.v4.content.IntentCompat$IntentCompatImpl:
+    public abstract android.content.Intent makeMainSelectorActivity(java.lang.String,java.lang.String)
+    public abstract android.content.Intent makeRestartActivityTask(android.content.ComponentName)
+android.support.v4.content.IntentCompat$IntentCompatImplBase:
+    51:53:public android.content.Intent makeMainSelectorActivity(java.lang.String,java.lang.String)
+    58:61:public android.content.Intent makeRestartActivityTask(android.content.ComponentName)
+android.support.v4.content.IntentCompat$IntentCompatImplHC:
+    72:72:public android.content.Intent makeRestartActivityTask(android.content.ComponentName)
+android.support.v4.content.IntentCompat$IntentCompatImplIcsMr1:
+    79:79:public android.content.Intent makeMainSelectorActivity(java.lang.String,java.lang.String)
+android.support.v4.content.IntentCompatHoneycomb:
+    22:22:IntentCompatHoneycomb()
+    28:28:public static android.content.Intent makeRestartActivityTask(android.content.ComponentName)
 android.support.v4.content.IntentCompatIcsMr1
 android.support.v4.content.Loader:
     android.content.Context mContext
@@ -1531,6 +1579,8 @@ com.softmo.smssafe.views.SmsViewerActivity:
     private static final int IDD_DELTHREAD
     private static final int IDD_DELMESSAGE
 com.softmo.smssafe.views.TStruct
+com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder:
+    public static final int REQUEST_CODE
 com.softmo.smssafe.views.smsadapter.SmsAdapter:
     private static final int MAX_LOADERS
 com.softmo.smssafe.views.smsadapter.SmsAdapterBubble:

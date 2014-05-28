@@ -8,6 +8,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.softmo.smssafe.R;
@@ -28,6 +28,7 @@ import com.softmo.smssafe.dbengine.IMSmsGroup;
 import com.softmo.smssafe.main.IMEvent;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
+import com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +43,7 @@ public class SmsMainActivity extends CMBaseListActivity {
 	private static final int IDD_DELALL = 1002;
 	private static final int IDD_PROGRAM_UPDATED = 1003;
 
-	private Button mBtNewSms;
-
-	private final android.os.Handler mHandler = new android.os.Handler();
+	private final Handler mHandler = new Handler();
 
 	private MainAdapter mAdapter;
 	private Map<Integer, String> mSavedMap;
@@ -73,47 +72,44 @@ public class SmsMainActivity extends CMBaseListActivity {
 
 	}
 
-    void GotoNewSms() {
-    	Intent intent = new Intent(this, SmsNewActivity.class); 
-        startActivityForResult(intent, NEW_SMS_RESULT);
-    }
-	    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        mBtNewSms = (Button) findViewById(R.id.btNewSms);
-        mBtNewSms.setOnClickListener( new View.OnClickListener() {
-			
-			public void onClick(View v) {
-		        GotoNewSms();
-			}
-		});
-        
-        registerForContextMenu(getListView());
-    }
-    
-    private void showUpdatedMessage() throws MyException {
-    	IMSetting set = getHelper().getLocator().createSetting();
-    	getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.EProgramUpdated);
-    	
-    	if (set.getIntVal()==0) return;
-    	getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.EProgramUpdated, String.valueOf(0));
-    	
-    	showDialog(IDD_PROGRAM_UPDATED);
-    }
+	void GotoNewSms() {
+		Intent intent = new Intent(this, SmsNewActivity.class);
+		startActivityForResult(intent, NEW_SMS_RESULT);
+	}
 
-    public void onMainBind() throws MyException {
-        mAdapter = new MainAdapter(getHelper().getMain(), this);
-       	mAdapter.setMap(mSavedMap);
-       	
-       	Log.d("!!!", "Main: setting adapter...");
-        setListAdapter(mAdapter);    	
-        
-        showUpdatedMessage();
-    }
- 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		getListView().setEmptyView(findViewById(R.id.text_empty));
+		registerForContextMenu(getListView());
+	}
+
+	private void showUpdatedMessage() throws MyException {
+		IMSetting set = getHelper().getLocator().createSetting();
+		getHelper().getMain().DbReader().QuerySetting().getById(set, TTypSetting.EProgramUpdated);
+
+		if (set.getIntVal() == 0) return;
+		getHelper().getMain().DbWriter().UpdateSetting(TTypSetting.EProgramUpdated, String.valueOf(0));
+
+		showDialog(IDD_PROGRAM_UPDATED);
+	}
+
+	public void onMainBind() throws MyException {
+		mAdapter = new MainAdapter(getHelper().getMain(), this);
+		mAdapter.setMap(mSavedMap);
+
+		Log.d("!!!", "Main: setting adapter...");
+		setListAdapter(mAdapter);
+
+		if (CMDefaultAppReminder.getInstance().showIfNeeded(this)) {
+			return;
+		}
+
+		showUpdatedMessage();
+	}
+
 	private final Runnable mRunReload = new Runnable() {
 
 		public void run() {

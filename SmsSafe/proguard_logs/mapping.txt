@@ -514,11 +514,60 @@ android.support.v4.app.LoaderManagerImpl$LoaderInfo -> android.support.v4.app.aa
     void callOnLoadFinished(android.support.v4.content.Loader,java.lang.Object) -> a
     java.lang.String toString() -> toString
     void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> a
-android.support.v4.app.NoSaveStateFrameLayout -> android.support.v4.app.ab:
+android.support.v4.app.NavUtils -> android.support.v4.app.ab:
+    android.support.v4.app.NavUtils$NavUtilsImpl IMPL -> a
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> a
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> b
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> a
+    android.content.Intent getParentActivityIntent(android.content.Context,android.content.ComponentName) -> a
+    java.lang.String getParentActivityName(android.app.Activity) -> b
+    java.lang.String getParentActivityName(android.content.Context,android.content.ComponentName) -> b
+android.support.v4.app.NavUtils$NavUtilsImpl -> android.support.v4.app.ac:
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> a
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> a
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> b
+    java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> a
+android.support.v4.app.NavUtils$NavUtilsImplBase -> android.support.v4.app.ad:
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> a
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> a
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> b
+    java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> a
+android.support.v4.app.NavUtils$NavUtilsImplJB -> android.support.v4.app.ae:
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> a
+    android.content.Intent superGetParentActivityIntent(android.app.Activity) -> b
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> a
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> b
+    java.lang.String getParentActivityName(android.content.Context,android.content.pm.ActivityInfo) -> a
+android.support.v4.app.NavUtilsJB -> android.support.v4.app.af:
+    android.content.Intent getParentActivityIntent(android.app.Activity) -> a
+    boolean shouldUpRecreateTask(android.app.Activity,android.content.Intent) -> a
+    void navigateUpTo(android.app.Activity,android.content.Intent) -> b
+    java.lang.String getParentActivityName(android.content.pm.ActivityInfo) -> a
+android.support.v4.app.NoSaveStateFrameLayout -> android.support.v4.app.ag:
     android.view.ViewGroup wrap(android.view.View) -> a
     void dispatchSaveInstanceState(android.util.SparseArray) -> dispatchSaveInstanceState
     void dispatchRestoreInstanceState(android.util.SparseArray) -> dispatchRestoreInstanceState
-android.support.v4.app.SuperNotCalledException -> android.support.v4.app.ac:
+android.support.v4.app.SuperNotCalledException -> android.support.v4.app.ah:
+android.support.v4.app.TaskStackBuilder -> android.support.v4.app.ai:
+    android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl IMPL -> a
+    java.util.ArrayList mIntents -> b
+    android.content.Context mSourceContext -> c
+    android.support.v4.app.TaskStackBuilder create(android.content.Context) -> a
+    android.support.v4.app.TaskStackBuilder addNextIntent(android.content.Intent) -> a
+    android.support.v4.app.TaskStackBuilder addNextIntentWithParentStack(android.content.Intent) -> b
+    android.support.v4.app.TaskStackBuilder addParentStack(android.content.ComponentName) -> a
+    java.util.Iterator iterator() -> iterator
+    void startActivities() -> a
+    void startActivities(android.os.Bundle) -> a
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl -> android.support.v4.app.aj:
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase -> android.support.v4.app.ak:
+android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplHoneycomb -> android.support.v4.app.al:
+android.support.v4.content.ContextCompat -> android.support.v4.content.a:
+    boolean startActivities(android.content.Context,android.content.Intent[],android.os.Bundle) -> a
+android.support.v4.content.ContextCompatHoneycomb -> android.support.v4.content.b:
+    void startActivities(android.content.Context,android.content.Intent[]) -> a
+android.support.v4.content.ContextCompatJellybean -> android.support.v4.content.c:
+    void startActivities(android.content.Context,android.content.Intent[],android.os.Bundle) -> a
 android.support.v4.content.FileProvider -> android.support.v4.content.FileProvider:
     java.lang.String[] COLUMNS -> a
     java.io.File DEVICE_ROOT -> b
@@ -538,14 +587,26 @@ android.support.v4.content.FileProvider -> android.support.v4.content.FileProvid
     java.io.File buildPath(java.io.File,java.lang.String[]) -> a
     java.lang.String[] copyOf(java.lang.String[],int) -> a
     java.lang.Object[] copyOf(java.lang.Object[],int) -> a
-android.support.v4.content.FileProvider$PathStrategy -> android.support.v4.content.a:
+android.support.v4.content.FileProvider$PathStrategy -> android.support.v4.content.d:
     java.io.File getFileForUri(android.net.Uri) -> a
-android.support.v4.content.FileProvider$SimplePathStrategy -> android.support.v4.content.b:
+android.support.v4.content.FileProvider$SimplePathStrategy -> android.support.v4.content.e:
     java.lang.String mAuthority -> a
     java.util.HashMap mRoots -> b
     void addRoot(java.lang.String,java.io.File) -> a
     java.io.File getFileForUri(android.net.Uri) -> a
-android.support.v4.content.Loader -> android.support.v4.content.c:
+android.support.v4.content.IntentCompat -> android.support.v4.content.f:
+    android.support.v4.content.IntentCompat$IntentCompatImpl IMPL -> a
+    android.content.Intent makeMainActivity(android.content.ComponentName) -> a
+android.support.v4.content.IntentCompat$IntentCompatImpl -> android.support.v4.content.g:
+    android.content.Intent makeMainActivity(android.content.ComponentName) -> a
+android.support.v4.content.IntentCompat$IntentCompatImplBase -> android.support.v4.content.h:
+    android.content.Intent makeMainActivity(android.content.ComponentName) -> a
+android.support.v4.content.IntentCompat$IntentCompatImplHC -> android.support.v4.content.i:
+    android.content.Intent makeMainActivity(android.content.ComponentName) -> a
+android.support.v4.content.IntentCompat$IntentCompatImplIcsMr1 -> android.support.v4.content.j:
+android.support.v4.content.IntentCompatHoneycomb -> android.support.v4.content.k:
+    android.content.Intent makeMainActivity(android.content.ComponentName) -> a
+android.support.v4.content.Loader -> android.support.v4.content.l:
     int mId -> a
     android.support.v4.content.Loader$OnLoadCompleteListener mListener -> b
     boolean mStarted -> c
@@ -564,7 +625,7 @@ android.support.v4.content.Loader -> android.support.v4.content.c:
     java.lang.String dataToString(java.lang.Object) -> a
     java.lang.String toString() -> toString
     void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[]) -> a
-android.support.v4.content.Loader$OnLoadCompleteListener -> android.support.v4.content.d:
+android.support.v4.content.Loader$OnLoadCompleteListener -> android.support.v4.content.m:
 android.support.v4.content.WakefulBroadcastReceiver -> android.support.v4.content.WakefulBroadcastReceiver:
     android.util.SparseArray mActiveWakeLocks -> a
     int mNextId -> b
@@ -2818,6 +2879,7 @@ com.softmo.smssafe.safeservice.CMSafeService -> com.softmo.smssafe.safeservice.C
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onCreate() -> onCreate
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    boolean respondViaMessage(android.content.Intent) -> a
     void onDestroy() -> onDestroy
     com.softmo.smssafe.main.IMMain access$000(com.softmo.smssafe.safeservice.CMSafeService) -> a
 com.softmo.smssafe.safeservice.CMSafeService$1 -> com.softmo.smssafe.safeservice.a:
@@ -3100,6 +3162,7 @@ com.softmo.smssafe.views.CMBaseActivity -> com.softmo.smssafe.views.CMBaseActivi
     void onResume() -> onResume
     void onPause() -> onPause
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void listenerEvent(com.softmo.smssafe.main.IMEvent) -> a
     void onMainBind() -> a
     android.app.Dialog onCreateDialog(int) -> onCreateDialog
@@ -3114,6 +3177,7 @@ com.softmo.smssafe.views.CMBaseListActivity -> com.softmo.smssafe.views.CMBaseLi
     void onResume() -> onResume
     void onPause() -> onPause
     void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     android.app.Dialog onCreateDialog(int) -> onCreateDialog
     void onPrepareDialog(int,android.app.Dialog) -> onPrepareDialog
     com.softmo.smssafe.views.IMBaseActivity getHelper() -> b
@@ -3142,6 +3206,7 @@ com.softmo.smssafe.views.CMHelperBaseActivity -> com.softmo.smssafe.views.a:
     void onResume() -> g
     void onPause() -> h
     void onActivityResult(int,int,android.content.Intent) -> a
+    boolean onOptionsItemSelected(android.view.MenuItem) -> a
     void listenerEvent(com.softmo.smssafe.main.IMEvent) -> a
     android.app.Dialog onCreateDialog(int) -> a
     void lockNow() -> i
@@ -3264,6 +3329,8 @@ com.softmo.smssafe.views.OptionsActivity -> com.softmo.smssafe.views.OptionsActi
     android.app.Dialog mDlg -> g
     void onCreate(android.os.Bundle) -> onCreate
     void onStart() -> onStart
+    boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
+    boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
     void createListAdapter() -> c
     void onMainBind() -> a
     void listenerEvent(com.softmo.smssafe.main.IMEvent) -> a
@@ -3308,8 +3375,7 @@ com.softmo.smssafe.views.OptionsAdapter$ITEMS -> com.softmo.smssafe.views.y:
     com.softmo.smssafe.views.OptionsAdapter$ITEMS ENotification -> c
     com.softmo.smssafe.views.OptionsAdapter$ITEMS ESmsListType -> d
     com.softmo.smssafe.views.OptionsAdapter$ITEMS EImport -> e
-    com.softmo.smssafe.views.OptionsAdapter$ITEMS ELockNow -> f
-    com.softmo.smssafe.views.OptionsAdapter$ITEMS[] $VALUES -> g
+    com.softmo.smssafe.views.OptionsAdapter$ITEMS[] $VALUES -> f
     com.softmo.smssafe.views.OptionsAdapter$ITEMS[] values() -> values
     com.softmo.smssafe.views.OptionsAdapter$ITEMS valueOf(java.lang.String) -> valueOf
 com.softmo.smssafe.views.SetPassActivity -> com.softmo.smssafe.views.SetPassActivity:
@@ -3317,24 +3383,28 @@ com.softmo.smssafe.views.SetPassActivity -> com.softmo.smssafe.views.SetPassActi
     android.widget.EditText mPass2 -> b
     java.util.HashSet mNumbers -> c
     void onCreate(android.os.Bundle) -> onCreate
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
     void onOkClick(android.view.View) -> onOkClick
     void onCancelClick(android.view.View) -> onCancelClick
     void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
     void onRestoreInstanceState(android.os.Bundle) -> onRestoreInstanceState
-com.softmo.smssafe.views.SetPassActivity$TMode -> com.softmo.smssafe.views.z:
+    void close() -> a
+com.softmo.smssafe.views.SetPassActivity$1 -> com.softmo.smssafe.views.z:
+    com.softmo.smssafe.views.SetPassActivity this$0 -> a
+    boolean onKey(android.view.View,int,android.view.KeyEvent) -> onKey
+com.softmo.smssafe.views.SetPassActivity$TMode -> com.softmo.smssafe.views.aa:
     com.softmo.smssafe.views.SetPassActivity$TMode ESetPass -> a
     com.softmo.smssafe.views.SetPassActivity$TMode EChangePass -> b
     com.softmo.smssafe.views.SetPassActivity$TMode[] $VALUES -> c
     com.softmo.smssafe.views.SetPassActivity$TMode[] values() -> values
     com.softmo.smssafe.views.SetPassActivity$TMode valueOf(java.lang.String) -> valueOf
 com.softmo.smssafe.views.SmsMainActivity -> com.softmo.smssafe.views.SmsMainActivity:
-    android.widget.Button mBtNewSms -> a
-    android.os.Handler mHandler -> b
-    com.softmo.smssafe.views.MainAdapter mAdapter -> c
-    java.util.Map mSavedMap -> d
-    int mThreadForDelId -> e
-    java.lang.String mThreadForDelName -> f
-    java.lang.Runnable mRunReload -> g
+    android.os.Handler mHandler -> a
+    com.softmo.smssafe.views.MainAdapter mAdapter -> b
+    java.util.Map mSavedMap -> c
+    int mThreadForDelId -> d
+    java.lang.String mThreadForDelName -> e
+    java.lang.Runnable mRunReload -> f
     void GotoGroup(int) -> b
     void onListItemClick(android.widget.ListView,android.view.View,int,long) -> onListItemClick
     void GotoNewSms() -> c
@@ -3361,34 +3431,31 @@ com.softmo.smssafe.views.SmsMainActivity -> com.softmo.smssafe.views.SmsMainActi
     com.softmo.smssafe.views.MainAdapter access$000(com.softmo.smssafe.views.SmsMainActivity) -> a
     int access$100(com.softmo.smssafe.views.SmsMainActivity) -> b
     java.lang.String access$200(com.softmo.smssafe.views.SmsMainActivity,int) -> a
-com.softmo.smssafe.views.SmsMainActivity$1 -> com.softmo.smssafe.views.aa:
-    com.softmo.smssafe.views.SmsMainActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$2 -> com.softmo.smssafe.views.ab:
+com.softmo.smssafe.views.SmsMainActivity$1 -> com.softmo.smssafe.views.ab:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void run() -> run
-com.softmo.smssafe.views.SmsMainActivity$3 -> com.softmo.smssafe.views.ac:
+com.softmo.smssafe.views.SmsMainActivity$2 -> com.softmo.smssafe.views.ac:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$4 -> com.softmo.smssafe.views.ad:
+com.softmo.smssafe.views.SmsMainActivity$3 -> com.softmo.smssafe.views.ad:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$5 -> com.softmo.smssafe.views.ae:
+com.softmo.smssafe.views.SmsMainActivity$4 -> com.softmo.smssafe.views.ae:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$6 -> com.softmo.smssafe.views.af:
+com.softmo.smssafe.views.SmsMainActivity$5 -> com.softmo.smssafe.views.af:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$7 -> com.softmo.smssafe.views.ag:
+com.softmo.smssafe.views.SmsMainActivity$6 -> com.softmo.smssafe.views.ag:
     com.softmo.smssafe.views.SmsMainActivity this$0 -> a
     void onClick(android.content.DialogInterface,int) -> onClick
-com.softmo.smssafe.views.SmsMainActivity$8 -> com.softmo.smssafe.views.ah:
+com.softmo.smssafe.views.SmsMainActivity$7 -> com.softmo.smssafe.views.ah:
     int[] $SwitchMap$com$softmo$smssafe$main$TTypEvent -> a
 com.softmo.smssafe.views.SmsNewActivity -> com.softmo.smssafe.views.SmsNewActivity:
     android.widget.EditText mEdPhone -> b
-    android.widget.Button mBtBook -> c
+    android.view.View mBtBook -> c
     android.widget.EditText mEdText -> d
-    android.widget.Button mBtSend -> e
+    android.view.View mBtSend -> e
     android.app.ProgressDialog mDlg -> f
     java.lang.String mPhone -> g
     java.lang.String mSavedPhone -> h
@@ -3441,7 +3508,7 @@ com.softmo.smssafe.views.SmsViewerActivity -> com.softmo.smssafe.views.SmsViewer
     android.view.View mEditorView -> g
     android.widget.EditText mEdText -> h
     android.widget.TextView mTvCounter -> i
-    android.widget.Button mBtSend -> j
+    android.view.View mBtSend -> j
     java.util.Map mSavedMap -> k
     com.softmo.smssafe.views.CSmsCounter mSmsCou -> l
     com.softmo.smssafe.views.smsadapter.SmsAdapter mAdapter -> m
@@ -3502,7 +3569,16 @@ com.softmo.smssafe.views.SmsViewerActivity$7 -> com.softmo.smssafe.views.at:
     void onClick(android.content.DialogInterface,int) -> onClick
 com.softmo.smssafe.views.SmsViewerActivity$8 -> com.softmo.smssafe.views.au:
     int[] $SwitchMap$com$softmo$smssafe$main$TTypEvent -> a
-com.softmo.smssafe.views.smsadapter.SmsAdapter -> com.softmo.smssafe.views.a.a:
+com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder -> com.softmo.smssafe.views.a.a:
+    com.softmo.smssafe.views.defaultappreminder.IMDefaultAppReminder sInstance -> a
+    boolean sNeedRemind -> b
+    com.softmo.smssafe.views.defaultappreminder.IMDefaultAppReminder getInstance() -> a
+    boolean showIfNeeded(android.app.Activity) -> a
+com.softmo.smssafe.views.defaultappreminder.CMDefaultAppReminder$1 -> com.softmo.smssafe.views.a.b:
+    boolean showIfNeeded(android.app.Activity) -> a
+com.softmo.smssafe.views.defaultappreminder.IMDefaultAppReminder -> com.softmo.smssafe.views.a.c:
+    boolean showIfNeeded(android.app.Activity) -> a
+com.softmo.smssafe.views.smsadapter.SmsAdapter -> com.softmo.smssafe.views.b.a:
     com.softmo.smssafe.main.IMMain mMain -> a
     com.softmo.smssafe.dbengine.IMDbReader mDbReader -> b
     android.app.Activity mActivity -> c
@@ -3530,11 +3606,11 @@ com.softmo.smssafe.views.smsadapter.SmsAdapter -> com.softmo.smssafe.views.a.a:
     void FillView(com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView,com.softmo.smssafe.dbengine.IMSms,java.lang.String) -> a
     java.lang.Object getItem(int) -> getItem
     int access$010(com.softmo.smssafe.views.smsadapter.SmsAdapter) -> a
-com.softmo.smssafe.views.smsadapter.SmsAdapter$1 -> com.softmo.smssafe.views.a.b:
+com.softmo.smssafe.views.smsadapter.SmsAdapter$1 -> com.softmo.smssafe.views.b.b:
     int[] $SwitchMap$com$softmo$smssafe$views$smsadapter$TTypSmsList -> a
-com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView -> com.softmo.smssafe.views.a.c:
+com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView -> com.softmo.smssafe.views.b.c:
     int mPos -> a
-com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsLoader -> com.softmo.smssafe.views.a.d:
+com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsLoader -> com.softmo.smssafe.views.b.d:
     int mPosition -> b
     com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView mSav -> c
     com.softmo.smssafe.dbengine.IMSms mSms -> d
@@ -3545,12 +3621,12 @@ com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsLoader -> com.softmo.smssafe.v
     void onPostExecute(java.lang.String) -> a
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.softmo.smssafe.views.smsadapter.SmsAdapterBubble -> com.softmo.smssafe.views.a.e:
+com.softmo.smssafe.views.smsadapter.SmsAdapterBubble -> com.softmo.smssafe.views.b.e:
     void FillView(com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView,com.softmo.smssafe.dbengine.IMSms,java.lang.String) -> a
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
     void showStub(com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$SmsAdapterBubbleView) -> a
-com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$1 -> com.softmo.smssafe.views.a.f:
-com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$SmsAdapterBubbleView -> com.softmo.smssafe.views.a.g:
+com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$1 -> com.softmo.smssafe.views.b.f:
+com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$SmsAdapterBubbleView -> com.softmo.smssafe.views.b.g:
     android.widget.LinearLayout mWrapper -> b
     android.widget.RelativeLayout mBubble -> c
     android.widget.TextView mSmsStub -> d
@@ -3558,17 +3634,17 @@ com.softmo.smssafe.views.smsadapter.SmsAdapterBubble$SmsAdapterBubbleView -> com
     android.widget.TextView mCap -> f
     android.widget.ImageView mImgStatus -> g
     android.widget.TextView mText -> h
-com.softmo.smssafe.views.smsadapter.SmsAdapterSimple -> com.softmo.smssafe.views.a.h:
+com.softmo.smssafe.views.smsadapter.SmsAdapterSimple -> com.softmo.smssafe.views.b.h:
     void FillView(com.softmo.smssafe.views.smsadapter.SmsAdapter$SmsAdapterView,com.softmo.smssafe.dbengine.IMSms,java.lang.String) -> a
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-com.softmo.smssafe.views.smsadapter.SmsAdapterSimple$1 -> com.softmo.smssafe.views.a.i:
-com.softmo.smssafe.views.smsadapter.SmsAdapterSimple$SmsAdapterSimpleView -> com.softmo.smssafe.views.a.j:
+com.softmo.smssafe.views.smsadapter.SmsAdapterSimple$1 -> com.softmo.smssafe.views.b.i:
+com.softmo.smssafe.views.smsadapter.SmsAdapterSimple$SmsAdapterSimpleView -> com.softmo.smssafe.views.b.j:
     android.widget.LinearLayout mItem -> b
     android.widget.TextView mCap -> c
     android.widget.ImageView mImgStatus -> d
     android.widget.TextView mText -> e
     android.widget.TextView mSmsLoading -> f
-com.softmo.smssafe.views.smsadapter.TTypSmsList -> com.softmo.smssafe.views.a.k:
+com.softmo.smssafe.views.smsadapter.TTypSmsList -> com.softmo.smssafe.views.b.k:
     com.softmo.smssafe.views.smsadapter.TTypSmsList EFlat -> a
     com.softmo.smssafe.views.smsadapter.TTypSmsList EChat -> b
     int mValue -> c

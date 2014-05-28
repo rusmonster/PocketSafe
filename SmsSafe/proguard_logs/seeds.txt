@@ -112,13 +112,13 @@ com.softmo.smssafe.R$drawable: int avatar
 com.softmo.smssafe.R$drawable: int bubble_green
 com.softmo.smssafe.R$drawable: int bubble_yellow
 com.softmo.smssafe.R$drawable: int copy2
+com.softmo.smssafe.R$drawable: int ic_action_add_person
 com.softmo.smssafe.R$drawable: int msg_err
 com.softmo.smssafe.R$drawable: int msg_list
 com.softmo.smssafe.R$drawable: int notificator
 com.softmo.smssafe.R$id: int Loading
 com.softmo.smssafe.R$id: int SmsStub
 com.softmo.smssafe.R$id: int btDel
-com.softmo.smssafe.R$id: int btNewSms
 com.softmo.smssafe.R$id: int btSendSms
 com.softmo.smssafe.R$id: int btSmsNewBook
 com.softmo.smssafe.R$id: int btSmsNewSend
@@ -142,13 +142,13 @@ com.softmo.smssafe.R$id: int mnuMainLock
 com.softmo.smssafe.R$id: int mnuMainNewSms
 com.softmo.smssafe.R$id: int mnuMainRead
 com.softmo.smssafe.R$id: int mnuMainSettings
+com.softmo.smssafe.R$id: int mnuOptLock
 com.softmo.smssafe.R$id: int mnuSmsNewLock
 com.softmo.smssafe.R$id: int mnuSmsViewerCall
 com.softmo.smssafe.R$id: int mnuSmsViewerCopyPhone
 com.softmo.smssafe.R$id: int mnuSmsViewerDelThread
 com.softmo.smssafe.R$id: int mnuSmsViewerLock
 com.softmo.smssafe.R$id: int mnuSmsViewerNewSms
-com.softmo.smssafe.R$id: int mnuSmsViewerShowAll
 com.softmo.smssafe.R$id: int msg_icon
 com.softmo.smssafe.R$id: int msg_status
 com.softmo.smssafe.R$id: int smsCap
@@ -159,9 +159,8 @@ com.softmo.smssafe.R$id: int smswrapper
 com.softmo.smssafe.R$id: int text1
 com.softmo.smssafe.R$id: int text2
 com.softmo.smssafe.R$id: int text3
-com.softmo.smssafe.R$id: int textView1
+com.softmo.smssafe.R$id: int text_empty
 com.softmo.smssafe.R$id: int tvCounter
-com.softmo.smssafe.R$id: int tvSmsNewText
 com.softmo.smssafe.R$layout: int about
 com.softmo.smssafe.R$layout: int enterpass
 com.softmo.smssafe.R$layout: int list_opt_notif_item
@@ -177,6 +176,7 @@ com.softmo.smssafe.R$layout: int smsviewer
 com.softmo.smssafe.R$layout: int smsviewereditor
 com.softmo.smssafe.R$menu: int main_context
 com.softmo.smssafe.R$menu: int menu_main
+com.softmo.smssafe.R$menu: int menu_options
 com.softmo.smssafe.R$menu: int menu_smsnew
 com.softmo.smssafe.R$menu: int menu_smsviewer
 com.softmo.smssafe.R$string: int EAesErrDecrypt
@@ -272,7 +272,6 @@ com.softmo.smssafe.R$string: int no
 com.softmo.smssafe.R$string: int old_pass
 com.softmo.smssafe.R$string: int opt_changepass
 com.softmo.smssafe.R$string: int opt_import
-com.softmo.smssafe.R$string: int opt_locknow
 com.softmo.smssafe.R$string: int opt_notif_icon_only
 com.softmo.smssafe.R$string: int opt_notif_nothing
 com.softmo.smssafe.R$string: int opt_notif_sound_and_icon
@@ -323,7 +322,9 @@ com.softmo.smssafe.R$string: int what_new_15
 com.softmo.smssafe.R$string: int what_new_16
 com.softmo.smssafe.R$string: int what_new_17
 com.softmo.smssafe.R$string: int what_new_18
+com.softmo.smssafe.R$string: int what_new_19
 com.softmo.smssafe.R$string: int what_new_2
+com.softmo.smssafe.R$string: int what_new_20
 com.softmo.smssafe.R$string: int what_new_3
 com.softmo.smssafe.R$string: int what_new_4
 com.softmo.smssafe.R$string: int what_new_5

@@ -1,154 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    >
-   
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_pass"
-        android:textSize="24dip" 
-        android:textColor="@color/black"
-        />
-    
-    <EditText 
-        android:id="@+id/edPass"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:editable="false"
-        />
-    
-     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-		>
-		
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="1"
-    	    android:onClick="onClick1" 
-    	    />
- 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="2"
-    	    android:onClick="onClick2" 
-    	    />
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="3"
-    	    android:onClick="onClick3" 
-    	    />
-    </LinearLayout>
-    
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-		>
-		
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="4"
-    	    android:onClick="onClick4" 
-    	    />
- 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="5"
-    	    android:onClick="onClick5" 
-    	    />
+	<EditText
+		android:id="@+id/edPass"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:singleLine="true"
+		android:hint="@string/enter_pass"
+		android:editable="false" />
 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="6"
-    	    android:onClick="onClick6" 
-    	    />
-    </LinearLayout>
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-		>
-		
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="7"
-    	    android:onClick="onClick7" 
-    	    />
- 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="8"
-    	    android:onClick="onClick8" 
-    	    />
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
 
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="9"
-    	    android:onClick="onClick9" 
-    	    />
-    </LinearLayout>
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-		>
-    	
-       <Button
-           	android:id="@+id/btDel"
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="C"
-    	    android:onClick="onClickDel" 
-    	    />
-              
-       <Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="0"
-    	    android:onClick="onClick0" 
-    	    />
-              
-    	<Button
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="fill_parent"
-    	    android:layout_weight="1"
-    	    android:text="@android:string/ok"
-    	    android:onClick="onOkClick" 
-    	    />
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="1"
+			android:onClick="onClick1" />
 
-    </LinearLayout>
-        
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="2"
+			android:onClick="onClick2" />
 
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="3"
+			android:onClick="onClick3" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="4"
+			android:onClick="onClick4" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="5"
+			android:onClick="onClick5" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="6"
+			android:onClick="onClick6" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="7"
+			android:onClick="onClick7" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="8"
+			android:onClick="onClick8" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="9"
+			android:onClick="onClick9" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/btDel"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="C"
+			android:onClick="onClickDel" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="0"
+			android:onClick="onClick0" />
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:text="@android:string/ok"
+			android:onClick="onOkClick" />
+
+	</LinearLayout>
 
 </LinearLayout>

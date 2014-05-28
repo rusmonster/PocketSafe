@@ -1,69 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/white"
-    >
 
-   	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-	    		android:id="@+id/smsItem"
-		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        android:orientation="vertical"
-		        android:layout_alignParentTop="true" 
-		        android:visibility="invisible"
-		        >
-		         		
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:orientation="horizontal"
-			        >
-			        
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<LinearLayout
+		android:id="@+id/smsItem"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:visibility="invisible">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
 			<ImageView
-		        android:id="@+id/msg_icon"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_margin="2dip"
-		        android:src="@drawable/msg_list" 
-		        />
-			
+				android:id="@+id/msg_icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="2dip"
+				android:src="@drawable/msg_list" />
+
 			<TextView
-				    android:id="@+id/smsCap"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="1"
-				    android:textStyle="bold"
-				    android:layout_marginLeft="8dip"
-				    android:text="cap"
-				    />
-			
+				android:id="@+id/smsCap"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textStyle="bold"
+				android:layout_marginLeft="8dip"
+				android:text="cap" />
+
 			<ImageView
-		        android:id="@+id/msg_status"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_margin="2dip"
-		        android:src="@drawable/msg_err" 
-		        />
-			
-		</LinearLayout>	 
-	    
+				android:id="@+id/msg_status"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="2dip"
+				android:src="@drawable/msg_err" />
+
+		</LinearLayout>
+
 		<TextView
-			    android:id="@+id/smsText"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:textColor="@color/black"
-			    android:text="text" 
-			    />
+			android:id="@+id/smsText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="text" />
+
 	</LinearLayout>
-	
+
 	<TextView
-	    android:id="@+id/Loading"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:gravity="center"
-	    android:layout_alignTop="@+id/smsItem"
-	    android:layout_alignBottom="@+id/smsItem"
-	    android:text="@string/Loading" 
-	    />	
+		android:id="@+id/Loading"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:text="@string/Loading" />
+
 </RelativeLayout>

@@ -27,15 +27,15 @@
 	<string name="sms_resend">Отправить заново</string>
     <string name="options">Настройка</string>
     
-    <string name="enter_phone">Телефон:</string>
-    <string name="enter_text">Текст:</string>
+    <string name="enter_phone">Телефон</string>
+    <string name="enter_text">Текст</string>
 
     <string name="copied">Текст скопирован в буфер</string>
     <string name="phone_copied">Телефон скопирован в буфер</string>
 
-    <string name="enter_pass">Введите пароль:</string>
-    <string name="enter_new_pass">Задайте новый пароль:</string>
-    <string name="repeat_pass">Повторите пароль:</string>
+    <string name="enter_pass">Введите пароль</string>
+    <string name="enter_new_pass">Задайте новый пароль</string>
+    <string name="repeat_pass">Повторите пароль</string>
     <string name="old_pass">Введите Ваш пароль</string>
     <string name="set_pass">Установка пароля</string>
     <string name="rsa_generate">Генерация ключей...</string>
@@ -48,7 +48,6 @@
     <string name="opt_notif_sound_only">Только звук</string>
     <string name="opt_notif_nothing">Ничего</string>
         
-    <string name="opt_locknow">Заблокировать сейчас</string>
     <string name="opt_import">Импортировать смс</string>
     <string name="locknow">Заблокировать</string>
     
@@ -82,6 +81,9 @@
 	<string name="importfinish">Импорт завершен. Вы можете удалить смс из андроид.</string>
 
 	<string name="what_new">Что нового</string>
+
+    <string name="what_new_20">v.1.5</string>
+	<string name="what_new_19">Обновление пользовательского интерфейса</string>
     <string name="what_new_18">v.1.4.1</string>
     <string name="what_new_17">Исправлена проблема отклонения правильного пароля для андроид 4.2+</string>
 	<string name="what_new_16">v.1.4</string>

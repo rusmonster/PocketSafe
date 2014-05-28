@@ -32,6 +32,8 @@
 	</string-array>
 
 	<string-array name="text_what_new">
+		<item>@string/what_new_20</item>
+		<item>@string/what_new_19</item>
 		<item>@string/what_new_18</item>
 		<item>@string/what_new_17</item>
 		<item>@string/what_new_16</item>
