@@ -1,11 +1,7 @@
 package com.softmo.smssafe.main;
 
-import java.math.BigInteger;
-import java.util.Date;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.softmo.smssafe.sec.IMAes;
 import com.softmo.smssafe.sec.IMBase64;
 import com.softmo.smssafe.utils.IMLocator;
@@ -15,17 +11,25 @@ import com.softmo.smssafe.utils.IMTimerWakeup;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Date;
+
 public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 
 	private IMLocator mLocator;
 	private IMPassHolderObserver mObserver;
-	private String mPass;
+	private byte[] mPass;
 	private String mKey;
+	private byte[] mSecret;
 	private IMAes mAes;
 	private IMBase64 mBase64;
 	private long mInterval;
 	private IMTimerWakeup mTimer;
 	private Date mTimExpire;
+	private byte[] mSecretMask;
+	private byte[] mPassMask;
 	
 	public CMPassHolder(IMLocator locator) {
 		mLocator = locator;
@@ -39,7 +43,7 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 		mTimExpire = null;
 		mTimer.cancelTimer();
 		
-		if (mPass!=null) {
+		if (isPassValid()) {
 			mTimExpire = new Date(System.currentTimeMillis()+mInterval);
 			mTimer.startTimer(mInterval);
 		}
@@ -64,22 +68,36 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	public void setPass(String pass) throws MyException {
 		if (pass==null || pass.length()==0)
 			throw new MyException(TTypMyException.EPassInvalid);
-		
-		
-		mPass = pass;
+
+
+		mPass = pass.getBytes();
+
+		mPassMask = new byte[mPass.length];
+		SecureRandom sr = new SecureRandom();
+		sr.nextBytes(mPassMask);
+
+		maskPass();
+
 		mTimExpire = null; //for pass check in getKey();
 		try {
 			if (mKey!=null)
 				getKey();
 		} catch (MyException e) {
 			Log.e("!!!", "Invalid pass: "+e.getId());
-			mPass=null;
+			clearPass();
 			throw e;
 		}
 	}
 
 	public String getPass() throws MyException {
-		return mPass;
+		String res = null;
+		if (isPassValid()) {
+			maskPass();
+			res = new String(mPass);
+			maskPass();
+		}
+
+		return res;
 	}
 
 	public void setKey(String _key) {
@@ -89,16 +107,30 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	public BigInteger getKey() throws MyException {
 		Date dat = new Date();
 		if (mTimExpire!=null && dat.after(mTimExpire)) {
-			mPass=null;
+			clearPass();
 		}
 		
-		if (mPass==null)
+		if (!isPassValid())
 			throw new MyException(TTypMyException.EPassExpired);
-		
-		String key = mAes.decrypt(mPass, mKey);
-		byte[] b = mBase64.decode(key.getBytes());
-		BigInteger res = new BigInteger(b);
-		
+
+		BigInteger res;
+		if (mSecret == null) {
+			String key = mAes.decrypt(getPass(), mKey);
+			mSecret = mBase64.decode(key.getBytes());
+
+			mSecretMask = new byte[mSecret.length];
+			SecureRandom sr = new SecureRandom();
+			sr.nextBytes(mSecretMask);
+
+			res = new BigInteger(mSecret);
+
+			maskSecret();
+		} else {
+			maskSecret();
+			res = new BigInteger(mSecret);
+			maskSecret();
+		}
+
 		return res;
 	}
 
@@ -111,10 +143,9 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	}
 
 	public void timerEvent(IMTimer sender) throws Exception {
-		if (mPass!=null) {
-			mPass = null;
-			mTimExpire=null;
-			if (mObserver!=null) 
+		if (isPassValid()) {
+			clearPass();
+			if (mObserver!=null)
 				mObserver.passExpired(this);
 		}
 	}
@@ -124,15 +155,41 @@ public class CMPassHolder implements IMPassHolder, IMTimerObserver {
 	}
 
 	public void clearPass() {
-		if (mPass!=null) {
-			mPass=null;
-			mTimExpire=null;
-			mTimer.cancelTimer();
-		}
+
+		if (mSecret != null)
+			Arrays.fill(mSecret, (byte) 0);
+
+		if (mSecretMask != null)
+			Arrays.fill(mSecretMask, (byte) 0);
+
+		if (mPass != null)
+			Arrays.fill(mPass, (byte) 0);
+
+		if (mPassMask != null)
+			Arrays.fill(mPassMask, (byte) 0);
+
+		mTimExpire=null;
+		mSecret = null;
+		mSecretMask = null;
+		mPass = null;
+		mPassMask = null;
+
+		mTimer.cancelTimer();
 	}
 
 	public void setContext(Context context) {
 		mTimer.setContext(context);
 	}
-	
+
+	private void maskSecret() {
+		for (int i = 0; i < mSecret.length; i++) {
+			mSecret[i] = (byte) (mSecret[i] ^ mSecretMask[i]);
+		}
+	}
+
+	private void maskPass() {
+		for (int i = 0; i < mPass.length; i++) {
+			mPass[i] = (byte) (mPass[i] ^ mPassMask[i]);
+		}
+	}
 }
