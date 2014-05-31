@@ -1429,48 +1429,48 @@ android.support.v4.widget.ViewDragHelper:
     908:927:protected boolean canScroll(android.view.View,boolean,int,int,int,int)
     1331:1337:public boolean isEdgeTouched(int)
     1351:1351:public boolean isEdgeTouched(int,int)
-smssafe2.BuildConfig
-smssafe2.R
-smssafe2.R$array
-smssafe2.R$attr
-smssafe2.R$color
-smssafe2.R$drawable
-smssafe2.R$id
-smssafe2.R$layout
-smssafe2.R$menu
-smssafe2.R$string
-smssafe2.bootreceiver.CMBootReceiver:
+com.softmo.smssafe2.BuildConfig
+com.softmo.smssafe2.R
+com.softmo.smssafe2.R$array
+com.softmo.smssafe2.R$attr
+com.softmo.smssafe2.R$color
+com.softmo.smssafe2.R$drawable
+com.softmo.smssafe2.R$id
+com.softmo.smssafe2.R$layout
+com.softmo.smssafe2.R$menu
+com.softmo.smssafe2.R$string
+com.softmo.smssafe2.bootreceiver.CMBootReceiver:
     private static final java.lang.String ACTION
-smssafe2.dbengine.CMDbTableContact:
+com.softmo.smssafe2.dbengine.CMDbTableContact:
     51:58:public int getCount()
-smssafe2.dbengine.CMDbTableSetting:
+com.softmo.smssafe2.dbengine.CMDbTableSetting:
     52:62:public int getCount()
-smssafe2.dbengine.CMDbTableSms:
+com.softmo.smssafe2.dbengine.CMDbTableSms:
     201:211:public int getCount()
     218:234:public void QueryByFolderOrderByDatDesc(java.util.ArrayList,int,int,int)
-smssafe2.dbengine.CMSetting:
+com.softmo.smssafe2.dbengine.CMSetting:
     14:15:public void setIntVal(int)
-smssafe2.dbengine.IMDbDataSet:
+com.softmo.smssafe2.dbengine.IMDbDataSet:
     public abstract int getCount()
-smssafe2.dbengine.IMDbEngine:
+com.softmo.smssafe2.dbengine.IMDbEngine:
     public static final java.lang.String ENCODING
-smssafe2.dbengine.IMDbQuerySms:
+com.softmo.smssafe2.dbengine.IMDbQuerySms:
     public abstract void QueryByFolderOrderByDatDesc(java.util.ArrayList,int,int,int)
-smssafe2.dbengine.IMSetting:
+com.softmo.smssafe2.dbengine.IMSetting:
     public abstract void setIntVal(int)
-smssafe2.dbengine.MyAppContext:
+com.softmo.smssafe2.dbengine.MyAppContext:
     25:25:public static android.content.Context getAppContext()
-smssafe2.dbengine.TTypDirection
-smssafe2.dbengine.TTypFolder
-smssafe2.dbengine.TTypIsNew
-smssafe2.dbengine.TTypStatus
-smssafe2.dbengine.provider.CMDbProvider:
+com.softmo.smssafe2.dbengine.TTypDirection
+com.softmo.smssafe2.dbengine.TTypFolder
+com.softmo.smssafe2.dbengine.TTypIsNew
+com.softmo.smssafe2.dbengine.TTypStatus
+com.softmo.smssafe2.dbengine.provider.CMDbProvider:
     public static final java.lang.String PROVIDER_NAME
     private static final java.lang.String SMSGROUP_PATH
     private static final int CODE_SETTING
     private static final int CODE_SMS
     private static final int CODE_SMSGROUP
-smssafe2.dbengine.provider.CMSQLiteOnlineHelper:
+com.softmo.smssafe2.dbengine.provider.CMSQLiteOnlineHelper:
     public static final java.lang.String DB_NAME
     public static final int DB_VERSION
     public static final java.lang.String TABLE_SETTING
@@ -1496,48 +1496,48 @@ smssafe2.dbengine.provider.CMSQLiteOnlineHelper:
     public static final java.lang.String SMSGROUP_COUNTNEW
     public static final java.lang.String SMSGROUP_MAXDATE
     public static final java.lang.String QUERY_SMSGROUP
-smssafe2.main.TTypEventStrings
-smssafe2.main.importer.CMImporter:
+com.softmo.smssafe2.main.TTypEventStrings
+com.softmo.smssafe2.main.importer.CMImporter:
     private static final int PAGE_SIZE
-smssafe2.main.notificator.IMNotificatorSound:
+com.softmo.smssafe2.main.notificator.IMNotificatorSound:
     public abstract void Cancel()
-smssafe2.main.notificator.TTypNotification:
+com.softmo.smssafe2.main.notificator.TTypNotification:
     20:20:public int getValue()
-smssafe2.sec.CMAes:
+com.softmo.smssafe2.sec.CMAes:
     private static final java.lang.String TAG
     private static final int ITERATION_COUNT
     private static final int KEY_LEN
     private static final int SALT_LEN
     private static final java.lang.String DELIMITER
     private static final java.lang.String UTF8
-smssafe2.sec.CMBase64:
+com.softmo.smssafe2.sec.CMBase64:
     private static final java.lang.String BASE64_STR
     private static final byte BASE64_ZERO
-smssafe2.smsreceiver.CMSmsMonitor:
+com.softmo.smssafe2.smsreceiver.CMSmsMonitor:
     private static final java.lang.String ACTION
-smssafe2.smssender.CMSmsSender:
+com.softmo.smssafe2.smssender.CMSmsSender:
     private static final java.lang.String SENT
     private static final java.lang.String DELIVERED
     private static final java.lang.String SMS_ID
     private static final java.lang.String PART_NUM
-smssafe2.utils.CMLocator:
-    135:135:public smssafe2.utils.IMTimer createTimer()
-smssafe2.utils.CMTimer
-smssafe2.utils.CMTimer$1
-smssafe2.utils.CMTimer$TTimerState
-smssafe2.utils.CMTimer2
-smssafe2.utils.CMTimer2$1
-smssafe2.utils.CMTimer2$2
-smssafe2.utils.CMTimer2$TTimer2State
-smssafe2.utils.IMLocator:
-    public abstract smssafe2.utils.IMTimer createTimer()
-smssafe2.views.CMHelperBaseActivity:
+com.softmo.smssafe2.utils.CMLocator:
+    135:135:public com.softmo.smssafe2.utils.IMTimer createTimer()
+com.softmo.smssafe2.utils.CMTimer
+com.softmo.smssafe2.utils.CMTimer$1
+com.softmo.smssafe2.utils.CMTimer$TTimerState
+com.softmo.smssafe2.utils.CMTimer2
+com.softmo.smssafe2.utils.CMTimer2$1
+com.softmo.smssafe2.utils.CMTimer2$2
+com.softmo.smssafe2.utils.CMTimer2$TTimer2State
+com.softmo.smssafe2.utils.IMLocator:
+    public abstract com.softmo.smssafe2.utils.IMTimer createTimer()
+com.softmo.smssafe2.views.CMHelperBaseActivity:
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT
     private static final int IDD_GENERATE
     private static final int IDD_IMPORT
     public static final java.lang.String KILL_ACTION
-smssafe2.views.CSmsCounter:
+com.softmo.smssafe2.views.CSmsCounter:
     public static final int LEN_SMALL
     public static final int LEN_LONG
     47:47:public int getLen()
@@ -1545,33 +1545,33 @@ smssafe2.views.CSmsCounter:
     49:49:public int getCount()
     50:50:public int getOst()
     51:51:public int getNextLimit()
-smssafe2.views.EnterPassActivity:
+com.softmo.smssafe2.views.EnterPassActivity:
     public static final java.lang.String PASS
-smssafe2.views.ErrorDisplayer:
+com.softmo.smssafe2.views.ErrorDisplayer:
     12:79:public ErrorDisplayer()
-smssafe2.views.MainAdapter:
+com.softmo.smssafe2.views.MainAdapter:
     private static final int LAYOUT
     private static final int MAX_LOADERS
-smssafe2.views.OptionsActivity:
+com.softmo.smssafe2.views.OptionsActivity:
     private static final int IDD_PASSTIMOUT
     private static final int IDD_IMPORTCONF
     private static final int IDD_SELECTNOTIFICATION
     private static final int IDD_SELECTSMSLIST
     private static final int SET_PASS_RESULT
     private static final int ENTER_PASS_RESULT
-smssafe2.views.SetPassActivity:
+com.softmo.smssafe2.views.SetPassActivity:
     public static final java.lang.String MODE
     public static final java.lang.String PASS
-smssafe2.views.SmsMainActivity:
+com.softmo.smssafe2.views.SmsMainActivity:
     protected static final int NEW_SMS_RESULT
     private static final int IDD_DELTHREAD
     private static final int IDD_DELALL
     private static final int IDD_PROGRAM_UPDATED
-smssafe2.views.SmsNewActivity:
+com.softmo.smssafe2.views.SmsNewActivity:
     private static final int IDD_SMS_SENDING
     protected static final int CONTACT_PICKER_RESULT
     public static final java.lang.String TEXT
-smssafe2.views.SmsViewerActivity:
+com.softmo.smssafe2.views.SmsViewerActivity:
     public static final java.lang.String HASH
     public static final java.lang.String SMS_ID
     private static final int IDD_SMS_SENDING
@@ -1582,14 +1582,14 @@ smssafe2.views.SmsViewerActivity:
     private static final int NEW_SMS_RESULT
     private static final int IDD_DELTHREAD
     private static final int IDD_DELMESSAGE
-smssafe2.views.TStruct
-smssafe2.views.defaultappreminder.CMDefaultAppReminder:
+com.softmo.smssafe2.views.TStruct
+com.softmo.smssafe2.views.defaultappreminder.CMDefaultAppReminder:
     public static final int REQUEST_CODE
-smssafe2.views.smsadapter.SmsAdapter:
+com.softmo.smssafe2.views.smsadapter.SmsAdapter:
     private static final int MAX_LOADERS
-smssafe2.views.smsadapter.SmsAdapterBubble:
+com.softmo.smssafe2.views.smsadapter.SmsAdapterBubble:
     private static final int LAYOUT
-smssafe2.views.smsadapter.SmsAdapterSimple:
+com.softmo.smssafe2.views.smsadapter.SmsAdapterSimple:
     private static final int LAYOUT
-smssafe2.views.smsadapter.TTypSmsList:
+com.softmo.smssafe2.views.smsadapter.TTypSmsList:
     18:18:public int getValue()

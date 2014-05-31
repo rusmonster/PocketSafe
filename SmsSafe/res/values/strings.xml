@@ -70,7 +70,7 @@
 	<string name="program">Program:</string>
 	<string name="site">WEB:</string>
 	<string name="version">Version:</string>
-	<string name="versionVal">1.5</string>
+	<string name="versionVal">2.0</string>
 
 	<string name="author">Author:</string>
 	<string name="authorVal">Dmitry Kalita</string>
@@ -82,7 +82,7 @@
 	<string name="importfinish">Import complete. Now you can delete sms from android</string>
 
 	<string name="what_new">What new</string>
-	<string name="what_new_20">v.1.5</string>
+	<string name="what_new_20">v.2.0</string>
 	<string name="what_new_19">Updated UI</string>
     <string name="what_new_18">v.1.4.1</string>
     <string name="what_new_17">Fixed an \"Incorrect password\" problem on android 4.2+</string>
