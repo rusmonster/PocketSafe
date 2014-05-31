@@ -2614,13 +2614,16 @@ com.softmo.smssafe.main.CMMain$2 -> com.softmo.smssafe.a.h:
 com.softmo.smssafe.main.CMPassHolder -> com.softmo.smssafe.a.i:
     com.softmo.smssafe.utils.IMLocator mLocator -> a
     com.softmo.smssafe.main.IMPassHolderObserver mObserver -> b
-    java.lang.String mPass -> c
+    byte[] mPass -> c
     java.lang.String mKey -> d
-    com.softmo.smssafe.sec.IMAes mAes -> e
-    com.softmo.smssafe.sec.IMBase64 mBase64 -> f
-    long mInterval -> g
-    com.softmo.smssafe.utils.IMTimerWakeup mTimer -> h
-    java.util.Date mTimExpire -> i
+    byte[] mSecret -> e
+    com.softmo.smssafe.sec.IMAes mAes -> f
+    com.softmo.smssafe.sec.IMBase64 mBase64 -> g
+    long mInterval -> h
+    com.softmo.smssafe.utils.IMTimerWakeup mTimer -> i
+    java.util.Date mTimExpire -> j
+    byte[] mSecretMask -> k
+    byte[] mPassMask -> l
     void restartTimer() -> a
     void cancelTimer() -> b
     void setPass(java.lang.String) -> a
@@ -2633,6 +2636,8 @@ com.softmo.smssafe.main.CMPassHolder -> com.softmo.smssafe.a.i:
     void setObserever(com.softmo.smssafe.main.IMPassHolderObserver) -> a
     void clearPass() -> f
     void setContext(android.content.Context) -> a
+    void maskSecret() -> g
+    void maskPass() -> h
 com.softmo.smssafe.main.IMDbWriter -> com.softmo.smssafe.a.j:
     void SmsUpdate(com.softmo.smssafe.dbengine.IMSms) -> a
     void SmsDelAll() -> b
@@ -2829,9 +2834,7 @@ com.softmo.smssafe.sec.CMAes -> com.softmo.smssafe.b.a:
     com.softmo.smssafe.utils.IMLocator mLocator -> a
     java.lang.String encrypt(java.lang.String,java.lang.String) -> a
     java.lang.String decrypt(java.lang.String,java.lang.String) -> b
-    byte[] getRawKey(byte[]) -> a
-    byte[] encrypt(byte[],byte[]) -> a
-    byte[] decrypt(byte[],byte[]) -> b
+    javax.crypto.SecretKey deriveKeyPbkdf2(byte[],java.lang.String) -> a
 com.softmo.smssafe.sec.CMBase64 -> com.softmo.smssafe.b.b:
     byte[] BASE64_BYTES -> a
     java.util.Map mMap -> b

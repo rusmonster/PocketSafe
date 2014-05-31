@@ -1457,7 +1457,11 @@ com.softmo.smssafe.main.notificator.TTypNotification:
     20:20:public int getValue()
 com.softmo.smssafe.sec.CMAes:
     private static final java.lang.String TAG
-    private static final int JELLY_BEAN_4_2
+    private static final int ITERATION_COUNT
+    private static final int KEY_LEN
+    private static final int SALT_LEN
+    private static final java.lang.String DELIMITER
+    private static final java.lang.String UTF8
 com.softmo.smssafe.sec.CMBase64:
     private static final java.lang.String BASE64_STR
     private static final byte BASE64_ZERO
