@@ -17,7 +17,7 @@ import java.security.spec.KeySpec;
 
 public class CMAes implements IMAes {
 	private static final String TAG = "CMAes";
-	private static final int ITERATION_COUNT = 10000;
+	private static final int ITERATION_COUNT = 1000;
 	private static final int KEY_LEN = 256;
 	private static final int SALT_LEN = KEY_LEN / 8;
 	private static final String DELIMITER = "]";
