@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="com.softmo.smssafe"
+		  package="com.softmo.smssafe2"
 		  android:versionCode="7"
 		  android:versionName="@string/versionVal">
 
@@ -27,7 +27,7 @@
 
 		<activity
 				android:label="@string/app_name"
-				android:name=".views.SmsMainActivity"
+				android:name="com.softmo.smssafe2.views.SmsMainActivity"
 				android:windowSoftInputMode="stateAlwaysHidden">
 
 			<intent-filter>
@@ -36,7 +36,7 @@
 			</intent-filter>
 		</activity>
 
-		<receiver android:name=".smsreceiver.CMSmsMonitor"
+		<receiver android:name="com.softmo.smssafe2.smsreceiver.CMSmsMonitor"
 				  android:permission="android.permission.BROADCAST_SMS">
 
 			<intent-filter android:priority="2147483647">
@@ -46,7 +46,7 @@
 		</receiver>
 
 		<!--We don't work with MMS, but is is needed to be "Default SMS App" in KitKat+-->
-		<receiver android:name=".smsreceiver.CMSmsMonitor"
+		<receiver android:name="com.softmo.smssafe2.smsreceiver.CMSmsMonitor"
 				  android:permission="android.permission.BROADCAST_WAP_PUSH">
 			<intent-filter>
 				<action android:name="android.provider.Telephony.WAP_PUSH_DELIVER"/>
@@ -54,16 +54,16 @@
 			</intent-filter>
 		</receiver>
 
-		<receiver android:name=".bootreceiver.CMBootReceiver">
+		<receiver android:name="com.softmo.smssafe2.bootreceiver.CMBootReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>
 			</intent-filter>
 		</receiver>
 
 		<activity
-				android:name=".views.SmsNewActivity"
+				android:name="com.softmo.smssafe2.views.SmsNewActivity"
 				android:windowSoftInputMode="stateAlwaysHidden"
-				android:parentActivityName=".views.SmsMainActivity">
+				android:parentActivityName="com.softmo.smssafe2.views.SmsMainActivity">
 			<!-- Parent activity meta-data to support 4.0 and lower -->
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
@@ -82,7 +82,7 @@
 			</intent-filter>
 		</activity>
 
-		<service android:name=".safeservice.CMSafeService"
+		<service android:name="com.softmo.smssafe2.safeservice.CMSafeService"
 				 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
 				 android:exported="true">
 
@@ -94,8 +94,8 @@
 			</intent-filter>
 		</service>
 
-		<activity android:name=".views.SmsViewerActivity"
-				  android:parentActivityName=".views.SmsMainActivity">
+		<activity android:name="com.softmo.smssafe2.views.SmsViewerActivity"
+				  android:parentActivityName="com.softmo.smssafe2.views.SmsMainActivity">
 			<!-- Parent activity meta-data to support 4.0 and lower -->
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
@@ -103,8 +103,8 @@
 
 		</activity>
 
-		<activity android:name=".views.AboutActivity"
-				  android:parentActivityName=".views.SmsMainActivity">
+		<activity android:name="com.softmo.smssafe2.views.AboutActivity"
+				  android:parentActivityName="com.softmo.smssafe2.views.SmsMainActivity">
 			<!-- Parent activity meta-data to support 4.0 and lower -->
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
@@ -112,8 +112,8 @@
 
 		</activity>
 
-		<activity android:name=".views.OptionsActivity"
-				  android:parentActivityName=".views.SmsMainActivity">
+		<activity android:name="com.softmo.smssafe2.views.OptionsActivity"
+				  android:parentActivityName="com.softmo.smssafe2.views.SmsMainActivity">
 			<!-- Parent activity meta-data to support 4.0 and lower -->
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
@@ -121,11 +121,11 @@
 
 		</activity>
 
-		<activity android:name=".views.SetPassActivity"
+		<activity android:name="com.softmo.smssafe2.views.SetPassActivity"
 				  android:label="@string/set_pass"
 				  android:windowSoftInputMode="stateAlwaysVisible"/>
 
-		<activity android:name=".views.EnterPassActivity"/>
+		<activity android:name="com.softmo.smssafe2.views.EnterPassActivity"/>
 	</application>
 
 </manifest>
