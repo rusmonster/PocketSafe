@@ -1,21 +1,27 @@
 package com.softmo.smssafe.sec;
 
-import java.security.SecureRandom;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
-import android.os.Build;
+import android.os.SystemClock;
 import android.util.Log;
 import com.softmo.smssafe.utils.IMLocator;
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+
 public class CMAes implements IMAes {
 	private static final String TAG = "CMAes";
-	private static final int JELLY_BEAN_4_2 = 17;
+	private static final int ITERATION_COUNT = 1000;
+	private static final int KEY_LEN = 256;
+	private static final int SALT_LEN = KEY_LEN / 8;
+	private static final String DELIMITER = "]";
+	private static final String UTF8 = "UTF-8";
 
 	private IMLocator mLocator;
 	
@@ -24,59 +30,67 @@ public class CMAes implements IMAes {
 	}
 	
 	public String encrypt(String seed, String cleartext) throws MyException {
+		Log.i("!!!", "encrypting... ");
+		long tim = SystemClock.elapsedRealtime();
 		try {
-	        byte[] rawKey = getRawKey(seed.getBytes());
-	        byte[] result = encrypt(rawKey, cleartext.getBytes());
-	        String ret = new String( mLocator.createBase64().encode(result) );
-	        return ret;
+			SecureRandom random = new SecureRandom();
+			byte[] salt = new byte[SALT_LEN];
+			random.nextBytes(salt);
+			SecretKey key = deriveKeyPbkdf2(salt, seed);
+
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			byte[] iv = new byte[cipher.getBlockSize()];
+			random.nextBytes(iv);
+			IvParameterSpec ivParams = new IvParameterSpec(iv);
+
+			cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
+			byte[] result = cipher.doFinal(cleartext.getBytes(UTF8));
+
+			IMBase64 base64 = mLocator.createBase64();
+			StringBuilder sb = new StringBuilder();
+	        sb.append(new String(base64.encode(salt), UTF8));
+			sb.append(DELIMITER);
+			sb.append(new String(base64.encode(iv), UTF8));
+			sb.append(DELIMITER);
+			sb.append(new String(base64.encode(result), UTF8));
+
+			tim = SystemClock.elapsedRealtime() - tim;
+			Log.i("!!!", "encrypting done all: " + tim);
+			return sb.toString();
 		} catch (Exception e) {
 			throw new MyException(TTypMyException.EAesErrEncrypt);
 		}
 	}
 	
 	public String decrypt(String seed, String encrypted) throws MyException {
-
+		Log.i("!!!", "decrypting... ");
+		long tim = SystemClock.elapsedRealtime();
 		try {
-	        byte[] rawKey = getRawKey(seed.getBytes());
-	        byte[] enc = mLocator.createBase64().decode(encrypted.getBytes());
-	        byte[] result = decrypt(rawKey, enc);
-	        return new String(result);
+			IMBase64 base64 = mLocator.createBase64();
+			String[] fields = encrypted.split(DELIMITER);
+			byte[] salt = base64.decode(fields[0].getBytes(UTF8));
+			byte[] iv = base64.decode((fields[1].getBytes(UTF8)));
+			byte[] cipherBytes = base64.decode(fields[2].getBytes(UTF8));
+			SecretKey key = deriveKeyPbkdf2(salt, seed);
+
+			IvParameterSpec ivParams = new IvParameterSpec(iv);
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
+			byte[] plaintext = cipher.doFinal(cipherBytes);
+
+			tim = SystemClock.elapsedRealtime() - tim;
+			Log.i("!!!", "decrypting done all: " + tim);
+	        return new String(plaintext, UTF8);
 		} catch (Exception e) {
 			throw new MyException(TTypMyException.EAesErrDecrypt);
 		}
 	}
 	
-	private static byte[] getRawKey(byte[] seed) throws Exception {
-	    KeyGenerator kgen = KeyGenerator.getInstance("AES");
-		SecureRandom sr;
-		if (android.os.Build.VERSION.SDK_INT >= JELLY_BEAN_4_2) {
-			sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-		} else {
-			sr = SecureRandom.getInstance("SHA1PRNG");
-		}
-		sr.setSeed(seed);
-	    kgen.init(256, sr); // 192 and 256 bits may not be available
-	    SecretKey skey = kgen.generateKey();
-	    byte[] raw = skey.getEncoded();
-	    
-	    return raw;
+	private static SecretKey deriveKeyPbkdf2(byte[] salt, String password) throws Exception {
+		KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LEN);
+		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+		SecretKey key = new SecretKeySpec(keyBytes, "AES");
+		return key;
 	}
-	
-	
-	private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
-	    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-	    Cipher cipher = Cipher.getInstance("AES");
-	    cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-	    byte[] encrypted = cipher.doFinal(clear);
-	    return encrypted;
-	}
-	
-	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
-	    SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-	    Cipher cipher = Cipher.getInstance("AES");
-	    cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-	    byte[] decrypted = cipher.doFinal(encrypted);
-	    return decrypted;
-	}
-	
 }

@@ -1,12 +1,10 @@
 package com.softmo.smssafe.sec;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.softmo.smssafe.utils.MyException;
 import com.softmo.smssafe.utils.MyException.TTypMyException;
 
-import android.util.Log;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CMBase64 implements IMBase64 {
 	
@@ -26,8 +24,7 @@ public class CMBase64 implements IMBase64 {
 			int cnt = _data.length;
 			int cnt_res = (cnt/3 + ((cnt%3==0)?0:1))*4;
 			byte[] res = new byte[cnt_res];
-			Log.d("!!!", "encode: cnt_res="+cnt_res);
-			
+
 			int len=cnt-2;
 			int k=0;
 			
