@@ -1,69 +1,69 @@
-com.softmo.smssafe.bootreceiver.CMBootReceiver
-com.softmo.smssafe.bootreceiver.CMBootReceiver: CMBootReceiver()
-com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting[] values()
-com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting: com.softmo.smssafe.dbengine.IMDbQuerySetting$TTypSetting valueOf(java.lang.String)
-com.softmo.smssafe.dbengine.MyAppContext
-com.softmo.smssafe.main.IMMain$TMainState: com.softmo.smssafe.main.IMMain$TMainState[] values()
-com.softmo.smssafe.main.IMMain$TMainState: com.softmo.smssafe.main.IMMain$TMainState valueOf(java.lang.String)
-com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent[] values()
-com.softmo.smssafe.main.TTypEvent: com.softmo.smssafe.main.TTypEvent valueOf(java.lang.String)
-com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState[] values()
-com.softmo.smssafe.main.importer.CMImporter$TImporterState: com.softmo.smssafe.main.importer.CMImporter$TImporterState valueOf(java.lang.String)
-com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification[] values()
-com.softmo.smssafe.main.notificator.TTypNotification: com.softmo.smssafe.main.notificator.TTypNotification valueOf(java.lang.String)
-com.softmo.smssafe.safeservice.CMSafeService
-com.softmo.smssafe.safeservice.CMSafeService: CMSafeService()
-com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState[] values()
-com.softmo.smssafe.sec.CMRsa$TRsaState: com.softmo.smssafe.sec.CMRsa$TRsaState valueOf(java.lang.String)
-com.softmo.smssafe.smsreceiver.CMSmsMonitor
-com.softmo.smssafe.smsreceiver.CMSmsMonitor: CMSmsMonitor()
-com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState: com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState[] values()
-com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState: com.softmo.smssafe.smssender.CMSmsSender$TSmsSenderState valueOf(java.lang.String)
-com.softmo.smssafe.utils.CMTimer$TTimerState: com.softmo.smssafe.utils.CMTimer$TTimerState[] values()
-com.softmo.smssafe.utils.CMTimer$TTimerState: com.softmo.smssafe.utils.CMTimer$TTimerState valueOf(java.lang.String)
-com.softmo.smssafe.utils.CMTimer2$TTimer2State: com.softmo.smssafe.utils.CMTimer2$TTimer2State[] values()
-com.softmo.smssafe.utils.CMTimer2$TTimer2State: com.softmo.smssafe.utils.CMTimer2$TTimer2State valueOf(java.lang.String)
-com.softmo.smssafe.utils.CMTimerWakeup
-com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState: com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState[] values()
-com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState: com.softmo.smssafe.utils.CMTimerWakeup$TTimerWakeupState valueOf(java.lang.String)
-com.softmo.smssafe.utils.MyException$TTypMyException: com.softmo.smssafe.utils.MyException$TTypMyException[] values()
-com.softmo.smssafe.utils.MyException$TTypMyException: com.softmo.smssafe.utils.MyException$TTypMyException valueOf(java.lang.String)
-com.softmo.smssafe.views.AboutActivity
-com.softmo.smssafe.views.AboutActivity: AboutActivity()
-com.softmo.smssafe.views.AboutActivity: void feedbackClick(android.view.View)
-com.softmo.smssafe.views.CMBaseActivity
-com.softmo.smssafe.views.CMBaseActivity: CMBaseActivity()
-com.softmo.smssafe.views.CMBaseListActivity
-com.softmo.smssafe.views.CMBaseListActivity: CMBaseListActivity()
-com.softmo.smssafe.views.EnterPassActivity
-com.softmo.smssafe.views.EnterPassActivity: EnterPassActivity()
-com.softmo.smssafe.views.EnterPassActivity: void onOkClick(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick0(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick1(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick2(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick3(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick4(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick5(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick6(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick7(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick8(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClick9(android.view.View)
-com.softmo.smssafe.views.EnterPassActivity: void onClickDel(android.view.View)
-com.softmo.smssafe.views.OptionsActivity
-com.softmo.smssafe.views.OptionsActivity: OptionsActivity()
-com.softmo.smssafe.views.OptionsAdapter$ITEMS: com.softmo.smssafe.views.OptionsAdapter$ITEMS[] values()
-com.softmo.smssafe.views.OptionsAdapter$ITEMS: com.softmo.smssafe.views.OptionsAdapter$ITEMS valueOf(java.lang.String)
-com.softmo.smssafe.views.SetPassActivity
-com.softmo.smssafe.views.SetPassActivity: SetPassActivity()
-com.softmo.smssafe.views.SetPassActivity: void onOkClick(android.view.View)
-com.softmo.smssafe.views.SetPassActivity: void onCancelClick(android.view.View)
-com.softmo.smssafe.views.SetPassActivity$TMode: com.softmo.smssafe.views.SetPassActivity$TMode[] values()
-com.softmo.smssafe.views.SetPassActivity$TMode: com.softmo.smssafe.views.SetPassActivity$TMode valueOf(java.lang.String)
-com.softmo.smssafe.views.SmsMainActivity
-com.softmo.smssafe.views.SmsMainActivity: SmsMainActivity()
-com.softmo.smssafe.views.SmsNewActivity
-com.softmo.smssafe.views.SmsNewActivity: SmsNewActivity()
-com.softmo.smssafe.views.SmsViewerActivity
-com.softmo.smssafe.views.SmsViewerActivity: SmsViewerActivity()
-com.softmo.smssafe.views.smsadapter.TTypSmsList: com.softmo.smssafe.views.smsadapter.TTypSmsList[] values()
-com.softmo.smssafe.views.smsadapter.TTypSmsList: com.softmo.smssafe.views.smsadapter.TTypSmsList valueOf(java.lang.String)
+smssafe2.bootreceiver.CMBootReceiver
+smssafe2.bootreceiver.CMBootReceiver: CMBootReceiver()
+smssafe2.dbengine.IMDbQuerySetting$TTypSetting: smssafe2.dbengine.IMDbQuerySetting$TTypSetting[] values()
+smssafe2.dbengine.IMDbQuerySetting$TTypSetting: smssafe2.dbengine.IMDbQuerySetting$TTypSetting valueOf(java.lang.String)
+smssafe2.dbengine.MyAppContext
+smssafe2.main.IMMain$TMainState: smssafe2.main.IMMain$TMainState[] values()
+smssafe2.main.IMMain$TMainState: smssafe2.main.IMMain$TMainState valueOf(java.lang.String)
+smssafe2.main.TTypEvent: smssafe2.main.TTypEvent[] values()
+smssafe2.main.TTypEvent: smssafe2.main.TTypEvent valueOf(java.lang.String)
+smssafe2.main.importer.CMImporter$TImporterState: smssafe2.main.importer.CMImporter$TImporterState[] values()
+smssafe2.main.importer.CMImporter$TImporterState: smssafe2.main.importer.CMImporter$TImporterState valueOf(java.lang.String)
+smssafe2.main.notificator.TTypNotification: smssafe2.main.notificator.TTypNotification[] values()
+smssafe2.main.notificator.TTypNotification: smssafe2.main.notificator.TTypNotification valueOf(java.lang.String)
+smssafe2.safeservice.CMSafeService
+smssafe2.safeservice.CMSafeService: CMSafeService()
+smssafe2.sec.CMRsa$TRsaState: smssafe2.sec.CMRsa$TRsaState[] values()
+smssafe2.sec.CMRsa$TRsaState: smssafe2.sec.CMRsa$TRsaState valueOf(java.lang.String)
+smssafe2.smsreceiver.CMSmsMonitor
+smssafe2.smsreceiver.CMSmsMonitor: CMSmsMonitor()
+smssafe2.smssender.CMSmsSender$TSmsSenderState: smssafe2.smssender.CMSmsSender$TSmsSenderState[] values()
+smssafe2.smssender.CMSmsSender$TSmsSenderState: smssafe2.smssender.CMSmsSender$TSmsSenderState valueOf(java.lang.String)
+smssafe2.utils.CMTimer$TTimerState: smssafe2.utils.CMTimer$TTimerState[] values()
+smssafe2.utils.CMTimer$TTimerState: smssafe2.utils.CMTimer$TTimerState valueOf(java.lang.String)
+smssafe2.utils.CMTimer2$TTimer2State: smssafe2.utils.CMTimer2$TTimer2State[] values()
+smssafe2.utils.CMTimer2$TTimer2State: smssafe2.utils.CMTimer2$TTimer2State valueOf(java.lang.String)
+smssafe2.utils.CMTimerWakeup
+smssafe2.utils.CMTimerWakeup$TTimerWakeupState: smssafe2.utils.CMTimerWakeup$TTimerWakeupState[] values()
+smssafe2.utils.CMTimerWakeup$TTimerWakeupState: smssafe2.utils.CMTimerWakeup$TTimerWakeupState valueOf(java.lang.String)
+smssafe2.utils.MyException$TTypMyException: smssafe2.utils.MyException$TTypMyException[] values()
+smssafe2.utils.MyException$TTypMyException: smssafe2.utils.MyException$TTypMyException valueOf(java.lang.String)
+smssafe2.views.AboutActivity
+smssafe2.views.AboutActivity: AboutActivity()
+smssafe2.views.AboutActivity: void feedbackClick(android.view.View)
+smssafe2.views.CMBaseActivity
+smssafe2.views.CMBaseActivity: CMBaseActivity()
+smssafe2.views.CMBaseListActivity
+smssafe2.views.CMBaseListActivity: CMBaseListActivity()
+smssafe2.views.EnterPassActivity
+smssafe2.views.EnterPassActivity: EnterPassActivity()
+smssafe2.views.EnterPassActivity: void onOkClick(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick0(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick1(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick2(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick3(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick4(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick5(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick6(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick7(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick8(android.view.View)
+smssafe2.views.EnterPassActivity: void onClick9(android.view.View)
+smssafe2.views.EnterPassActivity: void onClickDel(android.view.View)
+smssafe2.views.OptionsActivity
+smssafe2.views.OptionsActivity: OptionsActivity()
+smssafe2.views.OptionsAdapter$ITEMS: smssafe2.views.OptionsAdapter$ITEMS[] values()
+smssafe2.views.OptionsAdapter$ITEMS: smssafe2.views.OptionsAdapter$ITEMS valueOf(java.lang.String)
+smssafe2.views.SetPassActivity
+smssafe2.views.SetPassActivity: SetPassActivity()
+smssafe2.views.SetPassActivity: void onOkClick(android.view.View)
+smssafe2.views.SetPassActivity: void onCancelClick(android.view.View)
+smssafe2.views.SetPassActivity$TMode: smssafe2.views.SetPassActivity$TMode[] values()
+smssafe2.views.SetPassActivity$TMode: smssafe2.views.SetPassActivity$TMode valueOf(java.lang.String)
+smssafe2.views.SmsMainActivity
+smssafe2.views.SmsMainActivity: SmsMainActivity()
+smssafe2.views.SmsNewActivity
+smssafe2.views.SmsNewActivity: SmsNewActivity()
+smssafe2.views.SmsViewerActivity
+smssafe2.views.SmsViewerActivity: SmsViewerActivity()
+smssafe2.views.smsadapter.TTypSmsList: smssafe2.views.smsadapter.TTypSmsList[] values()
+smssafe2.views.smsadapter.TTypSmsList: smssafe2.views.smsadapter.TTypSmsList valueOf(java.lang.String)
